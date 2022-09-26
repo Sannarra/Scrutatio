@@ -61,6 +61,10 @@ We had some constraits:
 
 In addition of those constraints, we aims to:
 * Allow advertisements filter using search words/tags
+* Add a profile page
+* Save advertisements in profile for later candidature
+* Show messages chat
+* Ultra Dark mode
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
