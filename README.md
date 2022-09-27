@@ -75,8 +75,7 @@ In addition of those constraints, we aims to:
 Why ? We don't know, we are here for learning purposes.
 
 * [![React][React.js]][React-url]
-* [![JQuery][JQuery.com]][JQuery-url]
-* [![Symfony][Symfony.com]][Symfony-url]
+* [![Laravel][Laravel.com]][Laravel-url]
 * [![MySQL][mysql.com]][mysql-url]
 
 
@@ -92,30 +91,34 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+You must install:
+
+- npm
+- php
+- composer
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/EpitechMscProPromo2025/T-WEB-501-NAN-5-1-jobboard-lisa.bourdon.git
    ```
+
+2. Install composer packages
+   ```sh
+   composer install
+   ```
+
 3. Install NPM packages
    ```sh
    npm install
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
 
+4. Run in two separated terminals
+   ```sh
+   npm run dev
+   php artisan server
+   ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -140,6 +143,7 @@ Some usefull links we used during the project and would like to give credit to.
 * [Create a database diagram](https://dbdiagram.io/)
 * [Markdown badges](https://github.com/Ileriayo/markdown-badges)
 * [Readme Template](https://github.com/othneildrew/Best-README-Template)
+* [Laravel 9/React install using Vite](https://larainfo.com/blogs/install-react-js-in-laravel-9-with-vite)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -150,9 +154,7 @@ Some usefull links we used during the project and would like to give credit to.
 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
-[Symfony.com]: https://img.shields.io/badge/symfony-%23000000.svg?style=for-the-badge&logo=symfony&logoColor=white
-[Symfony-url]: https://symfony.com 
+[Laravel.com]: https://img.shields.io/badge/laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white
+[Laravel-url]: https://laravel.com 
 [mysql.com]: https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white
 [mysql-url]: https://mysql.com 
