@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             SectorSeeder::class ,
             CompanieSeeder::class ,
             CompanieSectorSeeder::class ,
-            AdvertisementSeeder::class]);
+            AdvertisementSeeder::class ,
+            ApplicationSeeder::class]);
     }
 }
