@@ -108,6 +108,11 @@ You must install:
 2. Configure your environnment
 
    Rename the ".env.example" file as ".env". Create a new database and set the "*DB_\**" variables in the .env file in order to connect to your newly created database.
+   
+   You can seed the database with random data using
+   ```sh
+   php artisan db:seed
+   ```
 
 3. Install composer packages
    ```sh
