@@ -96,6 +96,7 @@ You must install:
 - npm
 - php
 - composer
+- mysql
 
 ### Installation
 
@@ -104,17 +105,26 @@ You must install:
    git clone https://github.com/EpitechMscProPromo2025/T-WEB-501-NAN-5-1-jobboard-lisa.bourdon.git
    ```
 
-2. Install composer packages
+2. Configure your environnment
+
+   Rename the ".env.example" file as ".env". Create a new database and set the "*DB_\**" variables in the .env file in order to connect to your newly created database.
+
+3. Install composer packages
    ```sh
    composer install
    ```
 
-3. Install NPM packages
+4. Install NPM packages
    ```sh
    npm install
    ```
 
-4. Run in two separated terminals
+5. Update the database
+   ```sh
+   php artisan migrate
+   ```
+
+6. Run in two separated terminals
    ```sh
    npm run dev
    php artisan server
