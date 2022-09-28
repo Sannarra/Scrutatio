@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Companie;
 use Illuminate\Support\Facades\Schema;
+use App\Models\User;
 
 class CompanieSeeder extends Seeder
 {
@@ -30,7 +31,7 @@ class CompanieSeeder extends Seeder
                 'size' => $faker->numberBetween(10, 50000),
                 'headquarter' => $faker->city(),
                 'postal_code' => $faker->postcode(),
-                'human_resources_id' => $faker->numberBetween(1, 50),
+                'human_resources_id' => $faker->numberBetween(1, User::count()),
                 'website' => $faker->url(),
             ]);
         }

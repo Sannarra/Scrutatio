@@ -16,16 +16,36 @@ class SectorSeeder extends Seeder
      */
     public function run()
     {
-        $faker = \Faker\Factory::create();
+        $sectors = ['Agriculture',
+            'Metal Production',
+            'Chemical industries',
+            'Commerce',
+            'Construction',
+            'Education',
+            'Financial services',
+            'Food & drink',
+            'Forestry',
+            'Wood',
+            'Health care',
+            'Tourism',
+            'Mining',
+            'Mechanical and electrical engineering',
+            'Media',
+            'Culture',
+            'Oil and gas production',
+            'Postal and telecommunications services',
+            'Public service',
+            'Shipping',
+            'Fisheries',
+            'Textiles',
+            'Clothing',
+            'Transport'];
 
         Schema::disableForeignKeyConstraints();
         Sector::truncate();
         Schema::enableForeignKeyConstraints();
 
-        for ($i = 0; $i < 50; $i++) {
-            Sector::create([
-                'name' => $faker->word(),
-            ]);
-        }
+        foreach ($sectors as &$value)
+            Sector::create(['name' => $value]);
     }
 }
