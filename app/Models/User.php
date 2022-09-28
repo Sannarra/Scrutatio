@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Companie::class , 'human_resources');
     }
+
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
 }

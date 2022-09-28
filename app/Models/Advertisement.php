@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Companie;
+use App\Models\Application;
 
 class Advertisement extends Model
 {
@@ -21,5 +22,10 @@ class Advertisement extends Model
     public function companie()
     {
         return $this->belongsTo(Companie::class);
+    }
+
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
     }
 }
