@@ -50,7 +50,7 @@ class User extends Authenticatable
 
     public function companie()
     {
-        return $this->hasOne(Companie::class , 'human_resources');
+        return $this->hasOne(Companie::class , 'human_resources_id');
     }
 
     public function applications()

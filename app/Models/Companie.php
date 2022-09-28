@@ -17,12 +17,12 @@ class Companie extends Model
         'size',
         'headquarter',
         'postal_code',
-        'human_resources',
+        'human_resources_id',
         'website'];
 
     public function human_resources_user()
     {
-        return $this->belongsTo(User::class , 'human_resources');
+        return $this->belongsTo(User::class , 'human_resources_id');
     }
 
     public function sectors()
