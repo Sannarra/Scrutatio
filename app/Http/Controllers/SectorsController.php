@@ -14,9 +14,6 @@ class SectorsController extends Controller
 
     public function show(Request $request, Sector $sector)
     {
-        $this->validate($request, [
-            'name' => 'required|unique:sectors|max:255'
-        ]);
         return $sector;
     }
 

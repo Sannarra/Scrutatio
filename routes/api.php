@@ -12,15 +12,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('sectors', 'App\Http\Controllers\SectorsController@index');
-
-
 Route::get('sectors/{sector}', 'App\Http\Controllers\SectorsController@show');
-
-
 Route::post('sectors', 'App\Http\Controllers\SectorsController@store');
-
-
 Route::put('sectors/{sector}', 'App\Http\Controllers\SectorsController@update');
-
-
 Route::delete('sectors/{sector}', 'App\Http\Controllers\SectorsController@delete');
+
+Route::get('users', 'App\Http\Controllers\UserController@index');
+Route::get('users/{user}', 'App\Http\Controllers\UserController@show');
+Route::post('users', 'App\Http\Controllers\UserController@store');
+Route::put('users/{user}', 'App\Http\Controllers\UserController@update');
+Route::delete('users/{user}', 'App\Http\Controllers\UserController@delete');
