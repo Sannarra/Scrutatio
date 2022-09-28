@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Sector;
 use Illuminate\Support\Facades\Schema;
 
-class SectorsTableSeeder extends Seeder
+class SectorSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -24,7 +24,7 @@ class SectorsTableSeeder extends Seeder
 
         for ($i = 0; $i < 50; $i++) {
             Sector::create([
-                'name' => $faker->name,
+                'name' => $faker->word(),
             ]);
         }
     }
