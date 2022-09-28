@@ -20,4 +20,9 @@ class Application extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function mails()
+    {
+        return $this->hasMany(Mail::class);
+    }
 }
