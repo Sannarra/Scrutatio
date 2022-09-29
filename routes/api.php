@@ -27,7 +27,7 @@ Route::delete('users/{user}', 'App\Http\Controllers\UserController@delete');
 
 /// Companie
 Route::get('companies', 'App\Http\Controllers\CompanieController@index');
-Route::get('companies/{user}', 'App\Http\Controllers\CompanieController@show');
+Route::get('companies/{companie}', 'App\Http\Controllers\CompanieController@show');
 Route::post('companies', 'App\Http\Controllers\CompanieController@store');
-Route::put('companies/{user}', 'App\Http\Controllers\CompanieController@update');
-Route::delete('companies/{user}', 'App\Http\Controllers\CompanieController@delete');
+Route::put('companies/{companie}', 'App\Http\Controllers\CompanieController@update');
+Route::delete('companies/{companie}', 'App\Http\Controllers\CompanieController@delete');
