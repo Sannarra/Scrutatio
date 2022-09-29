@@ -1,3 +1,52 @@
+:root {
+    --dark: #333745;
+    --accent: #faaa00;
+    --light: #ffffff;
+    --background: #e1e5f2;
+    --accent2: #bfdbf7;
+  }
+
 body {
-    background-color: lightgray;
+    background-color: var(--background);
+    margin: 0;
 }
+
+/*/////////////// header ///////////////*/
+
+header{
+    background-color: var(--dark);
+    color: var(--light);
+    display: flex ;
+    justify-content: space-between;
+    padding: 3vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+header a {
+    color: var(--light);
+}
+
+header div {
+    margin:0 1em;
+}
+
+header div:nth-child(3){
+    display: flex;
+}
+
+/*/////////////// footer ///////////////*/
+
+footer {
+    margin-top: 6em; 
+    /* a enlever */
+    background-color: var(--dark);
+    color: var(--light);
+    bottom: 0px;
+}
+
+/*/////////////// sidebar ///////////////*/
+
+
