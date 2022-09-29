@@ -109,6 +109,11 @@ You must install:
 
    Rename the ".env.example" file as ".env". Create a new database and set the "*DB_\**" variables in the .env file in order to connect to your newly created database.
    
+   Generate a key
+   ```sh
+   php artisan key:generate
+   ```
+
    You can seed the database with random data using
    ```sh
    php artisan db:seed
@@ -132,7 +137,7 @@ You must install:
 6. Run in two separated terminals
    ```sh
    npm run dev
-   php artisan server
+   php artisan serve
    ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
