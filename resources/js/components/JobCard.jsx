@@ -22,18 +22,17 @@ const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <Button {...other} />;
 })(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
   marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
+  width: "130px"
 }));
 
 export default function JobCard() {
   const [expanded, setExpanded] = React.useState(false);
+  const [buttonText, setButtonText] = React.useState('Learn more');
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+    setButtonText(expanded ? "Learn more" : "hide")
   };
 
   return (
@@ -70,7 +69,7 @@ export default function JobCard() {
           onClick={handleExpandClick}
           aria-expanded={expanded}
         >
-          Learn More
+          {buttonText}
         </ExpandMore>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
