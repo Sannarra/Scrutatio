@@ -74,6 +74,7 @@ In addition of those constraints, we aims to:
 
 Why ? We don't know, we are here for learning purposes.
 
+* [![MUI][mui.com]][mui-url]
 * [![React][React.js]][React-url]
 * [![Laravel][Laravel.com]][Laravel-url]
 * [![MySQL][mysql.com]][mysql-url]
@@ -178,3 +179,5 @@ Some usefull links we used during the project and would like to give credit to.
 [Laravel-url]: https://laravel.com 
 [mysql.com]: https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white
 [mysql-url]: https://mysql.com 
+[mui.com]: https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white
+[mui-url]: https://mui.com/
