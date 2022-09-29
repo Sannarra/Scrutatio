@@ -16,6 +16,9 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import Chip from '@mui/material/Chip';
+import Grid from '@mui/material/Unstable_Grid2';
 
 
 const ExpandMore = styled((props) => {
@@ -23,7 +26,8 @@ const ExpandMore = styled((props) => {
   return <Button {...other} />;
 })(({ theme, expand }) => ({
   marginLeft: 'auto',
-  width: "130px"
+  width: "130px",
+  borderRadius: 50
 }));
 
 export default function JobCard() {
@@ -74,7 +78,19 @@ export default function JobCard() {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Method:</Typography>
+          <Divider sx={{marginBottom: "10px"}}>
+            <Chip label="Details" sx={{backgroundColor: "#e1e5f2"}}/>
+          </Divider>
+          <br/>
+          <Typography>Sectors: 
+            <Chip label="Agriculture" size="small" sx={{backgroundColor: "#e1e5f2", marginLeft: "5px", marginRight: "5px"}}/>
+            <Chip label="Metal Production" size="small" sx={{backgroundColor: "#e1e5f2", marginLeft: "5px", marginRight: "5px"}}/>
+          </Typography>
+          <br/>
+          <Typography>Contract Type: CDI</Typography>
+          <br/>
+
+          <Typography paragraph>Description:</Typography>
           <Typography paragraph>
             Heat 1/2 cup of the broth in a pot until simmering, add saffron and set
             aside for 10 minutes.
@@ -88,17 +104,38 @@ export default function JobCard() {
             stirring often until thickened and fragrant, about 10 minutes. Add
             saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
           </Typography>
-          <Typography paragraph>
-            Add rice and stir very gently to distribute. Top with artichokes and
-            peppers, and cook without stirring, until most of the liquid is absorbed,
-            15 to 18 minutes. Reduce heat to medium-low, add reserved shrimp and
-            mussels, tucking them down into the rice, and cook again without
-            stirring, until mussels have opened and rice is just tender, 5 to 7
-            minutes more. (Discard any mussels that don&apos;t open.)
-          </Typography>
           <Typography>
             Set aside off of the heat to let rest for 10 minutes, and then serve.
           </Typography>
+
+          <br/>
+          <br/>
+
+          <Grid container spacing={2}>
+            <Grid xs={1}/>
+            <Grid xs={5}>
+              <Typography variant="h6">
+                Salary
+                </Typography>
+            </Grid>
+            <Grid xs={6}>
+            <Typography variant="h6">
+                Working Time
+                </Typography>
+            </Grid>
+            <Grid xs={1}/>
+            <Grid xs={5}>
+                1520$
+            </Grid>
+            <Grid xs={6}>
+                35h
+            </Grid>
+          </Grid>
+
+          <br/>
+          <br/>
+
+          <Button variant="contained" sx={{width:"100%", backgroundColor: "#faaa00", color: "black", borderRadius: 50}}>Apply</Button>
         </CardContent>
       </Collapse>
     </Card>
