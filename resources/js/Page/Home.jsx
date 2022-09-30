@@ -14,7 +14,22 @@ export default class Home extends Component {
         /// Collapsing current card
         if (sender === this.openedCard) this.openedCard = undefined;
         else {
-            if (this.openedCard) this.openedCard.setExpanded(false);
+            if (this.openedCard) {
+                if (
+                    this.openedCard.cardRef.current.offsetTop <
+                    sender.cardRef.current.offsetTop
+                ) {
+                    let diff = this.openedCard.collapseRef.current.offsetHeight;
+                    // let maxVal = sender.cardRef.current.offsetTop - diff;
+                    let maxVal = window.scrollY - diff;
+                    window.scroll({
+                        top: Math.max(window.scrollY - diff, maxVal),
+                        left: 0,
+                        behavior: "smooth",
+                    });
+                }
+                this.openedCard.setExpanded(false);
+            }
             this.openedCard = sender;
         }
     }

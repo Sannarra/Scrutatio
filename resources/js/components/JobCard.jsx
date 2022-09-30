@@ -43,6 +43,8 @@ export default class JobCard extends React.Component {
         super(props);
         this.handleExpandClick = this.handleExpandClick.bind(this);
         this.state = { expanded: props.expanded };
+        this.collapseRef = React.createRef();
+        this.cardRef = React.createRef();
     }
 
     handleExpandClick() {
@@ -59,6 +61,7 @@ export default class JobCard extends React.Component {
     render() {
         return (
             <Card
+                ref={this.cardRef}
                 sx={{ maxWidth: 345, border: 1, borderRadius: 3, boxShadow: 5 }}
             >
                 <CardHeader
@@ -101,7 +104,12 @@ export default class JobCard extends React.Component {
                         {this.state.expanded ? "Hide" : "Learn more"}
                     </LearnMore>
                 </CardActions>
-                <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+                <Collapse
+                    ref={this.collapseRef}
+                    in={this.state.expanded}
+                    timeout="auto"
+                    unmountOnExit
+                >
                     <CardContent>
                         <Divider sx={{ marginBottom: "10px" }}>
                             <Chip
