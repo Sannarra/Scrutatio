@@ -10,6 +10,8 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import StarIcon from "@mui/icons-material/StarBorder";
 import FilledStarIcon from "@mui/icons-material/Star";
+import BusinessIcon from "@mui/icons-material/Business";
+import PlaceIcon from "@mui/icons-material/Place";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip";
@@ -99,7 +101,30 @@ export default class JobCard extends React.Component {
                         </IconButton>
                     }
                     title={this.props.data.jobTitle}
-                    subheader={`${this.props.data.companyName} ● ${this.props.data.city}`}
+                    subheader={
+                        <div>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    flexWrap: "wrap",
+                                }}
+                            >
+                                <BusinessIcon />
+                                <span>{this.props.data.companyName}</span>
+                            </div>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    flexWrap: "wrap",
+                                }}
+                            >
+                                <PlaceIcon />
+                                <span>{this.props.data.city}</span>
+                            </div>
+                        </div>
+                    }
                     style={{ textAlign: "center" }}
                 />
                 <CardContent>
