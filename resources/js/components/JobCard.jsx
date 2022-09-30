@@ -9,6 +9,7 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import StarIcon from "@mui/icons-material/StarBorder";
+import FilledStarIcon from "@mui/icons-material/Star";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip";
@@ -25,16 +26,17 @@ const LearnMore = styled((props) => {
 
 class Sector extends React.Component {
     render() {
-        return;
-        <Chip
-            label={this.props.name}
-            size="small"
-            sx={{
-                backgroundColor: "#e1e5f2",
-                marginLeft: "5px",
-                marginRight: "5px",
-            }}
-        />;
+        return (
+            <Chip
+                label={this.props.name}
+                size="small"
+                sx={{
+                    backgroundColor: "var(--background)",
+                    marginLeft: "5px",
+                    marginRight: "5px",
+                }}
+            />
+        );
     }
 }
 
@@ -42,7 +44,8 @@ export default class JobCard extends React.Component {
     constructor(props) {
         super(props);
         this.handleExpandClick = this.handleExpandClick.bind(this);
-        this.state = { expanded: props.expanded };
+        this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
+        this.state = { expanded: props.expanded, favorite: props.favorite };
         this.collapseRef = React.createRef();
         this.cardRef = React.createRef();
     }
@@ -55,6 +58,12 @@ export default class JobCard extends React.Component {
     setExpanded(state) {
         this.setState({
             expanded: state,
+        });
+    }
+
+    handleFavoriteClick() {
+        this.setState({
+            favorite: !this.state.favorite,
         });
     }
 
@@ -72,8 +81,16 @@ export default class JobCard extends React.Component {
                         />
                     }
                     action={
-                        <IconButton aria-label="save" sx={{ color: "#faaa00" }}>
-                            <StarIcon />
+                        <IconButton
+                            aria-label="save"
+                            sx={{ color: "var(--accent)" }}
+                            onClick={this.handleFavoriteClick}
+                        >
+                            {this.state.favorite ? (
+                                <FilledStarIcon />
+                            ) : (
+                                <StarIcon />
+                            )}
                         </IconButton>
                     }
                     title={this.props.jobTitle}
@@ -97,7 +114,10 @@ export default class JobCard extends React.Component {
                     </Typography>
                     <LearnMore
                         variant="contained"
-                        style={{ backgroundColor: "#faaa00", color: "black" }}
+                        style={{
+                            backgroundColor: "var(--accent)",
+                            color: "black",
+                        }}
                         onClick={this.handleExpandClick}
                         aria-expanded={this.state.expanded}
                     >
@@ -114,14 +134,14 @@ export default class JobCard extends React.Component {
                         <Divider sx={{ marginBottom: "10px" }}>
                             <Chip
                                 label="Details"
-                                sx={{ backgroundColor: "#e1e5f2" }}
+                                sx={{ backgroundColor: "var(--background)" }}
                             />
                         </Divider>
                         <br />
-                        <Typography>
+                        <Typography component={"span"}>
                             Sectors:
                             {this.props.sectors.map((sector, index) => {
-                                return <Sector name={sector} />;
+                                return <Sector name={sector} key={index} />;
                             })}
                         </Typography>
                         <br />
@@ -178,7 +198,7 @@ export default class JobCard extends React.Component {
                             variant="contained"
                             sx={{
                                 width: "100%",
-                                backgroundColor: "#faaa00",
+                                backgroundColor: "var(--accent)",
                                 color: "black",
                                 borderRadius: 50,
                             }}
