@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import Slider from '@mui/material/Slider';
 import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
-
+import SearchIcon from '@mui/icons-material/Search';
 
 
 
@@ -32,6 +32,7 @@ export default function SwipeableTemporaryDrawer() {
   });
 
   const toggleDrawer = (anchor, open) => (event) => {
+    
     if (
       event &&
       event.type === 'keydown' &&
@@ -39,6 +40,8 @@ export default function SwipeableTemporaryDrawer() {
     ) {
       return;
     }
+
+    // if (!open && event && event.type === 'click') return;
 
     setState({ ...state, [anchor]: open });
   };
@@ -85,7 +88,7 @@ export default function SwipeableTemporaryDrawer() {
                 onChange={handleChangeW}
                 getAriaValueText={valuetext}
                 valueLabelDisplay='on'
-                color='grey'
+                color='grey' // use graphic charter color
             />
             </Box>
         </label>
@@ -102,10 +105,10 @@ export default function SwipeableTemporaryDrawer() {
             <h3>Contract type</h3>
             <Box>
                 <Grid container>
-                      <Chip  sx={{ m: .5}} label="type" onClick={handleClick} />
-                      <Chip sx={{ m: .5}} label="type1" onClick={handleClick} />
+                      <Chip sx={{ m: .5}} label="type" onClick={handleClick} />
+                      <Chip sx={{ m: .5}} label="AAAAAAA" onClick={handleClick} />
                       <Chip sx={{ m: .5}} label="type2" onClick={handleClick} />
-                      <Chip sx={{ m: .5}} label="type3" onClick={handleClick} />
+                      <Chip sx={{ m: .5}} label="1" onClick={handleClick} />
                       <Chip sx={{ m: .5}} label="type3" onClick={handleClick} />
                       <Chip sx={{ m: .5}} label="type3" onClick={handleClick} />
                       <Chip sx={{ m: .5}} label="type3" onClick={handleClick} />
@@ -114,9 +117,10 @@ export default function SwipeableTemporaryDrawer() {
         </label>
 
         <label> 
-            <input type="button" value="Submit" />
+        <Button sx={{ mt: 5}} variant="contained" endIcon={<SearchIcon />}>
+           Filter
+        </Button>
         </label>
-
   </form>
     </Box>
   );
@@ -125,7 +129,7 @@ export default function SwipeableTemporaryDrawer() {
     <div>
       {['left'].map((anchor) => (
         <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
+          <Button onClick={toggleDrawer(anchor, true)}>Hello</Button>
           <SwipeableDrawer
             anchor={anchor}
             open={state[anchor]}
