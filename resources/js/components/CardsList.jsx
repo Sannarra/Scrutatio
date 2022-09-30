@@ -36,7 +36,17 @@ export default class CardsList extends Component {
     render() {
         return (
             <Stack spacing={3} sx={{ alignItems: "center" }}>
-                <JobCard
+                {this.props.data.jobs.map((job, index) => {
+                    return (
+                        <JobCard
+                            key={index}
+                            data={job}
+                            onExpand={this.handleExpandClick}
+                        />
+                    );
+                })}
+
+                {/* <JobCard
                     jobTitle="Shampooer"
                     companyName="Wolf PLC"
                     city="Boyletown"
@@ -59,7 +69,7 @@ export default class CardsList extends Component {
                     salary="1342"
                     working_time="25"
                     onExpand={this.handleExpandClick}
-                />
+                /> */}
             </Stack>
         );
     }

@@ -1,9 +1,11 @@
-import './bootstrap';
-import '../css/app.css'
+import "./bootstrap";
+import "../css/app.css";
 
-import ReactDOM from 'react-dom/client';        
-import Home from './Page/Home';
+import ReactDOM from "react-dom/client";
+import Home from "./Page/Home";
 
-ReactDOM.createRoot(document.getElementById('app')).render(     
-    <Home />        
+ReactDOM.createRoot(document.getElementById("app")).render(
+    <Home
+        data={JSON.parse(document.getElementById("app").getAttribute("data"))}
+    />
 );

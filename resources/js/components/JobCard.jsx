@@ -45,7 +45,10 @@ export default class JobCard extends React.Component {
         super(props);
         this.handleExpandClick = this.handleExpandClick.bind(this);
         this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
-        this.state = { expanded: props.expanded, favorite: props.favorite };
+        this.state = {
+            expanded: props.expanded,
+            favorite: props.data.favorite,
+        };
         this.collapseRef = React.createRef();
         this.cardRef = React.createRef();
     }
@@ -77,7 +80,7 @@ export default class JobCard extends React.Component {
                     avatar={
                         <Avatar
                             aria-label="company_icon"
-                            src={this.props.company_icon}
+                            src={this.props.data.company_icon}
                         />
                     }
                     action={
@@ -93,8 +96,8 @@ export default class JobCard extends React.Component {
                             )}
                         </IconButton>
                     }
-                    title={this.props.jobTitle}
-                    subheader={`${this.props.companyName} ● ${this.props.city}`}
+                    title={this.props.data.jobTitle}
+                    subheader={`${this.props.data.companyName} ● ${this.props.data.city}`}
                     style={{ textAlign: "center" }}
                 />
                 <CardContent>
@@ -110,7 +113,7 @@ export default class JobCard extends React.Component {
                         color="text.secondary"
                         sx={{ marginLeft: 1 }}
                     >
-                        {this.props.publication_date}
+                        {this.props.data.publication_date}
                     </Typography>
                     <LearnMore
                         variant="contained"
@@ -140,13 +143,13 @@ export default class JobCard extends React.Component {
                         <br />
                         <Typography component={"span"}>
                             Sectors:
-                            {this.props.sectors.map((sector, index) => {
+                            {this.props.data.sectors.map((sector, index) => {
                                 return <Sector name={sector} key={index} />;
                             })}
                         </Typography>
                         <br />
                         <Typography>
-                            Contract Type: {this.props.contract_type}
+                            Contract Type: {this.props.data.contract_type}
                         </Typography>
                         <br />
 
@@ -187,8 +190,8 @@ export default class JobCard extends React.Component {
                                 </Typography>
                             </Grid>
                             <Grid xs={1} />
-                            <Grid xs={5}>{this.props.salary}$</Grid>
-                            <Grid xs={6}>{this.props.working_time}h</Grid>
+                            <Grid xs={5}>{this.props.data.salary}$</Grid>
+                            <Grid xs={6}>{this.props.data.working_time}h</Grid>
                         </Grid>
 
                         <br />

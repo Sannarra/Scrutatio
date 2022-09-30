@@ -8,6 +8,6 @@ export default class Home extends Component {
     }
 
     render() {
-        return <CardsList />;
+        return <CardsList data={this.props.data} />;
     }
 }
