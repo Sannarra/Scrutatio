@@ -45,31 +45,6 @@ export default class CardsList extends Component {
                         />
                     );
                 })}
-
-                {/* <JobCard
-                    jobTitle="Shampooer"
-                    companyName="Wolf PLC"
-                    city="Boyletown"
-                    publication_date="29 sept 2022"
-                    sectors={["Public service"]}
-                    contract_type="CDI"
-                    salary="1542"
-                    working_time="35"
-                    company_icon="https://cdn.discordapp.com/icons/768816677491965973/89de8e72c08e16e921810da2a0fc5f19.webp"
-                    onExpand={this.handleExpandClick}
-                />
-
-                <JobCard
-                    jobTitle="Maintenance Worker"
-                    companyName="Hermiston Inc"
-                    city="Langton"
-                    publication_date="27 sept 2022"
-                    sectors={["Metal Production", "Mining"]}
-                    contract_type="CDI"
-                    salary="1342"
-                    working_time="25"
-                    onExpand={this.handleExpandClick}
-                /> */}
             </Stack>
         );
     }

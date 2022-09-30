@@ -34,6 +34,8 @@ class Sector extends React.Component {
                     backgroundColor: "var(--background)",
                     marginLeft: "5px",
                     marginRight: "5px",
+                    marginTop: "2px",
+                    marginBottom: "2px",
                 }}
             />
         );
@@ -74,7 +76,7 @@ export default class JobCard extends React.Component {
         return (
             <Card
                 ref={this.cardRef}
-                sx={{ maxWidth: 345, border: 1, borderRadius: 3, boxShadow: 5 }}
+                sx={{ width: "90%", border: 1, borderRadius: 3, boxShadow: 5 }}
             >
                 <CardHeader
                     avatar={
@@ -102,9 +104,7 @@ export default class JobCard extends React.Component {
                 />
                 <CardContent>
                     <Typography variant="body2" color="text.primary">
-                        This impressive paella is a perfect party dish and a fun
-                        meal to cook together with your guests. Add 1 cup of
-                        frozen peas along with the mussels, if you like.
+                        {this.props.data.short_brief}
                     </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
@@ -154,27 +154,17 @@ export default class JobCard extends React.Component {
                         <br />
 
                         <Typography paragraph>Description:</Typography>
-                        <Typography paragraph>
-                            Heat 1/2 cup of the broth in a pot until simmering,
-                            add saffron and set aside for 10 minutes.
-                        </Typography>
-                        <Typography paragraph>
-                            Heat oil in a (14- to 16-inch) paella pan or a
-                            large, deep skillet over medium-high heat. Add
-                            chicken, shrimp and chorizo, and cook, stirring
-                            occasionally until lightly browned, 6 to 8 minutes.
-                            Transfer shrimp to a large plate and set aside,
-                            leaving chicken and chorizo in the pan. Add
-                            pimentón, bay leaves, garlic, tomatoes, onion, salt
-                            and pepper, and cook, stirring often until thickened
-                            and fragrant, about 10 minutes. Add saffron broth
-                            and remaining 4 1/2 cups chicken broth; bring to a
-                            boil.
-                        </Typography>
-                        <Typography>
-                            Set aside off of the heat to let rest for 10
-                            minutes, and then serve.
-                        </Typography>
+
+                        {this.props.data.description
+                            .split("\n")
+                            .map((content, index) => {
+                                return (
+                                    <Typography paragraph key={index}>
+                                        {" "}
+                                        {content}
+                                    </Typography>
+                                );
+                            })}
 
                         <br />
                         <br />
