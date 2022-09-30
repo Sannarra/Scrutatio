@@ -10,16 +10,21 @@ class IndexController extends Controller
 {
     public function index(Request $request)
     {
+        $advertisements = Advertisement::all();
+
         $pageSize = 15;
         $page = $request->query('page');
         if ($page === null || !is_numeric($page))
             $page = 1;
         else
             $page = intval($page);
-        $data = ["jobs" => []];
+        $pageCount = 1;
+        if ($advertisements->count() > 0)
+            $pageCount = 1 + intdiv(($advertisements->count() - 1), $pageSize);
+        $data = ["jobs" => [], "page" => ["count" => $pageCount, "current" => $page]];
 
 
-        foreach (Advertisement::all()->skip(($page - 1) * $pageSize)->take($pageSize) as $jobOffer) {
+        foreach ($advertisements->skip(($page - 1) * $pageSize)->take($pageSize) as $jobOffer) {
             $sectors = [];
 
             foreach ($jobOffer->companie->sectors as $sector)

@@ -1,5 +1,6 @@
 import CardsList from "../components/CardsList";
 import Stack from "@mui/material/Stack";
+import Pagination from "@mui/material/Pagination";
 import { Component } from "react";
 
 export default class Home extends Component {
@@ -8,6 +9,18 @@ export default class Home extends Component {
     }
 
     render() {
-        return <CardsList data={this.props.data} />;
+        return (
+            <div>
+                <CardsList data={this.props.data} />
+                <br />
+                <div style={{ justifyContent: "center", display: "flex" }}>
+                    <Pagination
+                        count={this.props.data.page.count}
+                        page={this.props.data.page.current}
+                        color="primary"
+                    />
+                </div>
+            </div>
+        );
     }
 }
