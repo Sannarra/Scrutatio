@@ -54,7 +54,7 @@ export default function JobCard(props) {
                 avatar={
                     <Avatar
                         aria-label="company_icon"
-                        src="https://cdn.discordapp.com/icons/768816677491965973/89de8e72c08e16e921810da2a0fc5f19.webp"
+                        src={props.company_icon}
                     />
                 }
                 action={
