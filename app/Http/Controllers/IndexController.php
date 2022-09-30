@@ -3,16 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
-
+use Illuminate\Http\Request;
+use Mockery\Undefined;
 
 class IndexController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $pageSize = 15;
+        $page = $request->query('page');
+        if ($page === null || !is_numeric($page))
+            $page = 1;
+        else
+            $page = intval($page);
         $data = ["jobs" => []];
 
 
-        foreach (Advertisement::all() as $jobOffer) {
+        foreach (Advertisement::all()->skip(($page - 1) * $pageSize)->take($pageSize) as $jobOffer) {
             $sectors = [];
 
             foreach ($jobOffer->companie->sectors as $sector)
