@@ -7,8 +7,6 @@ export default function Main() {
 
   return (
     <>
-      {/* <Header openSidebar={() => setSidebarOpen(true)} />
-       */}
       <Button onClick={() => setSidebarOpen(true)}>Hello</Button>
       <Sidebar isOpen={sidebarOpen} setOpen={setSidebarOpen} />
     </>

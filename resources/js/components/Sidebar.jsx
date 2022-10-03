@@ -6,6 +6,7 @@ import Slider from '@mui/material/Slider';
 import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
 import SearchIcon from '@mui/icons-material/Search';
+import TextField from '@mui/material/TextField';
 
 export default function FilterSidebar({ isOpen, setOpen }) {
   
@@ -15,7 +16,7 @@ export default function FilterSidebar({ isOpen, setOpen }) {
 
   const toggleChip = (chip) => {
     if (selectedChips.includes(chip)) {
-      setSelectedChips(selectedChips.filter((c) => c !== chip));
+      setSelectedChips(selectedChips.filter((c) => c !== chip));  
     } else {
       setSelectedChips([...selectedChips, chip]);
     }
@@ -33,11 +34,12 @@ export default function FilterSidebar({ isOpen, setOpen }) {
   const Form = () => (
     <Box sx={{ width: 250, m: 2 }}>
       <form>
+      <h1>Filter</h1>
         <label>
-          <h2>Search</h2>
-          <input type="text" name="name" />
+          <h2>Search :</h2>
+          <TextField label="job, company name ..." />
         </label>
-        <h2>Filter</h2>
+        <h2>Details</h2>
         <label>
           <h3>Salary</h3>
 
@@ -51,12 +53,12 @@ export default function FilterSidebar({ isOpen, setOpen }) {
                 setValueSalary(newValue);
               }}
               valueLabelDisplay='on'
-              color='grey' // use graphic charter color
+              color='grey' 
             />
           </Box>
         </label>
         <label>
-          <h3>Worktime</h3>
+          <h3>Working Time</h3>
 
           <Box sx={{ width: 170, mt: 5 }}>
             <Slider
@@ -65,35 +67,31 @@ export default function FilterSidebar({ isOpen, setOpen }) {
               step={1}
               max={40}
               onChange={(_event, newValue) => {
-                setValueSalary(newValue);
+                setValueWorktime(newValue);
               }}
               valueLabelDisplay='on'
-              color='grey' // use graphic charter color
+              color='grey' 
             />
           </Box>
         </label>
         <label>
-          <h3>Localisation</h3>
-          <input type="text" name="name" />
+          <h3>Location</h3>
+          <TextField label="Houston, Chicago" />
         </label>
         <label>
           <h3>Secteurs</h3>
-          <input type="text" name="name" />
+          <TextField label="Tourism, Agriculture " />
         </label>
 
         <label>
           <h3>Contract type</h3>
-          <Box>
             <Grid container>
-              <Chip sx={{ m: .5 }} label="type" onClick={() => {toggleChip(1)}} />
-              <Chip sx={{ m: .5 }} label="AAAAAAA" onClick={() => {toggleChip(2)}} />
-              <Chip sx={{ m: .5 }} label="type2" onClick={() => {toggleChip(3)}} />
-              <Chip sx={{ m: .5 }} label="1" onClick={() => {toggleChip(4)}} />
-              <Chip sx={{ m: .5 }} label="type1" onClick={() => {toggleChip(5)}} />
-              <Chip sx={{ m: .5 }} label="type2" onClick={() => {toggleChip(6)}} />
-              <Chip sx={{ m: .5 }} label="type3" onClick={() => {toggleChip(7)}} />
+              <Chip sx={{m: .5 }} color={selectedChips.includes(1) ? 'primary' : 'default'} label="Fixed-term" onClick={() => {toggleChip(1)}} />
+              <Chip sx={{m: .5 }} color={selectedChips.includes(2) ? 'primary' : 'default'} label="Permanent" onClick={() => {toggleChip(2)}} />
+              <Chip sx={{m: .5 }} color={selectedChips.includes(3) ? 'primary' : 'default'} label="Internship" onClick={() => {toggleChip(3)}} />
+              <Chip sx={{m: .5 }} color={selectedChips.includes(4) ? 'primary' : 'default'} label="Apprenticeship" onClick={() => {toggleChip(4)}} />
+              <Chip sx={{m: .5 }} color={selectedChips.includes(5) ? 'primary' : 'default'} label="Seasonal" onClick={() => {toggleChip(5)}} />
             </Grid>
-          </Box>
         </label>
 
         <label>
