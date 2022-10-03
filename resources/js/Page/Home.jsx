@@ -18,6 +18,12 @@ export default class Home extends Component {
                         count={this.props.data.page.count}
                         page={this.props.data.page.current}
                         color="primary"
+                        onChange={(e, value) =>
+                            (window.location.href =
+                                window.location.href.split("?")[0] +
+                                "?page=" +
+                                value)
+                        }
                     />
                 </div>
             </div>
