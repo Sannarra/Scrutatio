@@ -17,7 +17,7 @@ class Advertisement extends Model
         'working_time',
         'city',
         'contract_type',
-        'companie_id'];
+        'company_id'];
 
     public function companie()
     {

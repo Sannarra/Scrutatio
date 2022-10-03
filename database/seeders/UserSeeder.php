@@ -28,11 +28,9 @@ class UserSeeder extends Seeder
                 'firstname' => $faker->firstName(),
                 'lastname' => $faker->lastName(),
                 'phone' => $faker->e164PhoneNumber(),
-                'email' => $faker->email(),
                 'city' => $faker->city(),
                 'status' => $faker->numberBetween(0, 5),
-                'username' => $faker->userName(),
-                'password' => hash('sha256', $faker->password())
+                'account_id' => $i + 1
             ]);
         }
     }

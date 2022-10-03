@@ -12,7 +12,7 @@ class Mail extends Model
     use HasFactory;
 
     protected $fillable = ['application_id',
-        'sender_id',
+        'sender_user_id',
         'subject',
         'content'];
 
@@ -23,6 +23,6 @@ class Mail extends Model
 
     public function sender()
     {
-        return $this->belongsTo(User::class , 'sender_id');
+        return $this->belongsTo(User::class , 'sender_user_id');
     }
 }

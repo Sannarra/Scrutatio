@@ -27,12 +27,14 @@ class AdvertisementSeeder extends Seeder
         for ($i = 0; $i < 50; $i++) {
             Advertisement::create([
                 'title' => $faker->jobTitle(),
-                'description' => $faker->paragraph(),
+                'short_brief' => $faker->paragraph(),
+                'description' => $faker->paragraphs($faker->numberBetween(3, 8), true),
                 'salary' => $faker->numberBetween(500, 4000),
                 'working_time' => $faker->numberBetween(15, 40),
                 'city' => $faker->city(),
                 'contract_type' => $faker->numberBetween(0, 5),
-                'companie_id' => $faker->numberBetween(1, Companie::count())
+                'company_id' => $faker->numberBetween(1, Companie::count()),
+                'icon_src' => $faker->imageUrl(40, 40)
             ]);
         }
     }

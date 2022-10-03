@@ -11,7 +11,7 @@ class CompanieSector extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['sector_id', 'companie_id'];
+    protected $fillable = ['sector_id', 'company_id'];
 
     public function companie()
     {

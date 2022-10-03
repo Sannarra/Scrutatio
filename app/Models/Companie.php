@@ -20,9 +20,9 @@ class Companie extends Model
         'human_resources_id',
         'website'];
 
-    public function human_resources_user()
+    public function account()
     {
-        return $this->belongsTo(User::class , 'human_resources_id');
+        return $this->belongsTo(Account::class);
     }
 
     public function sectors()

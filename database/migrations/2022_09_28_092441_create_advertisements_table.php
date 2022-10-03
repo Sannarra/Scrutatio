@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration 
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -22,7 +21,9 @@ return new class extends Migration
             $table->integer('working_time')->unsigned();
             $table->string('city');
             $table->integer('contract_type')->unsigned();
-            $table->foreignId('companie_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->text('short_brief');
+            $table->text('icon_src')->nullable();
+            $table->foreignId('company_id')->constrained("companies")->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

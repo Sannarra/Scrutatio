@@ -29,28 +29,9 @@ class User extends Authenticatable
         'status'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-    public function companie()
+    public function account()
     {
-        return $this->hasOne(Companie::class , 'human_resources_id');
+        return $this->belongsTo(Account::class);
     }
 
     public function applications()
@@ -60,6 +41,6 @@ class User extends Authenticatable
 
     public function mails()
     {
-        return $this->hasMany(Mail::class , 'sender_id');
+        return $this->hasMany(Mail::class , 'sender_user_id');
     }
 }
