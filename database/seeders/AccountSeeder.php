@@ -26,7 +26,7 @@ class AccountSeeder extends Seeder
         for ($i = 0; $i < 70; $i++) {
             Account::create([
                 'username' => $faker->userName(),
-                'password' => hash('sha256', $faker->password()),
+                'password_hash' => $faker->sha256(),
                 'email' => $faker->email()
             ]);
         }

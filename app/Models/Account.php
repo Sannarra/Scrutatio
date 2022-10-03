@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-class Account extends Model
+class Account extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
         'username',
@@ -41,6 +44,36 @@ class Account extends Model
     public function user()
     {
         return $this->hasOne(User::class);
+    }
+
+    public function getAuthIdentifierName()
+    {
+        return 'username';
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->id;
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password_hash;
+    }
+
+    public function getRememberToken()
+    {
+        return $this->remember_token;
+    }
+
+    public function setRememberToken($value)
+    {
+        $this->remember_token = $value;
+    }
+
+    public function getRememberTokenName()
+    {
+        return "remember_token";
     }
 
 }
