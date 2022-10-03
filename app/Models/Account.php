@@ -13,8 +13,8 @@ class Account extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        'username',
-        'email'];
+        'email',
+        'password'];
 
 
     /**
@@ -23,7 +23,7 @@ class Account extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password_hash',
+        'password',
         'remember_token',
     ];
 
@@ -44,36 +44,6 @@ class Account extends Authenticatable
     public function user()
     {
         return $this->hasOne(User::class);
-    }
-
-    public function getAuthIdentifierName()
-    {
-        return 'username';
-    }
-
-    public function getAuthIdentifier()
-    {
-        return $this->id;
-    }
-
-    public function getAuthPassword()
-    {
-        return $this->password_hash;
-    }
-
-    public function getRememberToken()
-    {
-        return $this->remember_token;
-    }
-
-    public function setRememberToken($value)
-    {
-        $this->remember_token = $value;
-    }
-
-    public function getRememberTokenName()
-    {
-        return "remember_token";
     }
 
 }

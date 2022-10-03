@@ -14,10 +14,9 @@ return new class extends Migration {
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique();
-            $table->string('email');
+            $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password_hash');
+            $table->string('password');
             $table->rememberToken();
             $table->timestamps();
         });

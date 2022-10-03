@@ -6,6 +6,8 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Account;
+use Illuminate\Support\Facades\Hash;
+
 
 class AccountSeeder extends Seeder
 {
@@ -23,11 +25,15 @@ class AccountSeeder extends Seeder
         Account::truncate();
         Schema::enableForeignKeyConstraints();
 
-        for ($i = 0; $i < 70; $i++) {
+        Account::create([
+            'email' => "admin@scrutatio.fr",
+            'password' => Hash::make("root")
+        ]);
+
+        for ($i = 1; $i < 70; $i++) {
             Account::create([
-                'username' => $faker->userName(),
-                'password_hash' => $faker->sha256(),
-                'email' => $faker->email()
+                'email' => $faker->email(),
+                'password' => Hash::make($faker->password())
             ]);
         }
     }
