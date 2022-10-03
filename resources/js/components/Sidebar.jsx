@@ -34,7 +34,6 @@ export default function FilterSidebar({ isOpen, setOpen }) {
   const Form = () => (
     <Box sx={{ width: 250, m: 2 }}>
       <form>
-      <h1>Filter</h1>
         <label>
           <h2>Search :</h2>
           <TextField label="job, company name ..." />
