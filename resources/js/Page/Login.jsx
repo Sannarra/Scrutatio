@@ -63,6 +63,13 @@ export default class Login extends Component {
                             </Button>
                         </FormGroup>
                     </form>
+                    <br />
+                    <a
+                        href="/registration"
+                        style={{ justifyContent: "center", display: "flex" }}
+                    >
+                        No account ? Create one
+                    </a>
                 </div>
             </div>
         );

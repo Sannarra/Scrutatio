@@ -115,6 +115,13 @@ export default class Register extends Component {
                         </FormGroup>
                     </form>
                 </div>
+                <br />
+                <a
+                    href="/login"
+                    style={{ justifyContent: "center", display: "flex" }}
+                >
+                    Already registered ? log in
+                </a>
             </div>
         );
     }
