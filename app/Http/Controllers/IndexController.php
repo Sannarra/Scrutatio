@@ -45,7 +45,7 @@ class IndexController extends Controller
             ]);
         }
 
-        return view('welcome')->with('data', json_encode($data));
+        return view('home')->with('data', json_encode($data));
     }
 }
 ?>
