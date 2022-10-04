@@ -13,7 +13,7 @@ export default function Main(props) {
         <div style={{ display: "flex", flexDirection: "column" , flex: '1', height:'100vh'}}>
             <Header openSidebar={() => setSidebarOpen(true)}    
             />
-            <div style={{ overflowY: 'auto', flex:'1', paddingTop:'10px' }}>
+            <div style={{ overflowY: 'auto', flex:'1', paddingTop:'10px' }} id="scrollable_body">
                 <Home data={props.data} />
                 <Sidebar isOpen={sidebarOpen} setOpen={setSidebarOpen} />
                 <Footer />
