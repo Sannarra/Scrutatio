@@ -33,8 +33,9 @@ Route::put('companies/{companie}', 'App\Http\Controllers\CompanieController@upda
 Route::delete('companies/{companie}', 'App\Http\Controllers\CompanieController@delete');
 
 // Search 
-Route::get('search', 'App\Http\Controllers\SearchController@index');
-Route::get('search/{id}', 'App\Http\Controllers\SearchController@show');
-Route::post('search', 'App\Http\Controllers\SearchController@store');
-Route::put('search/{id}', 'App\Http\Controllers\SearchController@update');
-Route::delete('search/{id}', 'App\Http\Controllers\SearchController@delete');
+Route::get('advertisment', 'App\Http\Controllers\SearchController@index');
+Route::get('advertisment/{id}', 'App\Http\Controllers\SearchController@show');
+Route::post('advertisment', 'App\Http\Controllers\SearchController@store');
+Route::put('advertisment/{id}', 'App\Http\Controllers\SearchController@update');
+Route::delete('advertisment/{id}', 'App\Http\Controllers\SearchController@delete');
+Route::get('advertisment/search/{id}', 'App\Http\Controllers\SearchController@show');
