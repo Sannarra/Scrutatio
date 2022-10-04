@@ -8,7 +8,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 
-export default class Home extends Component {
+export default class Login extends Component {
     constructor(props) {
         super(props);
     }

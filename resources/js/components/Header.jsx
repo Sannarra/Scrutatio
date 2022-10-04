@@ -14,7 +14,7 @@ export default function Header({ openSidebar }) {
             </div>
             <div style={{display:'flex'}}>
                 <div style={{margin:'0 1em'}}><a style={{color:'var(--light)'}} href='#'><ChatIcon/></a></div>
-                <div><a style={{color:'var(--light)'}} href='#'><AccountCircleIcon/></a></div>  
+                <div><a style={{color:'var(--light)'}} href='/home'><AccountCircleIcon/></a></div>  
             </div>
         </header>
     )
