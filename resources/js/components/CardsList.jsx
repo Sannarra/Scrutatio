@@ -18,16 +18,28 @@ export default class CardsList extends Component {
                     this.openedCard.cardRef.current.offsetTop <
                     sender.cardRef.current.offsetTop
                 ) {
-                    let diff = this.openedCard.collapseRef.current.offsetHeight;
-                    // let maxVal = sender.cardRef.current.offsetTop - diff;
-                    let maxVal = window.scrollY - diff;
+                    let openedCardHeight =
+                        this.openedCard.collapseRef.current.offsetHeight;
+
                     window.scroll({
-                        top: Math.max(window.scrollY - diff, maxVal),
-                        left: 0,
+                        top: Math.max(
+                            window.scrollY - openedCardHeight,
+                            sender.cardRef.current.offsetTop - openedCardHeight
+                        ),
+                        behavior: "smooth",
+                    });
+                } else {
+                    window.scroll({
+                        top: sender.cardRef.current.offsetTop,
                         behavior: "smooth",
                     });
                 }
                 this.openedCard.setExpanded(false);
+            } else {
+                window.scroll({
+                    top: sender.cardRef.current.offsetTop,
+                    behavior: "smooth",
+                });
             }
             this.openedCard = sender;
         }
