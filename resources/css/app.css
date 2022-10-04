@@ -19,10 +19,6 @@ header{
     display: flex ;
     justify-content: space-between;
     padding: 3vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
 }
 
 header a {
@@ -40,8 +36,6 @@ header div:nth-child(3){
 /*/////////////// footer ///////////////*/
 
 footer {
-    margin-top: 6em; 
-    /* a enlever */
     background-color: var(--dark);
     color: var(--light);
     bottom: 0px;
