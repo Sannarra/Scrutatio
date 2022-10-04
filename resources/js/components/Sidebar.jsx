@@ -26,11 +26,6 @@ export default function FilterSidebar({ isOpen, setOpen }) {
   };
 
   const filterAction = () => {
-    console.log(
-      valueSalary,
-      valueWorktime,
-      selectedChips
-    );
     setOpen(false);
   }
 
