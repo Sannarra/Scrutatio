@@ -11,27 +11,6 @@ body {
     margin: 0;
 }
 
-/*/////////////// header ///////////////*/
-
-header{
-    background-color: var(--dark);
-    color: var(--light);
-    display: flex ;
-    justify-content: space-between;
-    padding: 3vh;
-}
-
-header a {
-    color: var(--light);
-}
-
-header div {
-    margin:0 1em;
-}
-
-header div:nth-child(3){
-    display: flex;
-}
 
 /*/////////////// footer ///////////////*/
 
