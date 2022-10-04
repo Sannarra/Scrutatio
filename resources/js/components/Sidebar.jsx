@@ -7,6 +7,9 @@ import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
 import SearchIcon from '@mui/icons-material/Search';
 import TextField from '@mui/material/TextField';
+import CancelIcon from '@mui/icons-material/Cancel';
+import IconButton from "@mui/material/IconButton";
+
 
 export default function FilterSidebar({ isOpen, setOpen }) {
   
@@ -23,19 +26,19 @@ export default function FilterSidebar({ isOpen, setOpen }) {
   };
 
   const filterAction = () => {
-    console.log(
-      valueSalary,
-      valueWorktime,
-      selectedChips
-    );
+    setOpen(false);
+  }
+
+  const crossClose = () => {
     setOpen(false);
   }
 
   const Form = () => (
     <Box sx={{ width: 250, m: 2 }}>
       <form>
+      <IconButton title='Close' onClick={() => {crossClose()}}><CancelIcon/></IconButton>
+      <h2>Search :</h2>
         <label>
-          <h2>Search :</h2>
           <TextField label="job, company name ..." />
         </label>
         <h2>Details</h2>
@@ -73,12 +76,12 @@ export default function FilterSidebar({ isOpen, setOpen }) {
             />
           </Box>
         </label>
+        <h3>Location</h3>
         <label>
-          <h3>Location</h3>
           <TextField label="Houston, Chicago" />
         </label>
+        <h3>Secteurs</h3>
         <label>
-          <h3>Secteurs</h3>
           <TextField label="Tourism, Agriculture " />
         </label>
 
