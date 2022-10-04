@@ -1,14 +1,33 @@
-import './bootstrap';
-import '../css/app.css'
+import "./bootstrap";
+import "../css/app.css";
 
-import ReactDOM from 'react-dom/client';        
-import Header from './components/Header';
-import Footer from './components/Footer';
+import { createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
+import { grey } from "@mui/material/colors";
 
-ReactDOM.createRoot(document.getElementById('app')).render(     
-    <>
-        <Header />
-        <Footer />
-    </>
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: "#faaa00",
+        },
+        secondary: {
+            main: "#bfdbf7",
+        },
+        grey: {
+            main: "#333745",
+        },
+    },
+});
 
+import ReactDOM from "react-dom/client";
+import Main from "./Main";
+
+ReactDOM.createRoot(document.getElementById("app")).render(
+    <ThemeProvider theme={theme}>
+        <Main
+            data={JSON.parse(
+                document.getElementById("app").getAttribute("data")
+            )}
+        />
+    </ThemeProvider>
 );
