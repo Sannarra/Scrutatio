@@ -2,8 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\Sector;
-use App\Http\Controllers\SectorsController;
+use App\Models\Search;
+use App\Http\Controllers\SearchController;
 
 /* |-------------------------------------------------------------------------- | API Routes |-------------------------------------------------------------------------- | | Here is where you can register API routes for your application. These | routes are loaded by the RouteServiceProvider within a group which | is assigned the "api" middleware group. Enjoy building your API! | */
 
@@ -31,3 +31,10 @@ Route::get('companies/{companie}', 'App\Http\Controllers\CompanieController@show
 Route::post('companies', 'App\Http\Controllers\CompanieController@store');
 Route::put('companies/{companie}', 'App\Http\Controllers\CompanieController@update');
 Route::delete('companies/{companie}', 'App\Http\Controllers\CompanieController@delete');
+
+// Search 
+Route::get('search', 'App\Http\Controllers\SearchController@index');
+Route::get('search/{id}', 'App\Http\Controllers\SearchController@show');
+Route::post('search', 'App\Http\Controllers\SearchController@store');
+Route::put('search/{id}', 'App\Http\Controllers\SearchController@update');
+Route::delete('search/{id}', 'App\Http\Controllers\SearchController@delete');
