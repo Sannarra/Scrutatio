@@ -1,10 +1,8 @@
 import * as React from "react";
 import Sidebar from "./components/Sidebar.jsx";
-import Button from "@mui/material/Button";
 import Home from "./Page/Home.jsx";
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
-import { set } from "lodash";
 
 export default function Main(props) {
     const [sidebarOpen, setSidebarOpen] = React.useState(false);
