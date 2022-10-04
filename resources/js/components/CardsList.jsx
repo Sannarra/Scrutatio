@@ -13,31 +13,37 @@ export default class CardsList extends Component {
         /// Collapsing current card
         if (sender === this.openedCard) this.openedCard = undefined;
         else {
+            let scrollable = document.getElementById("scrollable_body");
             if (this.openedCard) {
-                if (
-                    this.openedCard.cardRef.current.offsetTop <
-                    sender.cardRef.current.offsetTop
-                ) {
-                    let openedCardHeight =
-                        this.openedCard.collapseRef.current.offsetHeight;
+                if (scrollable !== null) {
+                    if (
+                        this.openedCard.cardRef.current.offsetTop <
+                        sender.cardRef.current.offsetTop
+                    ) {
+                        let openedCardHeight =
+                            this.openedCard.collapseRef.current.offsetHeight;
 
-                    window.scroll({
-                        top: Math.max(
-                            window.scrollY - openedCardHeight,
-                            sender.cardRef.current.offsetTop - openedCardHeight
-                        ),
-                        behavior: "smooth",
-                    });
-                } else {
-                    window.scroll({
-                        top: sender.cardRef.current.offsetTop,
-                        behavior: "smooth",
-                    });
+                        scrollable.scrollTo({
+                            top:
+                                sender.cardRef.current.offsetTop -
+                                openedCardHeight -
+                                scrollable.offsetTop,
+                            behavior: "smooth",
+                        });
+                    } else {
+                        scrollable.scrollTo({
+                            top:
+                                sender.cardRef.current.offsetTop -
+                                scrollable.offsetTop,
+                            behavior: "smooth",
+                        });
+                    }
                 }
                 this.openedCard.setExpanded(false);
-            } else {
-                window.scroll({
-                    top: sender.cardRef.current.offsetTop,
+            } else if (scrollable !== null) {
+                scrollable.scrollTo({
+                    top:
+                        sender.cardRef.current.offsetTop - scrollable.offsetTop,
                     behavior: "smooth",
                 });
             }
