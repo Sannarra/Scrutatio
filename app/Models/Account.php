@@ -38,7 +38,7 @@ class Account extends Authenticatable
 
     public function company()
     {
-        return $this->hasOne(Companie::class);
+        return $this->hasOne(Company::class);
     }
 
     public function user()

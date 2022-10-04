@@ -4,13 +4,11 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Companie;
-use App\Models\CompanieSector;
-use App\Models\Sector;
+use App\Models\Company;
 use Illuminate\Support\Facades\Schema;
+use App\Models\User;
 
-
-class CompanieSectorSeeder extends Seeder
+class CompanySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -23,13 +21,18 @@ class CompanieSectorSeeder extends Seeder
 
 
         Schema::disableForeignKeyConstraints();
-        CompanieSector::truncate();
+        Company::truncate();
         Schema::enableForeignKeyConstraints();
 
         for ($i = 0; $i < 20; $i++) {
-            CompanieSector::create([
-                'sector_id' => $faker->numberBetween(1, Sector::count()),
-                'company_id' => $faker->numberBetween(1, Companie::count())
+            Company::create([
+                'name' => $faker->company(),
+                'creation_date' => $faker->date(),
+                'size' => $faker->numberBetween(10, 50000),
+                'headquarter' => $faker->city(),
+                'postal_code' => $faker->postcode(),
+                'account_id' => $i + 51,
+                'website' => $faker->url(),
             ]);
         }
     }

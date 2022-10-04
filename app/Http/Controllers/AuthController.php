@@ -25,7 +25,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('welcome')
+            return redirect()->intended('home')
                 ->withSuccess('Signed in');
         }
 
@@ -49,7 +49,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect("welcome")->withSuccess('You have signed-in');
+        return redirect("home")->withSuccess('You have signed-in');
     }
 
     public function create(array $data)
@@ -58,11 +58,6 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password'])
         ]);
-    }
-
-    public function welcome()
-    {
-        return view('welcome');
     }
 
     public function signOut()
