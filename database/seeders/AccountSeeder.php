@@ -27,7 +27,7 @@ class AccountSeeder extends Seeder
 
         Account::create([
             'email' => "admin@scrutatio.fr",
-            'password' => Hash::make("root")
+            'password' => Hash::make("scrutatio")
         ]);
 
         for ($i = 1; $i < 70; $i++) {
