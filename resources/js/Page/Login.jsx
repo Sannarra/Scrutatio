@@ -15,30 +15,55 @@ export default class Home extends Component {
 
     render() {
         return (
-            <div style={{ paddingLeft: "10%", paddingRight: "10%" }}>
-                <h1 style={{ justifyContent: "center", display: "flex" }}>
-                    Login
-                </h1>
-                <form>
-                    <FormGroup>
-                        <TextField label="Email" />
-                        <br />
-                        <TextField label="Password" />
-                        <br />
-                        <FormControlLabel
-                            control={<Checkbox />}
-                            label="Remember me"
+            <div {...this.props}>
+                <div style={{ paddingLeft: "10%", paddingRight: "10%" }}>
+                    <h1 style={{ justifyContent: "center", display: "flex" }}>
+                        Login
+                    </h1>
+                    <form method="POST" action="/custom-login">
+                        <input
+                            type="hidden"
+                            name="_token"
+                            value={this.props.csrf_token}
                         />
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            sx={{ width: "200px", alignSelf: "center" }}
-                        >
-                            Sign In
-                        </Button>
-                    </FormGroup>
-                </form>
+                        <FormGroup>
+                            <TextField
+                                label="Email"
+                                name="email"
+                                variant="filled"
+                                style={{ backgroundColor: "white" }}
+                            />
+                            <br />
+                            <TextField
+                                type="password"
+                                label="Password"
+                                variant="filled"
+                                name="password"
+                                style={{ backgroundColor: "white" }}
+                            />
+                            <br />
+                            <FormControlLabel
+                                control={<Checkbox />}
+                                label="Remember me"
+                                name="remember"
+                            />
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                sx={{
+                                    width: "200px",
+                                    alignSelf: "center",
+                                    backgroundColor: "var(--accent)",
+                                    color: "black",
+                                    borderRadius: 50,
+                                }}
+                            >
+                                Sign In
+                            </Button>
+                        </FormGroup>
+                    </form>
+                </div>
             </div>
         );
     }

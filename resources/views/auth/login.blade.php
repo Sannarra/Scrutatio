@@ -12,6 +12,6 @@
 </head>
 
 <body>
-    <div id="app" ></div>
+    <div id="app" csrf_token="{{csrf_token()}}"></div>
 
 </body>
