@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\Account;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -50,6 +51,38 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         return redirect("home")->withSuccess('You have signed-in');
+    }
+
+    public function memberRegistration(Request $request)
+    {
+        $request->validate([
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'phone' => 'required',
+            'city' => 'required',
+            'email' => 'required|email|unique:accounts',
+            'password' => 'required|min:6',
+        ]);
+
+        $data = $request->all();
+        $account = $this->create($data);
+        $member = $this->createUser($data, $account);
+
+        $request->session()->regenerate();
+
+        return redirect("home")->withSuccess('You have signed-in');
+    }
+
+    public function createUser(array $data, Account $account)
+    {
+        return User::create([
+            'firstname' => $data['firstname'],
+            'lastname' => $data["lastname"],
+            'phone' => $data["phone"],
+            'city' => $data["city"],
+            'status' => 0,
+            'account_id' => $account->id
+        ]);
     }
 
     public function create(array $data)

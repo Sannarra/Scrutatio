@@ -67,6 +67,9 @@ export default function Register(props) {
                 case "password":
                     if (!value) {
                         stateObj[name] = "Please enter Password.";
+                    } else if (value.length < 6) {
+                        stateObj[name] =
+                            "Password must be at least 6 characters wide.";
                     } else if (
                         input.confirmPassword &&
                         value !== input.confirmPassword
@@ -99,6 +102,7 @@ export default function Register(props) {
 
     const VerifiedTextField = (props) => (
         <TextField
+            key={props.name}
             type={props.type}
             label={props.label}
             name={props.name}
@@ -127,7 +131,7 @@ export default function Register(props) {
                 <h1 style={{ justifyContent: "center", display: "flex" }}>
                     Register
                 </h1>
-                <form method="POST" action="/custom-registration">
+                <form method="POST" action="/member-registration">
                     <input
                         type="hidden"
                         name="_token"
@@ -136,57 +140,57 @@ export default function Register(props) {
                     <FormGroup>
                         <Grid container spacing={4}>
                             <Grid xs={6}>
-                                <VerifiedTextField
-                                    type="text"
-                                    label="First Name"
-                                    name="firstname"
-                                    autoComplete="given-name"
-                                />
+                                {VerifiedTextField({
+                                    type: "text",
+                                    label: "First Name",
+                                    name: "firstname",
+                                    autoComplete: "given-name",
+                                })}
                             </Grid>
                             <Grid xs={6}>
-                                <VerifiedTextField
-                                    type="text"
-                                    label="Last Name"
-                                    name="lastname"
-                                    autoComplete="family-name"
-                                />
+                                {VerifiedTextField({
+                                    type: "text",
+                                    label: "Last Name",
+                                    name: "lastname",
+                                    autoComplete: "family-name",
+                                })}
                             </Grid>
                         </Grid>
                         <br />
-                        <VerifiedTextField
-                            type="text"
-                            label="Phone Number"
-                            name="phone"
-                            autoComplete="tel"
-                        />
+                        {VerifiedTextField({
+                            type: "text",
+                            label: "Phone Number",
+                            name: "phone",
+                            autoComplete: "tel",
+                        })}
                         <br />
-                        <VerifiedTextField
-                            type="text"
-                            label="City"
-                            name="city"
-                            autoComplete="address-level1"
-                        />
+                        {VerifiedTextField({
+                            type: "text",
+                            label: "City",
+                            name: "city",
+                            autoComplete: "address-level1",
+                        })}
                         <br />
-                        <VerifiedTextField
-                            type="password"
-                            label="Email"
-                            name="email"
-                            autoComplete="email"
-                        />
+                        {VerifiedTextField({
+                            type: "email",
+                            label: "Email",
+                            name: "email",
+                            autoComplete: "email",
+                        })}
                         <br />
-                        <VerifiedTextField
-                            type="password"
-                            label="Password"
-                            name="password"
-                            autoComplete="new-password"
-                        />
+                        {VerifiedTextField({
+                            type: "password",
+                            label: "Password",
+                            name: "password",
+                            autoComplete: "new-password",
+                        })}
                         <br />
-                        <VerifiedTextField
-                            type="password"
-                            label="Confirm Password"
-                            name="confirmPassword"
-                            autoComplete="new-password"
-                        />
+                        {VerifiedTextField({
+                            type: "password",
+                            label: "Confirm Password",
+                            name: "confirmPassword",
+                            autoComplete: "new-password",
+                        })}
 
                         <br />
                         <FormControlLabel

@@ -19,7 +19,8 @@ class User extends Model
         'lastname',
         'phone',
         'city',
-        'status'
+        'status',
+        'account_id'
     ];
 
     public function account()
