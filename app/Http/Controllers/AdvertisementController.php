@@ -68,10 +68,10 @@ class AdvertisementController extends Controller
     public function searchRoute(Request $request)
     {
         return response()->json($this->search($request->query('name'),
-         $request->query('minSalary'),
-          $request->query('maxSalary'),
-           $request->query('minHours'),
-            $request->query('maxHours'), 
+            $request->query('minSalary'),
+            $request->query('maxSalary'),
+            $request->query('minHours'),
+            $request->query('maxHours'),
             $request->query('location')), 200);
     }
 }
