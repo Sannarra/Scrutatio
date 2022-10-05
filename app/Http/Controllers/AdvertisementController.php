@@ -42,10 +42,24 @@ class AdvertisementController extends Controller
 
         return response()->json(null, 204);
     }
-    public function search(Advertisement $sector)
-    {
-      //search
 
-        return response()->json(null, 204);
+    public function search(Request $request)
+    {
+        $name = $request->query('name');
+        $minSalary = $request->query('minSalary');
+        $maxSalary = $request->query('maxSalary');
+        $minHours = $request->query('minHours');
+        $maxHours = $request->query('maxHours');
+        $location = $request->query('location');
+        
+        $result = Advertisement::where('title', 'like', "%$name%")
+                                ->where('salary', '>', $minSalary)
+                                ->where('salary', '<', $maxSalary)
+                                ->where('working_time', '>', $minHours)
+                                ->where('working_time', '<', $maxHours)
+                                ->where('city', 'like', "%$location%")
+                                ->get();
+
+        return response()->json($result, 200);
     }
 }

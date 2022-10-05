@@ -32,10 +32,12 @@ Route::post('companies', 'App\Http\Controllers\CompanieController@store');
 Route::put('companies/{companie}', 'App\Http\Controllers\CompanieController@update');
 Route::delete('companies/{companie}', 'App\Http\Controllers\CompanieController@delete');
 
-// Search 
+// Advertisement 
 Route::get('advertisment', 'App\Http\Controllers\SearchController@index');
 Route::get('advertisment/{id}', 'App\Http\Controllers\SearchController@show');
 Route::post('advertisment', 'App\Http\Controllers\SearchController@store');
 Route::put('advertisment/{id}', 'App\Http\Controllers\SearchController@update');
 Route::delete('advertisment/{id}', 'App\Http\Controllers\SearchController@delete');
-Route::get('advertisment/search/{id}', 'App\Http\Controllers\SearchController@show');
+
+// Search 
+Route::get('search', 'App\Http\Controllers\AdvertisementController@search');
