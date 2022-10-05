@@ -43,16 +43,10 @@ class AdvertisementController extends Controller
         return response()->json(null, 204);
     }
 
-    public function search(Request $request)
+    public function search($name, $minSalary, $maxSalary, $minHours, $maxHours, $location)
     {
-        $name = $request->query('name');
-        $minSalary = $request->query('minSalary');
-        $maxSalary = $request->query('maxSalary');
-        $minHours = $request->query('minHours');
-        $maxHours = $request->query('maxHours');
-        $location = $request->query('location');
 
-        $result = ( new Advertisement)->newQuery();
+        $result = (new Advertisement)->newQuery();
 
         if ($name != null)
             $result = $result->where('title', 'like', "%$name%");
@@ -68,6 +62,16 @@ class AdvertisementController extends Controller
             $result = $result->where('city', 'like', "%$location%");
         $result = $result->get();
 
-        return response()->json($result, 200);
+        return $result;
+    }
+
+    public function searchRoute(Request $request)
+    {
+        return response()->json($this->search($request->query('name'),
+         $request->query('minSalary'),
+          $request->query('maxSalary'),
+           $request->query('minHours'),
+            $request->query('maxHours'), 
+            $request->query('location')), 200);
     }
 }

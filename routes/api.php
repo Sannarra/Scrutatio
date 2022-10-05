@@ -40,4 +40,4 @@ Route::put('advertisment/{id}', 'App\Http\Controllers\SearchController@update');
 Route::delete('advertisment/{id}', 'App\Http\Controllers\SearchController@delete');
 
 // Search 
-Route::get('search', 'App\Http\Controllers\AdvertisementController@search');
+Route::get('search', 'App\Http\Controllers\AdvertisementController@searchRoute');
