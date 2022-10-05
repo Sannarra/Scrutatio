@@ -1,11 +1,14 @@
 import JobCard from "./JobCard";
 import Stack from "@mui/material/Stack";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
 import { Component } from "react";
 
 export default class CardsList extends Component {
     constructor(props) {
         super(props);
         this.handleExpandClick = this.handleExpandClick.bind(this);
+        this.createFab = this.createFab.bind(this);
         this.openedCard = undefined;
     }
 
@@ -51,6 +54,20 @@ export default class CardsList extends Component {
         }
     }
 
+    createFab() {
+        if (this.props.editMode)
+            return (
+                <Fab
+                    color="primary"
+                    aria-label="add"
+                    style={{ position: "sticky", bottom: "20px" }}
+                >
+                    <AddIcon />
+                </Fab>
+            );
+        return null;
+    }
+
     render() {
         return (
             <Stack spacing={3} sx={{ alignItems: "center" }}>
@@ -64,6 +81,7 @@ export default class CardsList extends Component {
                         />
                     );
                 })}
+                {this.createFab()}
             </Stack>
         );
     }
