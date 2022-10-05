@@ -12,11 +12,21 @@ import Grid from "@mui/material/Unstable_Grid2";
 
 export default function Register(props) {
     const [input, setInput] = useState({
+        firstname: "",
+        lastname: "",
+        phone: "",
+        city: "",
+        email: "",
         password: "",
         confirmPassword: "",
     });
 
     const [error, setError] = useState({
+        firstname: "",
+        lastname: "",
+        phone: "",
+        city: "",
+        email: "",
         password: "",
         confirmPassword: "",
     });
@@ -36,6 +46,24 @@ export default function Register(props) {
             const stateObj = { ...prev, [name]: "" };
 
             switch (name) {
+                case "firstname":
+                    if (!value)
+                        stateObj[name] = "Please enter your First Name.";
+                    break;
+                case "lastname":
+                    if (!value) stateObj[name] = "Please enter your Last Name.";
+                    break;
+                case "phone":
+                    if (!value)
+                        stateObj[name] = "Please enter your phone number.";
+                    break;
+                case "city":
+                    if (!value) stateObj[name] = "Please enter your city.";
+                    break;
+                case "email":
+                    if (!value) stateObj[name] = "Please enter your email.";
+                    break;
+
                 case "password":
                     if (!value) {
                         stateObj[name] = "Please enter Password.";
@@ -69,6 +97,30 @@ export default function Register(props) {
         });
     };
 
+    const VerifiedTextField = (props) => (
+        <TextField
+            type={props.type}
+            label={props.label}
+            name={props.name}
+            autoComplete={props.autoComplete}
+            value={input[props.name]}
+            error={error[props.name] != ""}
+            helperText={error[props.name]}
+            variant="filled"
+            onChange={onInputChange}
+            onBlur={validateInput}
+            required
+            style={{ backgroundColor: "white", width: "100%" }}
+        />
+    );
+
+    const validateInputs = () => {
+        for (const [key, value] of Object.entries(error)) {
+            if (value != "" || input[key] === "") return false;
+        }
+        return true;
+    };
+
     return (
         <div {...props}>
             <div style={{ paddingLeft: "10%", paddingRight: "10%" }}>
@@ -84,93 +136,58 @@ export default function Register(props) {
                     <FormGroup>
                         <Grid container spacing={4}>
                             <Grid xs={6}>
-                                <TextField
+                                <VerifiedTextField
+                                    type="text"
                                     label="First Name"
                                     name="firstname"
-                                    variant="filled"
-                                    required
                                     autoComplete="given-name"
-                                    style={{
-                                        backgroundColor: "white",
-                                        width: "100%",
-                                    }}
                                 />
                             </Grid>
                             <Grid xs={6}>
-                                <TextField
+                                <VerifiedTextField
+                                    type="text"
                                     label="Last Name"
                                     name="lastname"
-                                    variant="filled"
-                                    required
                                     autoComplete="family-name"
-                                    style={{
-                                        backgroundColor: "white",
-                                        width: "100%",
-                                    }}
                                 />
                             </Grid>
                         </Grid>
                         <br />
-                        <TextField
+                        <VerifiedTextField
+                            type="text"
                             label="Phone Number"
-                            name="lastname"
-                            variant="filled"
-                            required
+                            name="phone"
                             autoComplete="tel"
-                            style={{
-                                backgroundColor: "white",
-                            }}
                         />
                         <br />
-                        <TextField
+                        <VerifiedTextField
+                            type="text"
                             label="City"
                             name="city"
-                            variant="filled"
-                            required
                             autoComplete="address-level1"
-                            style={{
-                                backgroundColor: "white",
-                            }}
                         />
                         <br />
-                        <TextField
+                        <VerifiedTextField
+                            type="password"
                             label="Email"
-                            variant="filled"
                             name="email"
-                            required
                             autoComplete="email"
-                            style={{ backgroundColor: "white" }}
                         />
                         <br />
-                        <TextField
+                        <VerifiedTextField
                             type="password"
                             label="Password"
-                            variant="filled"
                             name="password"
-                            value={input.password}
-                            onChange={onInputChange}
-                            onBlur={validateInput}
-                            error={error.password != ""}
-                            helperText={error.password}
-                            required
                             autoComplete="new-password"
-                            style={{ backgroundColor: "white" }}
                         />
                         <br />
-                        <TextField
+                        <VerifiedTextField
                             type="password"
                             label="Confirm Password"
-                            variant="filled"
                             name="confirmPassword"
-                            value={input.confirmPassword}
-                            onChange={onInputChange}
-                            onBlur={validateInput}
-                            required
                             autoComplete="new-password"
-                            error={error.confirmPassword != ""}
-                            helperText={error.confirmPassword}
-                            style={{ backgroundColor: "white" }}
                         />
+
                         <br />
                         <FormControlLabel
                             control={<Checkbox />}
@@ -188,6 +205,7 @@ export default function Register(props) {
                                 color: "black",
                                 borderRadius: 50,
                             }}
+                            disabled={!validateInputs()}
                         >
                             Sign Up
                         </Button>
