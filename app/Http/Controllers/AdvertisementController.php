@@ -51,14 +51,22 @@ class AdvertisementController extends Controller
         $minHours = $request->query('minHours');
         $maxHours = $request->query('maxHours');
         $location = $request->query('location');
-        
-        $result = Advertisement::where('title', 'like', "%$name%")
-                                ->where('salary', '>', $minSalary)
-                                ->where('salary', '<', $maxSalary)
-                                ->where('working_time', '>', $minHours)
-                                ->where('working_time', '<', $maxHours)
-                                ->where('city', 'like', "%$location%")
-                                ->get();
+
+        $result = ( new Advertisement)->newQuery();
+
+        if ($name != null)
+            $result = $result->where('title', 'like', "%$name%");
+        if ($minSalary != null)
+            $result = $result->where('salary', '>', $minSalary);
+        if ($maxSalary != null)
+            $result = $result->where('salary', '<', $maxSalary);
+        if ($minHours != null)
+            $result = $result->where('working_time', '>', $minHours);
+        if ($maxHours != null)
+            $result = $result->where('working_time', '<', $maxHours);
+        if ($location != null)
+            $result = $result->where('city', 'like', "%$location%");
+        $result = $result->get();
 
         return response()->json($result, 200);
     }
