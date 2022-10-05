@@ -8,6 +8,8 @@ import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import StarIcon from "@mui/icons-material/StarBorder";
 import FilledStarIcon from "@mui/icons-material/Star";
 import BusinessIcon from "@mui/icons-material/Business";
@@ -49,7 +51,9 @@ export default class JobCard extends React.Component {
         super(props);
         this.handleExpandClick = this.handleExpandClick.bind(this);
         this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
+        this.cardAction = this.cardAction.bind(this);
         this.state = {
+            editMode: props.editMode,
             expanded: props.expanded,
             favorite: props.data.favorite,
         };
@@ -74,6 +78,30 @@ export default class JobCard extends React.Component {
         });
     }
 
+    cardAction() {
+        if (this.state.editMode)
+            return (
+                <>
+                    <IconButton aria-label="save">
+                        <EditIcon />
+                    </IconButton>
+                    <IconButton aria-label="save">
+                        <DeleteIcon />
+                    </IconButton>
+                </>
+            );
+        else
+            return (
+                <IconButton
+                    aria-label="save"
+                    sx={{ color: "var(--accent)" }}
+                    onClick={this.handleFavoriteClick}
+                >
+                    {this.state.favorite ? <FilledStarIcon /> : <StarIcon />}
+                </IconButton>
+            );
+    }
+
     render() {
         return (
             <Card
@@ -87,19 +115,7 @@ export default class JobCard extends React.Component {
                             src={this.props.data.company_icon}
                         />
                     }
-                    action={
-                        <IconButton
-                            aria-label="save"
-                            sx={{ color: "var(--accent)" }}
-                            onClick={this.handleFavoriteClick}
-                        >
-                            {this.state.favorite ? (
-                                <FilledStarIcon />
-                            ) : (
-                                <StarIcon />
-                            )}
-                        </IconButton>
-                    }
+                    action={this.cardAction()}
                     title={this.props.data.jobTitle}
                     subheader={
                         <div>

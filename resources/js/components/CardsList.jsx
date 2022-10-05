@@ -60,6 +60,7 @@ export default class CardsList extends Component {
                             key={index}
                             data={job}
                             onExpand={this.handleExpandClick}
+                            editMode={this.props.editMode}
                         />
                     );
                 })}
