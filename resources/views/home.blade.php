@@ -12,7 +12,12 @@
 </head>
 
 <body>
-    <div id="app" data='{{ $data }}'></div>
+    <div id="app"></div>
 </body>
+
+<script>
+    pageName="home";
+    pageData=@json($data);
+</script>
 
 </html>

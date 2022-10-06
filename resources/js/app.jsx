@@ -21,13 +21,28 @@ const theme = createTheme({
 
 import ReactDOM from "react-dom/client";
 import Main from "./Main";
+import Home from "./Page/Home.jsx";
+
+function getPage() {
+    switch (pageName) {
+        case "home":
+            return () => <Home data={pageData} />;
+        default:
+            return () => <h1>Undefined page name </h1>;
+    }
+}
 
 ReactDOM.createRoot(document.getElementById("app")).render(
     <ThemeProvider theme={theme}>
-        <Main
-            data={JSON.parse(
-                document.getElementById("app").getAttribute("data")
-            )}
-        />
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                flex: "1",
+                height: "100vh",
+            }}
+        >
+            <Main content={getPage()} />
+        </div>
     </ThemeProvider>
 );

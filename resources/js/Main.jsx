@@ -8,11 +8,20 @@ export default function Main(props) {
     const [sidebarOpen, setSidebarOpen] = React.useState(false);
 
     return (
-        <div style={{ display: "flex", flexDirection: "column" , flex: '1', height:'100vh'}}>
-            <Header openSidebar={() => setSidebarOpen(true)}    
-            />
-            <div style={{ overflowY: 'auto', flex:'1', paddingTop:'10px' }} id="scrollable_body">
-                <Home data={props.data} />
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                flex: "1",
+                height: "100vh",
+            }}
+        >
+            <Header openSidebar={() => setSidebarOpen(true)} />
+            <div
+                style={{ overflowY: "auto", flex: "1", paddingTop: "10px" }}
+                id="scrollable_body"
+            >
+                {props.content()}
                 <Sidebar isOpen={sidebarOpen} setOpen={setSidebarOpen} />
                 <Footer />
             </div>
