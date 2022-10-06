@@ -72,7 +72,7 @@ export default function FilterSidebar({
                 <h2>Search :</h2> {/*add auto-complete */}
                 <label>
                     <TextField
-                        name="name"
+                        name="searchWords"
                         label="job, company, description..."
                     />
                 </label>

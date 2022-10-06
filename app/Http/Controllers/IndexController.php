@@ -12,12 +12,12 @@ class IndexController extends Controller
     public function index(Request $request)
     {
         $advertisements = AdvertisementController::search($request->query('order'),
-        $request->query('name'),
-        $request->query('minSalary'),
-        $request->query('maxSalary'),
-        $request->query('minHours'),
-        $request->query('maxHours'),
-        $request->query('location'));
+            $request->query('searchWords'),
+            $request->query('minSalary'),
+            $request->query('maxSalary'),
+            $request->query('minHours'),
+            $request->query('maxHours'),
+            $request->query('location'));
 
         $pageSize = 10;
         $currentPage = $request->query('page');
@@ -31,8 +31,8 @@ class IndexController extends Controller
         $data = ["jobs" => [], "page" => ["count" => $pageCount, "current" => $currentPage]];
 
 
-        for ($i = 0; $i <= $pageSize; $i++){
-            if ($i + ($pageSize * ($currentPage - 1)) >= $advertisements->count() )
+        for ($i = 0; $i <= $pageSize; $i++) {
+            if ($i + ($pageSize * ($currentPage - 1)) >= $advertisements->count())
                 break;
             $jobOffer = $advertisements[$i + ($pageSize * ($currentPage - 1))];
 
@@ -60,6 +60,6 @@ class IndexController extends Controller
         return view('home')->with('data', json_encode($data));
     }
 
-        
+
 }
 ?>
