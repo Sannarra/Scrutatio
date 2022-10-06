@@ -1,8 +1,4 @@
-import CardsList from "../components/CardsList";
-import Stack from "@mui/material/Stack";
-import Pagination from "@mui/material/Pagination";
 import React, { useState } from "react";
-import { Component } from "react";
 import TextField from "@mui/material/TextField";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
