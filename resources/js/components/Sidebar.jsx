@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 
 export default function FilterSidebar({ isOpen, setOpen, csrf_token, SelectTextFields }) {
 
-  const [order, setOrder] = React.useState('ascending');
+  const [order, setOrder] = React.useState('asc');
   const [valueSalary, setValueSalary] = React.useState([500, 4000]);
   const [valueWorktime, setValueWorktime] = React.useState([5, 40]);
   const [selectedChips, setSelectedChips] = React.useState([]);
@@ -38,14 +38,13 @@ export default function FilterSidebar({ isOpen, setOpen, csrf_token, SelectTextF
 
   const sortBy = [
     {
-      value: "ascending",
-      name: "ascending",
+      value: "asc",
       label: 'by date ascending',
+      
 
     },
     {
-      value: "desending",
-      name: "desending",
+      value: "desc",
       label: 'by date desending',
     },
   ];
@@ -72,16 +71,17 @@ export default function FilterSidebar({ isOpen, setOpen, csrf_token, SelectTextF
 
       <IconButton title='Close' onClick={() => {crossClose()}}><CancelIcon/></IconButton>
      
-      <h2>Search :</h2> {/*add search with all the others elements */}
+      <h2>Search :</h2> {/*add auto-complete */}
         <label>
           <TextField name="name" label="job, company, description..." />
         </label>
-          <h2>Sort by :</h2> {/*linked with back */}
+          <h2>Sort by :</h2> 
 
           <TextField
           id="outlined-select-order"
           select
           label="Select"
+          name="order"
           value={order}
           onChange={handleChange}
         >
@@ -137,7 +137,7 @@ export default function FilterSidebar({ isOpen, setOpen, csrf_token, SelectTextF
         </label>
 
         <label>
-          <h3>Contract type</h3> {/*linked with back */}
+          <h3>Contract type</h3> 
             <Grid container>
               <Chip sx={{m: .5 }} color={selectedChips.includes(1) ? 'primary' : 'default'} label="Fixed-term" onClick={() => {toggleChip(1)}} />
               <Chip sx={{m: .5 }} color={selectedChips.includes(2) ? 'primary' : 'default'} label="Permanent" onClick={() => {toggleChip(2)}} />

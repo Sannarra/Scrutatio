@@ -42,10 +42,11 @@ class AdvertisementController extends Controller
         return response()->json(null, 204);
     }
 
-    static public function search($name, $minSalary, $maxSalary, $minHours, $maxHours, $location)
+    static public function search($order, $name, $minSalary, $maxSalary, $minHours, $maxHours, $location)
     {
 
         $result = (new Advertisement)->newQuery();
+
 
         if ($name != null)
             $result = $result->where('title', 'like', "%$name%" )->orWhere('description', 'like', "%$name%")->orWhere('short_brief', 'like', "%$name%");
@@ -59,9 +60,10 @@ class AdvertisementController extends Controller
             $result = $result->where('working_time', '<', $maxHours);
         if ($location != null)
             $result = $result->where('city', 'like', "%$location%");
-        if ($location != null)
-            $result = $result->where('city', 'like', "%$location%");
-        $result = $result->get();
+        if ($order != null)
+            $result = $result->orderBy("created_at", $order);
+
+            $result = $result->get();
 
         return $result;
     }
@@ -69,6 +71,7 @@ class AdvertisementController extends Controller
     {    
 
         return response()->json(AdvertisementController::search(
+            $request->query('order'),
             $request->query('name'),
             $request->query('minSalary'),
             $request->query('maxSalary'),

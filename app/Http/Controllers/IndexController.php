@@ -11,7 +11,8 @@ class IndexController extends Controller
 {
     public function index(Request $request)
     {
-        $advertisements = AdvertisementController::search($request->query('name'),
+        $advertisements = AdvertisementController::search($request->query('order'),
+        $request->query('name'),
         $request->query('minSalary'),
         $request->query('maxSalary'),
         $request->query('minHours'),
