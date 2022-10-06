@@ -29,6 +29,7 @@ export default class Login extends Component {
                                 name="email"
                                 variant="filled"
                                 style={{ backgroundColor: "white" }}
+                                autoComplete="email"
                             />
                             <br />
                             <TextField
@@ -37,6 +38,7 @@ export default class Login extends Component {
                                 variant="filled"
                                 name="password"
                                 style={{ backgroundColor: "white" }}
+                                autoComplete="current-password"
                             />
                             <br />
                             <FormControlLabel
@@ -62,7 +64,7 @@ export default class Login extends Component {
                     </form>
                     <br />
                     <a
-                        href="/registration"
+                        href="/register"
                         style={{ justifyContent: "center", display: "flex" }}
                     >
                         No account ? Create one

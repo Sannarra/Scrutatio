@@ -127,7 +127,7 @@ export default function Register(props) {
                 <h1 style={{ justifyContent: "center", display: "flex" }}>
                     Register
                 </h1>
-                <form method="POST" action="/member-registration">
+                <form method="POST" action="/member-register">
                     <input
                         type="hidden"
                         name="_token"

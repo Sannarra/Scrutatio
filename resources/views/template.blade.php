@@ -8,9 +8,17 @@
     <title>Scrutatio</title>
 
     @viteReactRefresh
-    @vite('resources/js/register.jsx')
+    @vite('resources/js/app.jsx')
 </head>
 
 <body>
-    <div id="app" csrf_token="{{csrf_token()}}"></div>
+    <div id="app"></div>
 </body>
+
+<script>
+    pageName='{{$pageName}}';
+    pageData=@json($data);
+    csrf_token="{{csrf_token()}}"
+</script>
+
+</html>

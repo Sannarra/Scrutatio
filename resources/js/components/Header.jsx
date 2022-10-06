@@ -1,9 +1,28 @@
 import SearchIcon from "@mui/icons-material/Search";
+import HomeIcon from "@mui/icons-material/Home";
 import ChatIcon from "@mui/icons-material/Chat";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import IconButton from "@mui/material/IconButton";
 
-export default function Header({ openSidebar }) {
+export default function Header({ with_sidebar, openSidebar }) {
+    const TopLeftButton = () => {
+        if (with_sidebar)
+            return (
+                <IconButton
+                    sx={{ color: "var(--light)" }}
+                    onClick={() => openSidebar()}
+                >
+                    <SearchIcon />
+                </IconButton>
+            );
+        else
+            return (
+                <IconButton sx={{ color: "var(--light)" }} href="/">
+                    <HomeIcon />
+                </IconButton>
+            );
+    };
+
     return (
         <header
             style={{
@@ -15,13 +34,7 @@ export default function Header({ openSidebar }) {
                 padding: "3vh",
             }}
         >
-            <IconButton
-                sx={{ color: "var(--light)" }}
-                onClick={() => openSidebar()}
-            >
-                <SearchIcon />
-            </IconButton>
-
+            {TopLeftButton()}
             <a
                 href="/"
                 style={{
@@ -32,7 +45,7 @@ export default function Header({ openSidebar }) {
             >
                 <img
                     style={{ width: "100%", height: "auto", maxHeight: "100%" }}
-                    src="./logo-white.png"
+                    src="/logo-white.png"
                     alt="logo"
                 />
             </a>

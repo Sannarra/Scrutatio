@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
     public function index()
     {
-        return view('auth.login');
+        return react_view("login");
     }
 
     public function customLogin(Request $request)
@@ -33,9 +33,9 @@ class AuthController extends Controller
         return redirect("login")->withSuccess('Login details are not valid');
     }
 
-    public function registration()
+    public function register()
     {
-        return view('auth.registration');
+        return react_view("register");
     }
 
     public function customRegistration(Request $request)
