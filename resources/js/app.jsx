@@ -22,6 +22,7 @@ const theme = createTheme({
 import ReactDOM from "react-dom/client";
 import Main from "./Main";
 import Home from "./Page/Home.jsx";
+import ManagePosts from "./Page/ManagePosts.jsx";
 import EditPosts from "./Page/EditPosts.jsx";
 
 function getPage() {
@@ -32,6 +33,8 @@ function getPage() {
             return () => <EditPosts creation_mode data={pageData} />;
         case "edit_post":
             return () => <EditPosts data={pageData} />;
+        case "manage_posts":
+            return () => <ManagePosts data={pageData} />;
         default:
             return () => <h1>Undefined page name </h1>;
     }

@@ -8,3 +8,4 @@ Route::get('/', 'App\Http\Controllers\IndexController@index');
 
 Route::get('/create-post', 'App\Http\Controllers\IndexController@createPost');
 Route::get('/edit-post/{advertisement}', 'App\Http\Controllers\IndexController@editPost');
+Route::get('/manage-posts', 'App\Http\Controllers\IndexController@managePosts');

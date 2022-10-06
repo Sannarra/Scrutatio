@@ -53,7 +53,7 @@ export default class JobCard extends React.Component {
         this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
         this.cardAction = this.cardAction.bind(this);
         this.state = {
-            editMode: props.editMode,
+            edit_mode: props.edit_mode,
             expanded: Boolean(props.expanded),
             favorite: props.data.favorite,
         };
@@ -79,10 +79,13 @@ export default class JobCard extends React.Component {
     }
 
     cardAction() {
-        if (this.state.editMode)
+        if (this.state.edit_mode)
             return (
                 <>
-                    <IconButton aria-label="save">
+                    <IconButton
+                        aria-label="save"
+                        href={`/edit-post/${this.props.data.id}`}
+                    >
                         <EditIcon />
                     </IconButton>
                     <IconButton aria-label="save">

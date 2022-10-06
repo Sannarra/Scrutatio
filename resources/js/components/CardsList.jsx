@@ -55,12 +55,13 @@ export default class CardsList extends Component {
     }
 
     createFab() {
-        if (this.props.editMode)
+        if (this.props.edit_mode)
             return (
                 <Fab
                     color="primary"
                     aria-label="add"
                     style={{ position: "sticky", bottom: "20px" }}
+                    href="/create-post"
                 >
                     <AddIcon />
                 </Fab>
@@ -77,7 +78,7 @@ export default class CardsList extends Component {
                             key={index}
                             data={job}
                             onExpand={this.handleExpandClick}
-                            editMode={this.props.editMode}
+                            edit_mode={this.props.edit_mode ? +true : +true}
                         />
                     );
                 })}
