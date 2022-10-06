@@ -27,9 +27,12 @@ import Register from "./Page/Register.jsx";
 import ManagePosts from "./Page/ManagePosts.jsx";
 import EditPosts from "./Page/EditPosts.jsx";
 
+let with_sidebar = false;
+
 function getPage() {
     switch (pageName) {
         case "home":
+            with_sidebar = true;
             return () => <Home data={pageData} />;
         case "login":
             return () => <Login csrf_token={csrf_token} />;
@@ -40,6 +43,7 @@ function getPage() {
         case "edit_post":
             return () => <EditPosts data={pageData} />;
         case "manage_posts":
+            with_sidebar = true;
             return () => <ManagePosts data={pageData} />;
         default:
             return () => <h1>Undefined page name </h1>;
@@ -56,7 +60,11 @@ ReactDOM.createRoot(document.getElementById("app")).render(
                 height: "100vh",
             }}
         >
-            <Main content={getPage()} csrf_token={csrf_token} />
+            <Main
+                content={getPage()}
+                csrf_token={csrf_token}
+                with_sidebar={with_sidebar}
+            />
         </div>
     </ThemeProvider>
 );

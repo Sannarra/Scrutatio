@@ -16,7 +16,10 @@ export default function Main(props) {
                 height: "100vh",
             }}
         >
-            <Header openSidebar={() => setSidebarOpen(true)} />
+            <Header
+                with_sidebar={props.with_sidebar}
+                openSidebar={() => setSidebarOpen(true)}
+            />
             <div
                 style={{
                     overflowY: "auto",
@@ -29,11 +32,13 @@ export default function Main(props) {
             >
                 <div style={{ flex: 1 }}>
                     {props.content()}
-                    <Sidebar
-                        isOpen={sidebarOpen}
-                        setOpen={setSidebarOpen}
-                        csrf_token={props.csrf_token}
-                    />
+                    {props.with_sidebar && (
+                        <Sidebar
+                            isOpen={sidebarOpen}
+                            setOpen={setSidebarOpen}
+                            csrf_token={props.csrf_token}
+                        />
+                    )}
                 </div>
                 <Footer />
             </div>

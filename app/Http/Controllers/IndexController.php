@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
-use App\Models\Companie;
+use App\Models\Company;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
