@@ -12,7 +12,8 @@
 </head>
 
 <body>
-    <div id="app" data='{{ $data }}'></div>
+    <div id="app" data='{{ $data }}' csrf_token="{{csrf_token()}}"
+    ></div>
 </body>
 
 </html>

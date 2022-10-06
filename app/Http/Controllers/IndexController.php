@@ -5,26 +5,38 @@ namespace App\Http\Controllers;
 use App\Models\Advertisement;
 use Illuminate\Http\Request;
 use Mockery\Undefined;
+use PhpParser\Node\Stmt\For_;
 
 class IndexController extends Controller
 {
     public function index(Request $request)
     {
-        $advertisements = Advertisement::all();
+        $advertisements = AdvertisementController::search($request->query('order'),
+            $request->query('searchWords'),
+            $request->query('minSalary'),
+            $request->query('maxSalary'),
+            $request->query('minHours'),
+            $request->query('maxHours'),
+            $request->query('location'));
 
-        $pageSize = 15;
-        $page = $request->query('page');
-        if ($page === null || !is_numeric($page))
-            $page = 1;
+        $pageSize = 10;
+        $currentPage = $request->query('page');
+        if ($currentPage === null || !is_numeric($currentPage))
+            $currentPage = 1;
         else
-            $page = intval($page);
+            $currentPage = intval($currentPage);
         $pageCount = 1;
         if ($advertisements->count() > 0)
             $pageCount = 1 + intdiv(($advertisements->count() - 1), $pageSize);
-        $data = ["jobs" => [], "page" => ["count" => $pageCount, "current" => $page]];
+        $data = ["jobs" => [], "page" => ["count" => $pageCount, "current" => $currentPage]];
 
 
-        foreach ($advertisements->skip(($page - 1) * $pageSize)->take($pageSize) as $jobOffer) {
+        for ($i = 0; $i <= $pageSize; $i++) {
+            if ($i + ($pageSize * ($currentPage - 1)) >= $advertisements->count())
+                break;
+            $jobOffer = $advertisements[$i + ($pageSize * ($currentPage - 1))];
+
+
             $sectors = [];
 
             foreach ($jobOffer->company->sectors as $sector)
@@ -47,5 +59,7 @@ class IndexController extends Controller
 
         return view('home')->with('data', json_encode($data));
     }
+
+
 }
 ?>

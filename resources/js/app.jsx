@@ -28,6 +28,9 @@ ReactDOM.createRoot(document.getElementById("app")).render(
             data={JSON.parse(
                 document.getElementById("app").getAttribute("data")
             )}
+            csrf_token={document
+                .getElementById("app")
+                .getAttribute("csrf_token")}
         />
     </ThemeProvider>
 );
