@@ -12,14 +12,16 @@ import InputAdornment from "@mui/material/InputAdornment";
 export default function PostEdit(props) {
     let now = new Date();
     const [input, setInput] = useState({
-        job_title: "",
-        city: "",
-        contract_type: "",
-        short_brief: "",
-        description: "",
-        salary: "",
-        working_time: "",
-        publication_date: `${now.getMonth()}/${now.getDay()} ${now.getHours()}:${now.getMinutes()}`,
+        job_title: props.job_title || "",
+        city: props.city || "",
+        contract_type: props.contract_type || "",
+        short_brief: props.short_brief || "",
+        description: props.description || "",
+        salary: props.salary || "",
+        working_time: props.working_time || "",
+        publication_date:
+            props.publication_date ||
+            `${now.getMonth()}/${now.getDay()} ${now.getHours()}:${now.getMinutes()}`,
     });
 
     const [error, setError] = useState({
@@ -94,7 +96,7 @@ export default function PostEdit(props) {
         <div {...props}>
             <div style={{ paddingLeft: "10%", paddingRight: "10%" }}>
                 <h1 style={{ justifyContent: "center", display: "flex" }}>
-                    {props.creation_mode ? "Create" : "Update"} post
+                    {props.creation_mode ? "Create" : "Edit"} post
                 </h1>
                 <form
                     method="POST"
@@ -188,7 +190,7 @@ export default function PostEdit(props) {
                             }}
                             disabled={!validateInputs()}
                         >
-                            {props.creation_mode ? "Create" : "Update"}
+                            {props.creation_mode ? "Create" : "Edit"}
                         </Button>
                     </FormGroup>
                 </form>

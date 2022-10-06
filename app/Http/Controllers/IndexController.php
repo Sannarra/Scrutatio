@@ -45,5 +45,24 @@ class IndexController extends Controller
         }
         return react_view("home", $data);
     }
+
+    public function createPost(Request $request)
+    {
+        return react_view("create_post");
+    }
+
+    public function editPost(Request $request, Advertisement $advertisement)
+    {
+        return react_view("edit_post", ["post" => [
+                "job_title" => $advertisement->title,
+                "city" => $advertisement->city,
+                "contract_type" => $advertisement->contract_type,
+                "short_brief" => $advertisement->short_brief,
+                "description" => $advertisement->description,
+                "salary" => $advertisement->salary,
+                "working_time" => $advertisement->working_time,
+                "publication_date" => $advertisement->publication_date,
+            ]]);
+    }
 }
 ?>

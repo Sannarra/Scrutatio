@@ -28,8 +28,10 @@ function getPage() {
     switch (pageName) {
         case "home":
             return () => <Home data={pageData} />;
-        case "post_creation":
+        case "create_post":
             return () => <EditPosts creation_mode data={pageData} />;
+        case "edit_post":
+            return () => <EditPosts data={pageData} />;
         default:
             return () => <h1>Undefined page name </h1>;
     }
