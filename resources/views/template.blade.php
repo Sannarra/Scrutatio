@@ -16,7 +16,7 @@
 </body>
 
 <script>
-    pageName="post_creation";
+    pageName='{{$pageName}}';
     pageData=@json($data);
 </script>
 

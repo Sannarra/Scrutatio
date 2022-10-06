@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
 use Illuminate\Http\Request;
-use Mockery\Undefined;
 
 class IndexController extends Controller
 {
@@ -44,8 +43,7 @@ class IndexController extends Controller
                 "short_brief" => $jobOffer->short_brief
             ]);
         }
-
-        return view('home')->with('data', $data);
+        return react_view("home", $data);
     }
 }
 ?>
