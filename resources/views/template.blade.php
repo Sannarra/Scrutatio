@@ -12,7 +12,13 @@
 </head>
 
 <body>
-    <div id="app" data='{{ $data }}'></div>
+    <div id="app"></div>
 </body>
+
+<script>
+    pageName='{{$pageName}}';
+    pageData=@json($data);
+    csrf_token="{{csrf_token()}}"
+</script>
 
 </html>

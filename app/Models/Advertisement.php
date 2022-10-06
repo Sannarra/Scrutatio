@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Companie;
+use App\Models\Company;
 use App\Models\Application;
 
 class Advertisement extends Model
@@ -17,13 +17,13 @@ class Advertisement extends Model
         'working_time',
         'city',
         'contract_type',
-        'companie_id',
+        'company_id',
         'icon_src',
         'short_brief'];
 
-    public function companie()
+    public function company()
     {
-        return $this->belongsTo(Companie::class);
+        return $this->belongsTo(Company::class , 'company_id');
     }
 
     public function applications()

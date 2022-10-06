@@ -5,7 +5,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/EpitechMscProPromo2025/T-WEB-501-NAN-5-1-jobboard-lisa.bourdon">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="./logo-white.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">JobBoard</h3>
