@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
 use Illuminate\Http\Request;
-use App\Models\Search;
 
 class AdvertisementController extends Controller
 {
@@ -36,9 +35,9 @@ class AdvertisementController extends Controller
         return response()->json($advertisements, 200);
     }
 
-    public function delete(Advertisement $sector)
+    public function delete(Advertisement $advertisement)
     {
-        $sector->delete();
+        $advertisement->delete();
 
         return response()->json(null, 204);
     }
