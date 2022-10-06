@@ -18,7 +18,7 @@ class IndexController extends Controller
         $request->query('maxHours'),
         $request->query('location'));
 
-        $pageSize = 3;
+        $pageSize = 10;
         $currentPage = $request->query('page');
         if ($currentPage === null || !is_numeric($currentPage))
             $currentPage = 1;
