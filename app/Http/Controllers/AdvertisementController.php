@@ -67,6 +67,27 @@ class AdvertisementController extends Controller
         $result = $result->get();
         return $result;
     }
+
+    static public function getJobCardsData($order, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $pageSize, $currentPage, $query = null)
+    {
+        $advertisements = AdvertisementController::search($order,
+            $searchWords,
+            $minSalary,
+            $maxSalary,
+            $minHours,
+            $maxHours,
+            $location,
+            $query);
+
+        $pageCount = 1 + intdiv(($advertisements->count() - 1), $pageSize);
+        $data = ["jobs" => [], "page" => ["count" => $pageCount, "current" => $currentPage]];
+
+
+        for ($i = 0; $i <= $pageSize && ($i + ($pageSize * ($currentPage - 1)) < $advertisements->count()); $i++)
+            array_push($data['jobs'], $advertisements[$i + ($pageSize * ($currentPage - 1))]->toJobCard());
+        return $data;
+    }
+
     public function searchRoute(Request $request)
     {
         return response()->json(AdvertisementController::search(
