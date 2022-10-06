@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\CompanieSector;
+use App\Models\CompanySector;
 
 class Sector extends Model
 {
@@ -14,6 +14,6 @@ class Sector extends Model
 
     public function sectors()
     {
-        return $this->hasMany(CompanieSector::class);
+        return $this->hasMany(CompanySector::class);
     }
 }

@@ -10,29 +10,40 @@ class IndexController extends Controller
 {
     public function index(Request $request)
     {
-        $advertisements = Advertisement::all();
+        $advertisements = AdvertisementController::search($request->query('order'),
+            $request->query('searchWords'),
+            $request->query('minSalary'),
+            $request->query('maxSalary'),
+            $request->query('minHours'),
+            $request->query('maxHours'),
+            $request->query('location'));
 
-        $pageSize = 15;
-        $page = $request->query('page');
-        if ($page === null || !is_numeric($page))
-            $page = 1;
+        $pageSize = 10;
+        $currentPage = $request->query('page');
+        if ($currentPage === null || !is_numeric($currentPage))
+            $currentPage = 1;
         else
-            $page = intval($page);
+            $currentPage = intval($currentPage);
         $pageCount = 1;
         if ($advertisements->count() > 0)
             $pageCount = 1 + intdiv(($advertisements->count() - 1), $pageSize);
-        $data = ["jobs" => [], "page" => ["count" => $pageCount, "current" => $page]];
+        $data = ["jobs" => [], "page" => ["count" => $pageCount, "current" => $currentPage]];
 
 
-        foreach ($advertisements->skip(($page - 1) * $pageSize)->take($pageSize) as $jobOffer) {
+        for ($i = 0; $i <= $pageSize; $i++) {
+            if ($i + ($pageSize * ($currentPage - 1)) >= $advertisements->count())
+                break;
+            $jobOffer = $advertisements[$i + ($pageSize * ($currentPage - 1))];
+
+
             $sectors = [];
 
-            foreach ($jobOffer->companie->sectors as $sector)
+            foreach ($jobOffer->company->sectors as $sector)
                 array_push($sectors, $sector->sector->name);
 
             array_push($data['jobs'], [
                 "job_title" => $jobOffer->title,
-                "company_name" => $jobOffer->companie->name,
+                "company_name" => $jobOffer->company->name,
                 "city" => $jobOffer->city,
                 "publication_date" => date('m-d H:i', strtotime($jobOffer->created_at)),
                 "sectors" => $sectors,
@@ -50,12 +61,12 @@ class IndexController extends Controller
 
     public function createPost(Request $request)
     {
-        $companie = Companie::all()->find(1);
+        $company = Company::all()->find(1);
 
         return react_view("create_post", ["post" => [],
             "company" => [
-                "company_name" => $companie->name,
-                "sectors" => $companie->sectors->pluck('sector.name'),
+                "company_name" => $company->name,
+                "sectors" => $company->sectors->pluck('sector.name'),
             ]]);
     }
 
@@ -75,8 +86,8 @@ class IndexController extends Controller
                 "id" => $advertisement->id
             ],
             "company" => [
-                "company_name" => $advertisement->companie->name,
-                "sectors" => $advertisement->companie->sectors->pluck('sector.name'),
+                "company_name" => $advertisement->company->name,
+                "sectors" => $advertisement->company->sectors->pluck('sector.name'),
             ]]);
     }
 
@@ -99,12 +110,12 @@ class IndexController extends Controller
         foreach ($advertisements->skip(($page - 1) * $pageSize)->take($pageSize) as $jobOffer) {
             $sectors = [];
 
-            foreach ($jobOffer->companie->sectors as $sector)
+            foreach ($jobOffer->company->sectors as $sector)
                 array_push($sectors, $sector->sector->name);
 
             array_push($data['jobs'], [
                 "job_title" => $jobOffer->title,
-                "company_name" => $jobOffer->companie->name,
+                "company_name" => $jobOffer->company->name,
                 "city" => $jobOffer->city,
                 "publication_date" => date('m-d H:i', strtotime($jobOffer->created_at)),
                 "sectors" => $sectors,
@@ -119,5 +130,7 @@ class IndexController extends Controller
         }
         return react_view("manage_posts", $data);
     }
+
+
 }
 ?>

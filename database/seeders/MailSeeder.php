@@ -30,7 +30,7 @@ class MailSeeder extends Seeder
                 'subject' => $faker->sentence(),
                 'content' => $faker->text(),
                 'application_id' => $faker->numberBetween(1, Application::count()),
-                'sender_id' => $faker->numberBetween(1, User::count())
+                'sender_user_id' => $faker->numberBetween(1, User::count())
             ]);
         }
     }

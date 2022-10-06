@@ -4,11 +4,11 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Companie;
+use App\Models\Company;
 use Illuminate\Support\Facades\Schema;
 use App\Models\User;
 
-class CompanieSeeder extends Seeder
+class CompanySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -21,17 +21,17 @@ class CompanieSeeder extends Seeder
 
 
         Schema::disableForeignKeyConstraints();
-        Companie::truncate();
+        Company::truncate();
         Schema::enableForeignKeyConstraints();
 
         for ($i = 0; $i < 20; $i++) {
-            Companie::create([
+            Company::create([
                 'name' => $faker->company(),
                 'creation_date' => $faker->date(),
                 'size' => $faker->numberBetween(10, 50000),
                 'headquarter' => $faker->city(),
                 'postal_code' => $faker->postcode(),
-                'human_resources_id' => $faker->numberBetween(1, User::count()),
+                'account_id' => $i + 51,
                 'website' => $faker->url(),
             ]);
         }

@@ -18,6 +18,7 @@
 <script>
     pageName='{{$pageName}}';
     pageData=@json($data);
+    csrf_token="{{csrf_token()}}"
 </script>
 
 </html>

@@ -4,13 +4,12 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Companie;
-use App\Models\CompanieSector;
-use App\Models\Sector;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Account;
+use Illuminate\Support\Facades\Hash;
 
 
-class CompanieSectorSeeder extends Seeder
+class AccountSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -23,13 +22,18 @@ class CompanieSectorSeeder extends Seeder
 
 
         Schema::disableForeignKeyConstraints();
-        CompanieSector::truncate();
+        Account::truncate();
         Schema::enableForeignKeyConstraints();
 
-        for ($i = 0; $i < 20; $i++) {
-            CompanieSector::create([
-                'sector_id' => $faker->numberBetween(1, Sector::count()),
-                'companie_id' => $faker->numberBetween(1, Companie::count())
+        Account::create([
+            'email' => "admin@scrutatio.fr",
+            'password' => Hash::make("scrutatio")
+        ]);
+
+        for ($i = 1; $i < 70; $i++) {
+            Account::create([
+                'email' => $faker->email(),
+                'password' => Hash::make($faker->password())
             ]);
         }
     }

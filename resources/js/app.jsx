@@ -22,6 +22,8 @@ const theme = createTheme({
 import ReactDOM from "react-dom/client";
 import Main from "./Main";
 import Home from "./Page/Home.jsx";
+import Login from "./Page/Login.jsx";
+import Register from "./Page/Register.jsx";
 import ManagePosts from "./Page/ManagePosts.jsx";
 import EditPosts from "./Page/EditPosts.jsx";
 
@@ -29,6 +31,10 @@ function getPage() {
     switch (pageName) {
         case "home":
             return () => <Home data={pageData} />;
+        case "login":
+            return () => <Login csrf_token={csrf_token} />;
+        case "register":
+            return () => <Register csrf_token={csrf_token} />;
         case "create_post":
             return () => <EditPosts creation_mode data={pageData} />;
         case "edit_post":
@@ -50,7 +56,7 @@ ReactDOM.createRoot(document.getElementById("app")).render(
                 height: "100vh",
             }}
         >
-            <Main content={getPage()} />
+            <Main content={getPage()} csrf_token={csrf_token} />
         </div>
     </ThemeProvider>
 );
