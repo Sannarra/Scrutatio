@@ -30,7 +30,7 @@ class IndexController extends Controller
             $pageCount = 1 + intdiv(($advertisements->count() - 1), $pageSize);
         $data = ["jobs" => [], "page" => ["count" => $pageCount, "current" => $currentPage]];
 
-        // echo $advertisements[0];
+
         for ($i = 0; $i <= $pageSize; $i++){
             if ($i + ($pageSize * ($currentPage - 1)) >= $advertisements->count() )
                 break;
