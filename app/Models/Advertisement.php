@@ -30,4 +30,23 @@ class Advertisement extends Model
     {
         return $this->hasMany(Application::class);
     }
+
+
+    public function toJobCard()
+    {
+        return [
+            "job_title" => $this->title,
+            "company_name" => $this->company->name,
+            "city" => $this->city,
+            "publication_date" => date('m-d H:i', strtotime($this->created_at)),
+            "sectors" => $this->company->sectors->pluck('sector.name'),
+            "contract_type" => $this->contract_type,
+            "salary" => $this->salary,
+            "working_time" => $this->working_time,
+            "company_icon" => $this->icon_src,
+            "description" => $this->description,
+            "short_brief" => $this->short_brief,
+            "id" => $this->id
+        ];
+    }
 }

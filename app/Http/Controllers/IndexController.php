@@ -8,55 +8,37 @@ use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
+    public function getJobCardsData($order, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $pageSize, $currentPage, $query = null)
+    {
+        $advertisements = AdvertisementController::search($order,
+            $searchWords,
+            $minSalary,
+            $maxSalary,
+            $minHours,
+            $maxHours,
+            $location,
+            $query);
+
+        $pageCount = 1 + intdiv(($advertisements->count() - 1), $pageSize);
+        $data = ["jobs" => [], "page" => ["count" => $pageCount, "current" => $currentPage]];
+
+
+        for ($i = 0; $i <= $pageSize && ($i + ($pageSize * ($currentPage - 1)) < $advertisements->count()); $i++)
+            array_push($data['jobs'], $advertisements[$i + ($pageSize * ($currentPage - 1))]->toJobCard());
+        return $data;
+    }
+
     public function index(Request $request)
     {
-        $advertisements = AdvertisementController::search($request->query('order'),
+        return react_view("home", AdvertisementController::getJobCardsData($request->query('order'),
             $request->query('searchWords'),
             $request->query('minSalary'),
             $request->query('maxSalary'),
             $request->query('minHours'),
             $request->query('maxHours'),
-            $request->query('location'));
-
-        $pageSize = 10;
-        $currentPage = $request->query('page');
-        if ($currentPage === null || !is_numeric($currentPage))
-            $currentPage = 1;
-        else
-            $currentPage = intval($currentPage);
-        $pageCount = 1;
-        if ($advertisements->count() > 0)
-            $pageCount = 1 + intdiv(($advertisements->count() - 1), $pageSize);
-        $data = ["jobs" => [], "page" => ["count" => $pageCount, "current" => $currentPage]];
-
-
-        for ($i = 0; $i <= $pageSize; $i++) {
-            if ($i + ($pageSize * ($currentPage - 1)) >= $advertisements->count())
-                break;
-            $jobOffer = $advertisements[$i + ($pageSize * ($currentPage - 1))];
-
-
-            $sectors = [];
-
-            foreach ($jobOffer->company->sectors as $sector)
-                array_push($sectors, $sector->sector->name);
-
-            array_push($data['jobs'], [
-                "job_title" => $jobOffer->title,
-                "company_name" => $jobOffer->company->name,
-                "city" => $jobOffer->city,
-                "publication_date" => date('m-d H:i', strtotime($jobOffer->created_at)),
-                "sectors" => $sectors,
-                "contract_type" => $jobOffer->contract_type,
-                "salary" => $jobOffer->salary,
-                "working_time" => $jobOffer->working_time,
-                "company_icon" => $jobOffer->icon_src,
-                "description" => $jobOffer->description,
-                "short_brief" => $jobOffer->short_brief,
-                "id" => $jobOffer->id
-            ]);
-        }
-        return react_view("home", $data);
+            $request->query('location'),
+            intval($request->query('pageSize', 10)),
+            intval($request->query('page', 1))));
     }
 
     public function createPost(Request $request)
@@ -93,42 +75,15 @@ class IndexController extends Controller
 
     public function managePosts(Request $request)
     {
-        $advertisements = Advertisement::all();
-
-        $pageSize = 15;
-        $page = $request->query('page');
-        if ($page === null || !is_numeric($page))
-            $page = 1;
-        else
-            $page = intval($page);
-        $pageCount = 1;
-        if ($advertisements->count() > 0)
-            $pageCount = 1 + intdiv(($advertisements->count() - 1), $pageSize);
-        $data = ["jobs" => [], "page" => ["count" => $pageCount, "current" => $page]];
-
-
-        foreach ($advertisements->skip(($page - 1) * $pageSize)->take($pageSize) as $jobOffer) {
-            $sectors = [];
-
-            foreach ($jobOffer->company->sectors as $sector)
-                array_push($sectors, $sector->sector->name);
-
-            array_push($data['jobs'], [
-                "job_title" => $jobOffer->title,
-                "company_name" => $jobOffer->company->name,
-                "city" => $jobOffer->city,
-                "publication_date" => date('m-d H:i', strtotime($jobOffer->created_at)),
-                "sectors" => $sectors,
-                "contract_type" => $jobOffer->contract_type,
-                "salary" => $jobOffer->salary,
-                "working_time" => $jobOffer->working_time,
-                "company_icon" => $jobOffer->icon_src,
-                "description" => $jobOffer->description,
-                "short_brief" => $jobOffer->short_brief,
-                "id" => $jobOffer->id
-            ]);
-        }
-        return react_view("manage_posts", $data);
+        return react_view("manage_posts", AdvertisementController::getJobCardsData($request->query('order'),
+            $request->query('searchWords'),
+            $request->query('minSalary'),
+            $request->query('maxSalary'),
+            $request->query('minHours'),
+            $request->query('maxHours'),
+            $request->query('location'),
+            intval($request->query('pageSize', 10)),
+            intval($request->query('page', 1))));
     }
 
 
