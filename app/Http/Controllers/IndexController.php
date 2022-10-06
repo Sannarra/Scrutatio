@@ -19,23 +19,24 @@ class IndexController extends Controller
         $request->query('location'));
 
         $pageSize = 3;
-        $page = $request->query('page');
-        if ($page === null || !is_numeric($page))
-            $page = 1;
+        $currentPage = $request->query('page');
+        echo $currentPage;
+        if ($currentPage === null || !is_numeric($currentPage))
+            $currentPage = 1;
         else
-            $page = intval($page);
+            $currentPage = intval($currentPage);
         $pageCount = 1;
         if ($advertisements->count() > 0)
             $pageCount = 1 + intdiv(($advertisements->count() - 1), $pageSize);
-        $data = ["jobs" => [], "page" => ["count" => $pageCount, "current" => $page]];
+        $data = ["jobs" => [], "page" => ["count" => $pageCount, "current" => $currentPage]];
+
+        // echo $advertisements[0];
+        for ($i = 0; $i <= $pageSize; $i++){
+            if ($i + ($pageSize * ($currentPage - 1)) >= $advertisements->count() )
+                break;
+            $jobOffer = $advertisements[$i + ($pageSize * ($currentPage - 1))];
 
 
-        
-        foreach ($advertisements/*->skip(($page - 1) * $pageSize)->take($pageSize)*/ as $jobOffer) {
-
-            for ($i = ($page-1); $i <= $pageSize; $i++) {
-          
-            }
             $sectors = [];
 
             foreach ($jobOffer->companie->sectors as $sector)
@@ -58,5 +59,7 @@ class IndexController extends Controller
 
         return view('home')->with('data', json_encode($data));
     }
+
+        
 }
 ?>
