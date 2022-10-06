@@ -19,9 +19,13 @@ export default function PostEdit(props) {
         description: props.description || "",
         salary: props.salary || "",
         working_time: props.working_time || "",
+
         publication_date:
             props.publication_date ||
             `${now.getMonth()}/${now.getDay()} ${now.getHours()}:${now.getMinutes()}`,
+        company_icon: props.company_icon || "",
+        company_name: props.company_name || "",
+        sectors: props.sectors || undefined,
     });
 
     const [error, setError] = useState({

@@ -53,7 +53,8 @@ class IndexController extends Controller
 
     public function editPost(Request $request, Advertisement $advertisement)
     {
-        return react_view("edit_post", ["post" => [
+        return react_view("edit_post", [
+            "post" => [
                 "job_title" => $advertisement->title,
                 "city" => $advertisement->city,
                 "contract_type" => $advertisement->contract_type,
@@ -62,6 +63,11 @@ class IndexController extends Controller
                 "salary" => $advertisement->salary,
                 "working_time" => $advertisement->working_time,
                 "publication_date" => $advertisement->publication_date,
+                "company_icon" => $advertisement->icon_src,
+            ],
+            "company" => [
+                "company_name" => $advertisement->companie->name,
+                "sectors" => $advertisement->companie->sectors->pluck('sector.name'),
             ]]);
     }
 }

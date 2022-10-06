@@ -12,6 +12,7 @@ export default class EditPosts extends Component {
     render() {
         return (
             <PostEdit
+                creation_mode={this.props.creation_mode ? +true : +false}
                 job_title={this.props.data.post.job_title}
                 city={this.props.data.post.city}
                 contract_type={this.props.data.post.contract_type}
@@ -20,7 +21,9 @@ export default class EditPosts extends Component {
                 salary={this.props.data.post.salary}
                 working_time={this.props.data.post.working_time}
                 publication_date={this.props.data.post.publication_date}
-                creation_mode={this.props.creation_mode ? +true : +false}
+                company_icon={this.props.data.post.company_icon}
+                company_name={this.props.data.company.company_name}
+                sectors={this.props.data.company.sectors}
             />
         );
     }
