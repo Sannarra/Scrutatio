@@ -16,7 +16,7 @@
 </body>
 
 <script>
-    pageName="home";
+    pageName="post_creation";
     pageData=@json($data);
 </script>
 

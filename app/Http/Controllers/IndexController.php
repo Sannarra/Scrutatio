@@ -31,8 +31,8 @@ class IndexController extends Controller
                 array_push($sectors, $sector->sector->name);
 
             array_push($data['jobs'], [
-                "jobTitle" => $jobOffer->title,
-                "companyName" => $jobOffer->companie->name,
+                "job_title" => $jobOffer->title,
+                "company_name" => $jobOffer->companie->name,
                 "city" => $jobOffer->city,
                 "publication_date" => date('m-d H:i', strtotime($jobOffer->created_at)),
                 "sectors" => $sectors,

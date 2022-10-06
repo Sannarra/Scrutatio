@@ -54,7 +54,7 @@ export default class JobCard extends React.Component {
         this.cardAction = this.cardAction.bind(this);
         this.state = {
             editMode: props.editMode,
-            expanded: props.expanded,
+            expanded: Boolean(props.expanded),
             favorite: props.data.favorite,
         };
         this.collapseRef = React.createRef();
@@ -105,6 +105,7 @@ export default class JobCard extends React.Component {
     render() {
         return (
             <Card
+                {...this.props}
                 ref={this.cardRef}
                 sx={{ width: "90%", border: 1, borderRadius: 3, boxShadow: 5 }}
             >
@@ -116,7 +117,7 @@ export default class JobCard extends React.Component {
                         />
                     }
                     action={this.cardAction()}
-                    title={this.props.data.jobTitle}
+                    title={this.props.data.job_title}
                     subheader={
                         <div>
                             <div
@@ -127,7 +128,7 @@ export default class JobCard extends React.Component {
                                 }}
                             >
                                 <BusinessIcon />
-                                <span>{this.props.data.companyName}</span>
+                                <span>{this.props.data.company_name}</span>
                             </div>
                             <div
                                 style={{
@@ -184,9 +185,10 @@ export default class JobCard extends React.Component {
                         <br />
                         <Typography component={"span"}>
                             Sectors:
-                            {this.props.data.sectors.map((sector, index) => {
-                                return <Sector name={sector} key={index} />;
-                            })}
+                            {this.props.data.sectors &&
+                                this.props.data.sectors.map((sector, index) => {
+                                    return <Sector name={sector} key={index} />;
+                                })}
                         </Typography>
                         <br />
                         <Typography>

@@ -22,11 +22,14 @@ const theme = createTheme({
 import ReactDOM from "react-dom/client";
 import Main from "./Main";
 import Home from "./Page/Home.jsx";
+import EditPosts from "./Page/EditPosts.jsx";
 
 function getPage() {
     switch (pageName) {
         case "home":
             return () => <Home data={pageData} />;
+        case "post_creation":
+            return () => <EditPosts creation_mode data={pageData} />;
         default:
             return () => <h1>Undefined page name </h1>;
     }
