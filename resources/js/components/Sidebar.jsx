@@ -11,7 +11,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import IconButton from "@mui/material/IconButton";
 
 
-export default function FilterSidebar({ isOpen, setOpen }) {
+export default function FilterSidebar({ isOpen, setOpen, csrf_token }) {
   
   const [valueSalary, setValueSalary] = React.useState([1200, 3000]);
   const [valueWorktime, setValueWorktime] = React.useState([20, 30]);
@@ -25,7 +25,8 @@ export default function FilterSidebar({ isOpen, setOpen }) {
     }
   };
 
-  const filterAction = () => {
+  const filterAction = (e) => {
+    
     setOpen(false);
   }
 
@@ -33,13 +34,32 @@ export default function FilterSidebar({ isOpen, setOpen }) {
     setOpen(false);
   }
 
+  const minMax = () => {
+    
+  }
+
+
+
+
   const Form = () => (
     <Box sx={{ width: 250, m: 2 }}>
-      <form>
+      <form action="#" onSubmit={filterAction}>
+      <input
+          type="hidden"
+          name="_token"
+          value={csrf_token}
+      />
+      <input type="hidden" name="minSalary" value={valueSalary[0]}/>
+      <input type="hidden" name="maxSalary" value={valueSalary[1]}/>
+
+      <input type="hidden" name="minHours" value={valueWorktime[0]}/>
+      <input type="hidden" name="maxHours" value={valueWorktime[1]}/>
+
+
       <IconButton title='Close' onClick={() => {crossClose()}}><CancelIcon/></IconButton>
       <h2>Search :</h2>
         <label>
-          <TextField label="job, company name ..." />
+          <TextField name="name" label="company name" />
         </label>
         <h2>Details</h2>
         <label>
@@ -78,11 +98,11 @@ export default function FilterSidebar({ isOpen, setOpen }) {
         </label>
         <h3>Location</h3>
         <label>
-          <TextField label="Houston, Chicago" />
+          <TextField name="location" label="Houston, Chicago" />
         </label>
-        <h3>Secteurs</h3>
+        <h3>Field</h3>
         <label>
-          <TextField label="Tourism, Agriculture " />
+          <TextField name="field" label="Tourism, Agriculture " />
         </label>
 
         <label>
@@ -97,7 +117,7 @@ export default function FilterSidebar({ isOpen, setOpen }) {
         </label>
 
         <label>
-          <Button sx={{ mt: 5 }} variant="contained" endIcon={<SearchIcon />} onClick={() => {filterAction()}}>
+          <Button sx={{ mt: 5 }} type="submit" variant="contained" endIcon={<SearchIcon />} onClick={() => {filterAction()}}>
             Filter
           </Button>
         </label>

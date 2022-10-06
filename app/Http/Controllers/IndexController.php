@@ -5,14 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Advertisement;
 use Illuminate\Http\Request;
 use Mockery\Undefined;
+use PhpParser\Node\Stmt\For_;
 
 class IndexController extends Controller
 {
     public function index(Request $request)
     {
-        $advertisements = Advertisement::all();
+        $advertisements = AdvertisementController::search($request->query('name'),
+        $request->query('minSalary'),
+        $request->query('maxSalary'),
+        $request->query('minHours'),
+        $request->query('maxHours'),
+        $request->query('location'));
 
-        $pageSize = 15;
+        $pageSize = 3;
         $page = $request->query('page');
         if ($page === null || !is_numeric($page))
             $page = 1;
@@ -24,7 +30,12 @@ class IndexController extends Controller
         $data = ["jobs" => [], "page" => ["count" => $pageCount, "current" => $page]];
 
 
-        foreach ($advertisements->skip(($page - 1) * $pageSize)->take($pageSize) as $jobOffer) {
+        
+        foreach ($advertisements/*->skip(($page - 1) * $pageSize)->take($pageSize)*/ as $jobOffer) {
+
+            for ($i = ($page-1); $i <= $pageSize; $i++) {
+          
+            }
             $sectors = [];
 
             foreach ($jobOffer->companie->sectors as $sector)
