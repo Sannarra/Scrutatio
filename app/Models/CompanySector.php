@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Sector;
-use App\Models\Companie;
+use App\Models\Company;
 
-class CompanieSector extends Model
+class CompanySector extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['sector_id', 'companie_id'];
+    protected $fillable = ['sector_id', 'company_id'];
 
-    public function companie()
+    public function company()
     {
-        return $this->belongsTo(Companie::class);
+        return $this->belongsTo(Company::class);
     }
 
     public function sector()

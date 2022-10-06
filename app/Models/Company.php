@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
-use App\Models\CompanieSector;
+use App\Models\CompanySector;
 use App\Models\Advertisement;
 
-class Companie extends Model
+class Company extends Model
 {
     use HasFactory;
 
@@ -20,14 +20,14 @@ class Companie extends Model
         'human_resources_id',
         'website'];
 
-    public function human_resources_user()
+    public function account()
     {
-        return $this->belongsTo(User::class , 'human_resources_id');
+        return $this->belongsTo(Account::class);
     }
 
     public function sectors()
     {
-        return $this->hasMany(CompanieSector::class);
+        return $this->hasMany(CompanySector::class);
     }
 
     public function advertisements()

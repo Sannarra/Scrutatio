@@ -24,12 +24,12 @@ Route::post('users', 'App\Http\Controllers\UserController@store');
 Route::put('users/{user}', 'App\Http\Controllers\UserController@update');
 Route::delete('users/{user}', 'App\Http\Controllers\UserController@delete');
 
-/// Companie
-Route::get('companies', 'App\Http\Controllers\CompanieController@index');
-Route::get('companies/{companie}', 'App\Http\Controllers\CompanieController@show');
-Route::post('companies', 'App\Http\Controllers\CompanieController@store');
-Route::put('companies/{companie}', 'App\Http\Controllers\CompanieController@update');
-Route::delete('companies/{companie}', 'App\Http\Controllers\CompanieController@delete');
+/// Company
+Route::get('companies', 'App\Http\Controllers\CompanyController@index');
+Route::get('companies/{company}', 'App\Http\Controllers\CompanyController@show');
+Route::post('companies', 'App\Http\Controllers\CompanyController@store');
+Route::put('companies/{company}', 'App\Http\Controllers\CompanyController@update');
+Route::delete('companies/{company}', 'App\Http\Controllers\CompanyController@delete');
 
 // Advertisement 
 Route::get('advertisment', 'App\Http\Controllers\AdvertisementController@index');

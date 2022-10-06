@@ -39,12 +39,12 @@ class IndexController extends Controller
 
             $sectors = [];
 
-            foreach ($jobOffer->companie->sectors as $sector)
+            foreach ($jobOffer->company->sectors as $sector)
                 array_push($sectors, $sector->sector->name);
 
             array_push($data['jobs'], [
                 "jobTitle" => $jobOffer->title,
-                "companyName" => $jobOffer->companie->name,
+                "companyName" => $jobOffer->company->name,
                 "city" => $jobOffer->city,
                 "publication_date" => date('m-d H:i', strtotime($jobOffer->created_at)),
                 "sectors" => $sectors,

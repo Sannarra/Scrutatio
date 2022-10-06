@@ -22,17 +22,20 @@ export default function Header({ openSidebar }) {
                 <SearchIcon />
             </IconButton>
 
-                <a href="/" style={{
+            <a
+                href="/"
+                style={{
                     justifyContent: "center",
                     alignItems: "center",
                     display: "flex",
-                }}>
-                    <img
+                }}
+            >
+                <img
                     style={{ width: "100%", height: "auto", maxHeight: "100%" }}
                     src="./logo-white.png"
                     alt="logo"
-                    />
-                </a>
+                />
+            </a>
 
             <div style={{ display: "flex" }}>
                 <div style={{ margin: "0 1em" }}>
@@ -41,7 +44,7 @@ export default function Header({ openSidebar }) {
                     </a>
                 </div>
                 <div>
-                    <a style={{ color: "var(--light)" }} href="#">
+                    <a style={{ color: "var(--light)" }} href="/home">
                         <AccountCircleIcon />
                     </a>
                 </div>
