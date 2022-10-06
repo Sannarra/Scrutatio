@@ -13,7 +13,7 @@ export default function Main(props) {
             />
             <div style={{ overflowY: 'auto', flex:'1', paddingTop:'10px' }} id="scrollable_body">
                 <Home data={props.data} />
-                <Sidebar isOpen={sidebarOpen} setOpen={setSidebarOpen} />
+                <Sidebar isOpen={sidebarOpen} setOpen={setSidebarOpen} csrf_token={props.csrf_token}/>
                 <Footer />
             </div>
         </div>
