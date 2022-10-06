@@ -34,9 +34,7 @@ Route::delete('companies/{companie}', 'App\Http\Controllers\CompanieController@d
 // Advertisement 
 Route::get('advertisment', 'App\Http\Controllers\AdvertisementController@index');
 Route::get('advertisment/{id}', 'App\Http\Controllers\AdvertisementController@show');
+Route::get('advertisement/search', 'App\Http\Controllers\AdvertisementController@searchRoute');
 Route::post('advertisment', 'App\Http\Controllers\AdvertisementController@store');
 Route::put('advertisment/{id}', 'App\Http\Controllers\AdvertisementController@update');
 Route::delete('advertisment/{id}', 'App\Http\Controllers\AdvertisementController@delete');
-
-// Search 
-Route::get('search', 'App\Http\Controllers\AdvertisementController@searchRoute');
