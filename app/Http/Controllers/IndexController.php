@@ -20,7 +20,6 @@ class IndexController extends Controller
 
         $pageSize = 3;
         $currentPage = $request->query('page');
-        echo $currentPage;
         if ($currentPage === null || !is_numeric($currentPage))
             $currentPage = 1;
         else
