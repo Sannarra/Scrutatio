@@ -46,9 +46,9 @@ class AdvertisementController extends Controller
     {
 
         $result = (new Advertisement)->newQuery();
-        
+
         if ($name != null)
-            $result = $result->where('title', 'like', "%$name%");
+            $result = $result->where('title', 'like', "%$name%" )->orWhere('description', 'like', "%$name%")->orWhere('short_brief', 'like', "%$name%");
         if ($minSalary != null)
             $result = $result->where('salary', '>', $minSalary);
         if ($maxSalary != null)
@@ -59,14 +59,17 @@ class AdvertisementController extends Controller
             $result = $result->where('working_time', '<', $maxHours);
         if ($location != null)
             $result = $result->where('city', 'like', "%$location%");
+        if ($location != null)
+            $result = $result->where('city', 'like', "%$location%");
         $result = $result->get();
 
         return $result;
     }
-
     public function searchRoute(Request $request)
-    {
-        return response()->json(AdvertisementController::search($request->query('name'),
+    {    
+
+        return response()->json(AdvertisementController::search(
+            $request->query('name'),
             $request->query('minSalary'),
             $request->query('maxSalary'),
             $request->query('minHours'),
