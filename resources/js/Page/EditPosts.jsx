@@ -147,7 +147,7 @@ export default function EditPosts(props) {
                                 label: "Short Brief",
                                 name: "short_brief",
                                 autoComplete: "on",
-                                multiline: "true",
+                                multiline: true,
                                 maxLength: 170,
                             })}
                             <br />
@@ -156,7 +156,7 @@ export default function EditPosts(props) {
                                 label: "Description",
                                 name: "description",
                                 autoComplete: "on",
-                                multiline: "true",
+                                multiline: true,
                             })}
 
                             <br />
@@ -203,11 +203,9 @@ export default function EditPosts(props) {
                     </form>
                 </Grid>
                 <Grid xs={12} md={6} paddingLeft={{ xs: 0, md: 3 }}>
-                    <JobCard
-                        data={input}
-                        expanded="true"
-                        style={{ width: "100%" }}
-                    />
+                    <div style={{ width: "100%" }}>
+                        <JobCard data={input} expanded="true" />
+                    </div>
                 </Grid>
             </Grid>
         </div>

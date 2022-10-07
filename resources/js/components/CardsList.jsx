@@ -4,27 +4,22 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import { Component } from "react";
 
-export default class CardsList extends Component {
-    constructor(props) {
-        super(props);
-        this.handleExpandClick = this.handleExpandClick.bind(this);
-        this.createFab = this.createFab.bind(this);
-        this.openedCard = undefined;
-    }
+export default function CardsList(props) {
+    let openedCard = undefined;
 
-    handleExpandClick(sender) {
+    const handleExpandClick = (sender) => {
         /// Collapsing current card
-        if (sender === this.openedCard) this.openedCard = undefined;
+        if (sender === openedCard) openedCard = undefined;
         else {
             let scrollable = document.getElementById("scrollable_body");
-            if (this.openedCard) {
+            if (openedCard) {
                 if (scrollable !== null) {
                     if (
-                        this.openedCard.cardRef.current.offsetTop <
+                        openedCard.cardRef.current.offsetTop <
                         sender.cardRef.current.offsetTop
                     ) {
                         let openedCardHeight =
-                            this.openedCard.collapseRef.current.offsetHeight;
+                            openedCard.collapseRef.current.offsetHeight;
 
                         scrollable.scrollTo({
                             top:
@@ -42,7 +37,7 @@ export default class CardsList extends Component {
                         });
                     }
                 }
-                this.openedCard.setExpanded(false);
+                openedCard.setExpanded(false);
             } else if (scrollable !== null) {
                 scrollable.scrollTo({
                     top:
@@ -50,12 +45,12 @@ export default class CardsList extends Component {
                     behavior: "smooth",
                 });
             }
-            this.openedCard = sender;
+            openedCard = sender;
         }
-    }
+    };
 
-    createFab() {
-        if (this.props.edit_mode)
+    const createFab = () => {
+        if (props.edit_mode)
             return (
                 <Fab
                     color="primary"
@@ -67,23 +62,21 @@ export default class CardsList extends Component {
                 </Fab>
             );
         return null;
-    }
+    };
 
-    render() {
-        return (
-            <Stack spacing={3} sx={{ alignItems: "center" }}>
-                {this.props.data.jobs.map((job, index) => {
-                    return (
-                        <JobCard
-                            key={index}
-                            data={job}
-                            onExpand={this.handleExpandClick}
-                            edit_mode={this.props.edit_mode ? +true : +false}
-                        />
-                    );
-                })}
-                {this.createFab()}
-            </Stack>
-        );
-    }
+    return (
+        <Stack spacing={3} sx={{ alignItems: "center" }}>
+            {props.data.jobs.map((job, index) => {
+                return (
+                    <JobCard
+                        key={index}
+                        data={job}
+                        onExpand={handleExpandClick}
+                        edit_mode={props.edit_mode ? +true : +false}
+                    />
+                );
+            })}
+            {createFab()}
+        </Stack>
+    );
 }

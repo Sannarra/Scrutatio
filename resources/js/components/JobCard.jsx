@@ -119,7 +119,6 @@ export default class JobCard extends React.Component {
     render() {
         return (
             <Card
-                {...this.props}
                 ref={this.cardRef}
                 sx={{ width: "90%", border: 1, borderRadius: 3, boxShadow: 5 }}
             >
