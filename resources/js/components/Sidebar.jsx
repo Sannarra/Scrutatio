@@ -28,12 +28,12 @@ export default function FilterSidebar({
     const [field, setField] = React.useState(urlParams.field || "");
     const [order, setOrder] = React.useState(urlParams.order || "desc");
     const [valueSalary, setValueSalary] = React.useState([
-        urlParams.minSalary || 0,
-        urlParams.maxSalary || 4000,
+        parseInt(urlParams.minSalary) || 0,
+        parseInt(urlParams.maxSalary) || 4000,
     ]);
     const [valueWorktime, setValueWorktime] = React.useState([
-        urlParams.minHours || 0,
-        urlParams.maxHours || 40,
+        parseInt(urlParams.minHours) || 0,
+        parseInt(urlParams.maxHours) || 40,
     ]);
     const [selectedChips, setSelectedChips] = React.useState([]);
 
