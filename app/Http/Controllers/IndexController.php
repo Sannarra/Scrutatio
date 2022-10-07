@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Advertisement;
+use App\Models\Post;
 use App\Models\Company;
 use Illuminate\Http\Request;
 
@@ -10,7 +10,7 @@ class IndexController extends Controller
 {
     public function index(Request $request)
     {
-        return react_view("home", AdvertisementController::getJobCardsData($request->query('order'),
+        return react_view("home", PostController::getJobCardsData($request->query('order'),
             $request->query('searchWords'),
             $request->query('minSalary'),
             $request->query('maxSalary'),

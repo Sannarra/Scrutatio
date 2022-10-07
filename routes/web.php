@@ -10,9 +10,9 @@ use App\Http\Controllers\IndexController;
 Route::get('/', 'App\Http\Controllers\IndexController@index');
 Route::get('home', [IndexController::class , 'index'])->name('home')->middleware('auth');
 
-Route::get('/create-post', 'App\Http\Controllers\AdvertisementController@createPost');
-Route::get('/edit-post/{advertisement}', 'App\Http\Controllers\AdvertisementController@editPost');
-Route::get('/manage-posts', 'App\Http\Controllers\AdvertisementController@managePosts');
+Route::get('/create-post', 'App\Http\Controllers\PostController@createPost');
+Route::get('/edit-post/{post}', 'App\Http\Controllers\PostController@editPost');
+Route::get('/manage-posts', 'App\Http\Controllers\PostController@managePosts');
 
 Route::get('login', [AuthController::class , 'index'])->name('login');
 Route::post('custom-login', [AuthController::class , 'customLogin'])->name('login.custom');

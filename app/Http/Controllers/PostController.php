@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Advertisement;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Models\Company;
 
-class AdvertisementController extends Controller
+class PostController extends Controller
 {
     public function index()
     {
-        return Advertisement::all();
+        return Post::all();
     }
 
-    public function show(Request $request, Advertisement $advertisements)
+    public function show(Request $request, Post $posts)
     {
-        return $advertisements;
+        return $posts;
     }
 
     public function store(Request $request)
@@ -24,21 +24,21 @@ class AdvertisementController extends Controller
             'name' => 'required|unique:sectors|max:255'
         ]);
 
-        $advertisements = Advertisement::create($request->all());
+        $posts = Post::create($request->all());
 
-        return response()->json($advertisements, 201);
+        return response()->json($posts, 201);
     }
 
-    public function update(Request $request, Advertisement $advertisements)
+    public function update(Request $request, Post $posts)
     {
-        $advertisements->update($request->all());
+        $posts->update($request->all());
 
-        return response()->json($advertisements, 200);
+        return response()->json($posts, 200);
     }
 
-    public function delete(Advertisement $advertisement)
+    public function delete(Post $post)
     {
-        $advertisement->delete();
+        $post->delete();
 
         return response()->json(null, 204);
     }
@@ -46,7 +46,7 @@ class AdvertisementController extends Controller
     static public function search($order, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $query = null)
     {
         if ($query == null)
-            $query = (new Advertisement)->newQuery();
+            $query = (new Post)->newQuery();
         $result = $query;
 
 
@@ -71,7 +71,7 @@ class AdvertisementController extends Controller
 
     static public function getJobCardsData($order, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $pageSize, $currentPage, $query = null)
     {
-        $advertisements = AdvertisementController::search($order,
+        $posts = PostController::search($order,
             $searchWords,
             $minSalary,
             $maxSalary,
@@ -80,18 +80,18 @@ class AdvertisementController extends Controller
             $location,
             $query);
 
-        $pageCount = 1 + intdiv(($advertisements->count() - 1), $pageSize);
+        $pageCount = 1 + intdiv(($posts->count() - 1), $pageSize);
         $data = ["jobs" => [], "page" => ["count" => $pageCount, "current" => $currentPage]];
 
 
-        for ($i = 0; $i <= $pageSize && ($i + ($pageSize * ($currentPage - 1)) < $advertisements->count()); $i++)
-            array_push($data['jobs'], $advertisements[$i + ($pageSize * ($currentPage - 1))]->toJobCard());
+        for ($i = 0; $i <= $pageSize && ($i + ($pageSize * ($currentPage - 1)) < $posts->count()); $i++)
+            array_push($data['jobs'], $posts[$i + ($pageSize * ($currentPage - 1))]->toJobCard());
         return $data;
     }
 
     public function searchRoute(Request $request)
     {
-        return response()->json(AdvertisementController::search(
+        return response()->json(PostController::search(
             $request->query('order'),
             $request->query('searchWords'),
             $request->query('minSalary'),
@@ -113,7 +113,7 @@ class AdvertisementController extends Controller
             ]]);
     }
 
-    public function editPost(Request $request, Advertisement $advertisement)
+    public function editPost(Request $request, Post $advertisement)
     {
         return react_view("edit_post", [
             "post" => [
@@ -136,7 +136,7 @@ class AdvertisementController extends Controller
 
     public function managePosts(Request $request)
     {
-        return react_view("manage_posts", AdvertisementController::getJobCardsData($request->query('order'),
+        return react_view("manage_posts", PostController::getJobCardsData($request->query('order'),
             $request->query('searchWords'),
             $request->query('minSalary'),
             $request->query('maxSalary'),

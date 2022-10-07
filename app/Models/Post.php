@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Company;
 use App\Models\Application;
 
-class Advertisement extends Model
+class Post extends Model
 {
     use HasFactory;
 

@@ -31,10 +31,10 @@ Route::post('companies', 'App\Http\Controllers\CompanyController@store');
 Route::put('companies/{company}', 'App\Http\Controllers\CompanyController@update');
 Route::delete('companies/{company}', 'App\Http\Controllers\CompanyController@delete');
 
-// Advertisement 
-Route::get('advertisment', 'App\Http\Controllers\AdvertisementController@index');
-Route::get('advertisment/{id}', 'App\Http\Controllers\AdvertisementController@show');
-Route::get('advertisement/search', 'App\Http\Controllers\AdvertisementController@searchRoute');
-Route::post('advertisment', 'App\Http\Controllers\AdvertisementController@store');
-Route::put('advertisment/{id}', 'App\Http\Controllers\AdvertisementController@update');
-Route::delete('advertisment/{id}', 'App\Http\Controllers\AdvertisementController@delete');
+// Post 
+Route::get('posts', 'App\Http\Controllers\PostController@index');
+Route::get('posts/{id}', 'App\Http\Controllers\PostController@show');
+Route::get('posts/search', 'App\Http\Controllers\PostController@searchRoute');
+Route::post('posts', 'App\Http\Controllers\PostController@store');
+Route::put('posts/{id}', 'App\Http\Controllers\PostController@update');
+Route::delete('posts/{id}', 'App\Http\Controllers\PostController@delete');
