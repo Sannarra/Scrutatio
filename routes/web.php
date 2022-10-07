@@ -22,3 +22,5 @@ Route::get('register', [AuthController::class , 'register'])->name('register-use
 Route::post('custom-register', [AuthController::class , 'customRegistration'])->name('register.custom');
 Route::post('member-register', [AuthController::class , 'memberRegistration'])->name('register.member');
 Route::get('signout', [AuthController::class , 'signOut'])->name('signout');
+
+Route::get('admin-panel', 'App\Http\Controllers\AdministrationController@index');
