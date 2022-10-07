@@ -12,13 +12,13 @@ import InputAdornment from "@mui/material/InputAdornment";
 export default function PostEdit(props) {
     let now = new Date();
     const [input, setInput] = useState({
-        job_title: props.job_title || "",
+        title: props.title || "",
         city: props.city || "",
         contract_type: props.contract_type || "",
         short_brief: props.short_brief || "",
         description: props.description || "",
-        salary: props.salary || "",
-        working_time: props.working_time || "",
+        salary: props.salary || "0",
+        working_time: props.working_time || "0",
 
         publication_date:
             props.publication_date ||
@@ -29,7 +29,7 @@ export default function PostEdit(props) {
     });
 
     const [error, setError] = useState({
-        job_title: "",
+        title: "",
         city: "",
         contract_type: "",
         short_brief: "",
@@ -62,11 +62,8 @@ export default function PostEdit(props) {
 
     const VerifiedTextField = (props) => (
         <TextField
+            {...props}
             key={props.name}
-            type={props.type}
-            label={props.label}
-            name={props.name}
-            autoComplete={props.autoComplete}
             value={input[props.name]}
             error={error[props.name] != ""}
             helperText={error[props.name]}
@@ -84,8 +81,9 @@ export default function PostEdit(props) {
             }}
             inputProps={{
                 maxLength: props.maxLength ? props.maxLength : null,
+                min: props.min,
+                max: props.max,
             }}
-            multiline={Boolean(props.multiline)}
         />
     );
 
@@ -114,7 +112,7 @@ export default function PostEdit(props) {
                         action={
                             props.creation_mode
                                 ? "/create-post"
-                                : "/update-post"
+                                : `/edit-post/${props.post_id}`
                         }
                     >
                         <input
@@ -126,7 +124,7 @@ export default function PostEdit(props) {
                             {VerifiedTextField({
                                 type: "text",
                                 label: "Title",
-                                name: "job_title",
+                                name: "title",
                                 autoComplete: "on",
                             })}
                             <br />
@@ -170,6 +168,7 @@ export default function PostEdit(props) {
                                         name: "salary",
                                         autoComplete: "on",
                                         unit: "$",
+                                        min: 0,
                                     })}
                                 </Grid>
                                 <Grid xs={6}>
@@ -179,6 +178,7 @@ export default function PostEdit(props) {
                                         name: "working_time",
                                         autoComplete: "on",
                                         unit: "h",
+                                        min: 0,
                                     })}
                                 </Grid>
                             </Grid>

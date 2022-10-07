@@ -117,7 +117,7 @@ class PostController extends Controller
     {
         return react_view("edit_post", [
             "post" => [
-                "job_title" => $post->title,
+                "title" => $post->title,
                 "city" => $post->city,
                 "contract_type" => $post->contract_type,
                 "short_brief" => $post->short_brief,
@@ -145,5 +145,40 @@ class PostController extends Controller
             $request->query('location'),
             intval($request->query('pageSize', 10)),
             intval($request->query('page', 1))));
+    }
+
+    public function doCreatePost(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            'city' => 'required',
+            'short_brief' => 'required',
+            'description' => 'required',
+            'contract_type' => 'required',
+            'salary' => 'required',
+            'working_time' => 'required'
+
+        ]);
+        $data = $request->all();
+        $data['company_id'] = 1; /// TO REPLACE with authentified company
+
+        Post::create($data);
+        return redirect("manage-posts");
+    }
+
+    public function doEditPost(Request $request, Post $post)
+    {
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            'city' => 'required',
+            'short_brief' => 'required',
+            'description' => 'required',
+            'contract_type' => 'required',
+            'salary' => 'required',
+            'working_time' => 'required'
+        ]);
+
+        $post->update($request->all());
+        return redirect("manage-posts");
     }
 }

@@ -13,7 +13,8 @@ export default class EditPosts extends Component {
         return (
             <PostEdit
                 creation_mode={this.props.creation_mode ? +true : +false}
-                job_title={this.props.data.post.job_title}
+                post_id={this.props.data.post.id}
+                title={this.props.data.post.title}
                 city={this.props.data.post.city}
                 contract_type={this.props.data.post.contract_type}
                 short_brief={this.props.data.post.short_brief}
@@ -24,6 +25,7 @@ export default class EditPosts extends Component {
                 company_icon={this.props.data.post.company_icon}
                 company_name={this.props.data.company.company_name}
                 sectors={this.props.data.company.sectors}
+                csrf_token={this.props.csrf_token}
             />
         );
     }

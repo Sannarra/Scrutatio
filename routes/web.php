@@ -11,8 +11,10 @@ Route::get('/', 'App\Http\Controllers\IndexController@index');
 Route::get('home', [IndexController::class , 'index'])->name('home')->middleware('auth');
 
 Route::get('/create-post', 'App\Http\Controllers\PostController@createPost');
+Route::post('/create-post', 'App\Http\Controllers\PostController@doCreatePost');
 Route::get('/edit-post/{post}', 'App\Http\Controllers\PostController@editPost');
-Route::get('/manage-posts', 'App\Http\Controllers\PostController@managePosts');
+Route::post('/edit-post/{post}', 'App\Http\Controllers\PostController@doEditPost');
+Route::get('/manage-posts', 'App\Http\Controllers\PostController@managePosts')->name("manage.posts");
 
 Route::get('login', [AuthController::class , 'index'])->name('login');
 Route::post('custom-login', [AuthController::class , 'customLogin'])->name('login.custom');

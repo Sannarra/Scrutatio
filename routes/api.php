@@ -33,8 +33,8 @@ Route::delete('companies/{company}', 'App\Http\Controllers\CompanyController@del
 
 // Post 
 Route::get('posts', 'App\Http\Controllers\PostController@index');
-Route::get('posts/{id}', 'App\Http\Controllers\PostController@show');
+Route::get('posts/{post}', 'App\Http\Controllers\PostController@show');
 Route::get('posts/search', 'App\Http\Controllers\PostController@searchRoute');
 Route::post('posts', 'App\Http\Controllers\PostController@store');
-Route::put('posts/{id}', 'App\Http\Controllers\PostController@update');
-Route::delete('posts/{id}', 'App\Http\Controllers\PostController@delete');
+Route::put('posts/{post}', 'App\Http\Controllers\PostController@update');
+Route::delete('posts/{post}', 'App\Http\Controllers\PostController@delete');
