@@ -26,6 +26,7 @@ import Login from "./Page/Login.jsx";
 import Register from "./Page/Register.jsx";
 import ManagePosts from "./Page/ManagePosts.jsx";
 import EditPosts from "./Page/EditPosts.jsx";
+import AdminPanel from "./Page/AdminPanel.jsx";
 
 let with_sidebar = false;
 
@@ -51,6 +52,8 @@ function getPage() {
         case "manage_posts":
             with_sidebar = true;
             return () => <ManagePosts data={pageData} />;
+        case "admin_panel":
+            return () => <AdminPanel />;
         default:
             return () => <h1>Undefined page name </h1>;
     }

@@ -86,6 +86,8 @@ export default class JobCard extends React.Component {
             headers: {
                 "Content-type": "application/json",
             },
+        }).then((res) => {
+            window.location.reload();
         });
     }
 
