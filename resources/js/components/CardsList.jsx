@@ -78,7 +78,7 @@ export default class CardsList extends Component {
                             key={index}
                             data={job}
                             onExpand={this.handleExpandClick}
-                            edit_mode={this.props.edit_mode ? +true : +true}
+                            edit_mode={this.props.edit_mode ? +true : +false}
                         />
                     );
                 })}
