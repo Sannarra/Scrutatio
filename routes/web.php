@@ -10,7 +10,7 @@ use App\Http\Controllers\IndexController;
 Route::get('/', 'App\Http\Controllers\IndexController@index');
 Route::get('home', [IndexController::class , 'index'])->name('home')->middleware('auth');
 Route::get('/create-post', 'App\Http\Controllers\IndexController@createPost');
-Route::get('/edit-post/{advertisement}', 'App\Http\Controllers\IndexController@editPost');
+Route::get('/edit-post/{post}', 'App\Http\Controllers\IndexController@editPost');
 Route::get('/manage-posts', 'App\Http\Controllers\IndexController@managePosts');
 
 Route::get('login', [AuthController::class , 'index'])->name('login');

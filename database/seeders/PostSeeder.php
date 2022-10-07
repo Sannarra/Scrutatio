@@ -5,10 +5,10 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Company;
-use App\Models\Advertisement;
+use App\Models\Post;
 use Illuminate\Support\Facades\Schema;
 
-class AdvertisementSeeder extends Seeder
+class PostSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -21,11 +21,11 @@ class AdvertisementSeeder extends Seeder
 
 
         Schema::disableForeignKeyConstraints();
-        Advertisement::truncate();
+        Post::truncate();
         Schema::enableForeignKeyConstraints();
 
         for ($i = 0; $i < 50; $i++) {
-            Advertisement::create([
+            Post::create([
                 'title' => $faker->jobTitle(),
                 'short_brief' => $faker->paragraph(),
                 'description' => $faker->paragraphs($faker->numberBetween(3, 8), true),

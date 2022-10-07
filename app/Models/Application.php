@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Advertisement;
+use App\Models\Post;
 use App\Models\User;
 
 class Application extends Model
 {
     use HasFactory;
 
-    public function advertisement()
+    public function post()
     {
-        return $this->belongsTo(Advertisement::class);
+        return $this->belongsTo(Post::class);
     }
 
     public function applicant()

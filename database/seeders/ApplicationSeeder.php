@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Application;
-use App\Models\Advertisement;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 
@@ -27,7 +27,7 @@ class ApplicationSeeder extends Seeder
 
         for ($i = 0; $i < 20; $i++) {
             Application::create([
-                'advertisement_id' => $faker->numberBetween(1, Advertisement::count()),
+                'post_id' => $faker->numberBetween(1, Post::count()),
                 'user_id' => $faker->numberBetween(1, User::count())
             ]);
         }

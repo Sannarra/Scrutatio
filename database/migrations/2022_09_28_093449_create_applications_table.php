@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('advertisement_id')->constrained("advertisements")->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('post_id')->constrained("posts")->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('user_id')->constrained("users")->onUpdate('cascade')->onDelete('cascade');
         });
     }

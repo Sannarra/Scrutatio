@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             SectorSeeder::class ,
             CompanySeeder::class ,
             CompanySectorSeeder::class ,
-            AdvertisementSeeder::class ,
+            PostSeeder::class ,
             ApplicationSeeder::class ,
             MailSeeder::class]);
     }
