@@ -17,9 +17,24 @@ export default function FilterSidebar({
     csrf_token,
     SelectTextFields,
 }) {
-    const [order, setOrder] = React.useState("desc");
-    const [valueSalary, setValueSalary] = React.useState([0, 4000]);
-    const [valueWorktime, setValueWorktime] = React.useState([0, 40]);
+    const urlParams = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+    });
+
+    const [searchWords, setSearchWords] = React.useState(
+        urlParams.searchWords || ""
+    );
+    const [location, setLocation] = React.useState(urlParams.location || "");
+    const [field, setField] = React.useState(urlParams.field || "");
+    const [order, setOrder] = React.useState(urlParams.order || "desc");
+    const [valueSalary, setValueSalary] = React.useState([
+        urlParams.minSalary || 0,
+        urlParams.maxSalary || 4000,
+    ]);
+    const [valueWorktime, setValueWorktime] = React.useState([
+        urlParams.minHours || 0,
+        urlParams.maxHours || 40,
+    ]);
     const [selectedChips, setSelectedChips] = React.useState([]);
 
     const toggleChip = (chip) => {
@@ -74,6 +89,10 @@ export default function FilterSidebar({
                     <TextField
                         name="searchWords"
                         label="job, company, description..."
+                        value={searchWords}
+                        onChange={(e) => {
+                            setSearchWords(e.target.value);
+                        }}
                     />
                 </label>
                 <h2>Sort by :</h2>
@@ -128,11 +147,25 @@ export default function FilterSidebar({
                 </label>
                 <h3>Location</h3>
                 <label>
-                    <TextField name="location" label="Houston, Chicago..." />
+                    <TextField
+                        name="location"
+                        label="Houston, Chicago..."
+                        value={location}
+                        onChange={(e) => {
+                            setLocation(e.target.value);
+                        }}
+                    />
                 </label>
                 <h3>Field</h3>
                 <label>
-                    <TextField name="field" label="Tourism, Agriculture..." />
+                    <TextField
+                        name="field"
+                        label="Tourism, Agriculture..."
+                        value={field}
+                        onChange={(e) => {
+                            setField(e.target.value);
+                        }}
+                    />
                 </label>
                 <label>
                     <h3>Contract type</h3>
