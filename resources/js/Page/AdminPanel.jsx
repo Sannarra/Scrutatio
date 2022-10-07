@@ -5,7 +5,7 @@ import UsersGrid from "../components/grid/UsersGrid.jsx";
 
 export default function AdminPanel(props) {
     return (
-        <div>
+        <div style={{ paddingLeft: "10%", paddingRight: "10%" }}>
             <PostsGrid />
             <AccountsGrid />
             <CompaniesGrid />

@@ -109,7 +109,7 @@ export default function PostsGrid(props) {
     return (
         <div>
             <h3>{props.table_name}</h3>
-            <div style={{ height: "400px" }}>
+            <div style={{ height: "450px" }}>
                 <div style={{ display: "flex", height: "100%" }}>
                     <DataGrid
                         style={{ flex: "1" }}
