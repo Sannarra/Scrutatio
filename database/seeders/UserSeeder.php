@@ -29,7 +29,6 @@ class UserSeeder extends Seeder
                 'lastname' => $faker->lastName(),
                 'phone' => $faker->e164PhoneNumber(),
                 'city' => $faker->city(),
-                'status' => $faker->numberBetween(0, 5),
                 'account_id' => $i + 1
             ]);
         }
