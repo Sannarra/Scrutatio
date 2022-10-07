@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Models\Company;
 
 class PostController extends Controller
 {
@@ -98,5 +99,86 @@ class PostController extends Controller
             $request->query('minHours'),
             $request->query('maxHours'),
             $request->query('location')), 200);
+    }
+
+    public function createPost(Request $request)
+    {
+        /// To Change
+        $company = Company::all()->find(1);
+
+        return react_view("create_post", ["post" => [],
+            "company" => [
+                "company_name" => $company->name,
+                "sectors" => $company->sectors->pluck('sector.name'),
+            ]]);
+    }
+
+    public function editPost(Request $request, Post $post)
+    {
+        return react_view("edit_post", [
+            "post" => [
+                "title" => $post->title,
+                "city" => $post->city,
+                "contract_type" => $post->contract_type,
+                "short_brief" => $post->short_brief,
+                "description" => $post->description,
+                "salary" => $post->salary,
+                "working_time" => $post->working_time,
+                "publication_date" => $post->publication_date,
+                "company_icon" => $post->icon_src,
+                "id" => $post->id
+            ],
+            "company" => [
+                "company_name" => $post->company->name,
+                "sectors" => $post->company->sectors->pluck('sector.name'),
+            ]]);
+    }
+
+    public function managePosts(Request $request)
+    {
+        return react_view("manage_posts", PostController::getJobCardsData($request->query('order'),
+            $request->query('searchWords'),
+            $request->query('minSalary'),
+            $request->query('maxSalary'),
+            $request->query('minHours'),
+            $request->query('maxHours'),
+            $request->query('location'),
+            intval($request->query('pageSize', 10)),
+            intval($request->query('page', 1))));
+    }
+
+    public function doCreatePost(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            'city' => 'required',
+            'short_brief' => 'required',
+            'description' => 'required',
+            'contract_type' => 'required',
+            'salary' => 'required',
+            'working_time' => 'required'
+
+        ]);
+        $data = $request->all();
+        $data['company_id'] = 1; /// TO REPLACE with authentified company
+
+        Post::create($data);
+        return redirect("manage-posts");
+    }
+
+    public function doEditPost(Request $request, Post $post)
+    {
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            'city' => 'required',
+            'short_brief' => 'required',
+            'description' => 'required',
+            'contract_type' => 'required',
+            'salary' => 'required',
+            'working_time' => 'required'
+        ]);
+
+        $post->update($request->all());
+        return redirect("manage-posts");
     }
 }

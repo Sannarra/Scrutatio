@@ -39,9 +39,15 @@ function getPage() {
         case "register":
             return () => <Register csrf_token={csrf_token} />;
         case "create_post":
-            return () => <EditPosts creation_mode data={pageData} />;
+            return () => (
+                <EditPosts
+                    creation_mode
+                    data={pageData}
+                    csrf_token={csrf_token}
+                />
+            );
         case "edit_post":
-            return () => <EditPosts data={pageData} />;
+            return () => <EditPosts data={pageData} csrf_token={csrf_token} />;
         case "manage_posts":
             with_sidebar = true;
             return () => <ManagePosts data={pageData} />;

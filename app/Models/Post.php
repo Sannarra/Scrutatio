@@ -35,7 +35,7 @@ class Post extends Model
     public function toJobCard()
     {
         return [
-            "job_title" => $this->title,
+            "title" => $this->title,
             "company_name" => $this->company->name,
             "city" => $this->city,
             "publication_date" => date('m-d H:i', strtotime($this->created_at)),
