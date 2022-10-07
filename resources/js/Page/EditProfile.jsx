@@ -6,16 +6,19 @@ import Grid from "@mui/material/Grid";
 import StarIcon from "@mui/icons-material/Star";
 import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export default function Profile(props) {
     return (
         <div>
             <Grid container justifyContent="space-between">
-                <Button href="" variant="contained" startIcon={<EditIcon />}>
+                <Button href="#" variant="contained" startIcon={<EditIcon />}>
                     Edit profile
                 </Button>
-<div>
+                <Button
+                    variant="contained"
+                    sx={{ backgroundColor: "lightgrey" }}
+                    startIcon={<DeleteIcon />}
+                ></Button>
                 <Button
                     sx={{ backgroundColor: "lightgrey" }}
                     href="/signout"
@@ -24,14 +27,6 @@ export default function Profile(props) {
                 >
                     Sign Out
                 </Button>
-                <Button
-                    sx={{ backgroundColor: "lightgrey" }}
-                    href="/api/user/1/delete"
-                    variant="contained"
-                    startIcon={<DeleteIcon />}
-                >
-                </Button>
-                </div>
             </Grid>
             <Grid container sx={{ mt: 3, justifyContent: "center" }}>
                 <Grid
@@ -61,27 +56,14 @@ export default function Profile(props) {
                     <UserInfo data={props.data.user} />
                 </Box>
             </Grid>
-
-            <Box sx={{display:"flex", justifyContent: "center"}}>
-                <Button
-                    sx={{ color: "black" }}
-                    href="#"
-                    variant="outlined"
-                    startIcon={<StarIcon />}
-                >
-                    saved offers
-                </Button>
-                
-                <Button
-                    sx={{ color: "black" }}
-                    href="#"
-                    variant="outlined"
-                    startIcon={<AddCircleIcon />}
-                >
-                    Create company account
-                </Button>
-
-            </Box>
+            <Button
+                sx={{ color: "black" }}
+                href="#"
+                variant="outlined"
+                startIcon={<StarIcon />}
+            >
+                saved offers
+            </Button>
         </div>
     );
 }

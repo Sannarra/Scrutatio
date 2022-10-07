@@ -11,13 +11,16 @@ use App\Http\Controllers\ProfileController;
 Route::get('/', 'App\Http\Controllers\IndexController@index');
 Route::get('home', [IndexController::class , 'index'])->name('home')->middleware('auth');
 Route::get('profile', [ProfileController::class , 'index'])->name('profile')->middleware('auth');
+Route::get('edit-profile/{user}', 'App\Http\Controllers\ProfileController@editProfile');
+
+//post
 Route::get('create-post', 'App\Http\Controllers\PostController@createPost');
 Route::post('create-post', 'App\Http\Controllers\PostController@doCreatePost');
 Route::get('edit-post/{post}', 'App\Http\Controllers\PostController@editPost');
 Route::post('edit-post/{post}', 'App\Http\Controllers\PostController@doEditPost');
 Route::get('manage-posts', 'App\Http\Controllers\PostController@managePosts')->name("manage.posts");
 
-
+//connexion
 Route::get('login', [AuthController::class , 'index'])->name('login');
 Route::post('custom-login', [AuthController::class , 'customLogin'])->name('login.custom');
 Route::get('register', [AuthController::class , 'register'])->name('register-user');
