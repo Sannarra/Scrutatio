@@ -17,7 +17,7 @@ class Company extends Model
         'size',
         'headquarter',
         'postal_code',
-        'human_resources_id',
+        'account_id',
         'website'];
 
     public function account()

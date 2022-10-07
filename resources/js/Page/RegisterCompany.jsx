@@ -5,24 +5,24 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 
-export default function CreateCompany(props) {
+export default function RegisterCompany(props) {
     const [input, setInput] = useState({
-        companyName: "",
+        name: "",
+        creation_date: "",
         size: "",
-        headquarter:"",
-        website:"",
-        city: "",
+        headquarter: "",
+        website: "",
         email: "",
         password: "",
         confirmPassword: "",
     });
 
     const [error, setError] = useState({
-        companyName: "",
+        name: "",
+        creation_date: "",
         size: "",
-        headquarter:"",
-        website:"",
-        city: "",
+        headquarter: "",
+        website: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -43,24 +43,30 @@ export default function CreateCompany(props) {
             const stateObj = { ...prev, [name]: "" };
 
             switch (name) {
-                case "companyName":
+                case "name":
                     if (!value)
-                        stateObj[name] = "Please enter the name of your company.";
+                        stateObj[name] =
+                            "Please enter the name of your company.";
+                    break;
+                case "creationDate":
+                    if (!value)
+                        stateObj[name] =
+                            "Please enter the creation date of your company.";
                     break;
                 case "size":
                     if (!value)
-                        stateObj[name] = "Please enter the size of your company.";
+                        stateObj[name] =
+                            "Please enter the size of your company.";
                     break;
                 case "headquarter":
                     if (!value)
-                        stateObj[name] = "Please enter the headquarter of your company.";
+                        stateObj[name] =
+                            "Please enter the headquarter of your company.";
                     break;
                 case "website":
                     if (!value)
-                        stateObj[name] = "Please enter the website of your company.";
-                    break;
-                case "city":
-                    if (!value) stateObj[name] = "Please enter your city.";
+                        stateObj[name] =
+                            "Please enter the website of your company.";
                     break;
                 case "email":
                     if (!value) stateObj[name] = "Please enter your email.";
@@ -107,6 +113,7 @@ export default function CreateCompany(props) {
             key={props.name}
             type={props.type}
             label={props.label}
+            placeholder={props.placeholder}
             name={props.name}
             autoComplete={props.autoComplete}
             value={input[props.name]}
@@ -130,15 +137,17 @@ export default function CreateCompany(props) {
     return (
         <div {...props}>
             <div style={{ paddingLeft: "10%", paddingRight: "10%" }}>
-               
-              
-                    <h1 style={{ justifyContent: "center", display: "flex" }}>
-                        Create Company
-                    </h1>
-                    <div style={{ justifyContent: "center", display: "flex" }}>
-                        <img style={{width:'20%'}} src="/company.png" alt="company-picture" />
-                    </div>
-                <form method="POST" action="/member-registration">
+                <h1 style={{ justifyContent: "center", display: "flex" }}>
+                    Create Company
+                </h1>
+                <div style={{ justifyContent: "center", display: "flex" }}>
+                    <img
+                        style={{ width: "20%" }}
+                        src="/company.png"
+                        alt="company-picture"
+                    />
+                </div>
+                <form method="POST" action="/company-register">
                     <input
                         type="hidden"
                         name="_token"
@@ -148,12 +157,19 @@ export default function CreateCompany(props) {
                         {VerifiedTextField({
                             type: "text",
                             label: "Your company name",
-                            name: "companyName",
+                            name: "name",
                             autoComplete: "on",
                         })}
                         <br />
                         {VerifiedTextField({
-                            type: "int",
+                            type: "date",
+                            label: "Creation date",
+                            name: "creation_date",
+                            autoComplete: "on",
+                        })}
+                        <br />
+                        {VerifiedTextField({
+                            type: "number",
                             label: "Company's workforce",
                             name: "size",
                             autoComplete: "on",
@@ -171,14 +187,7 @@ export default function CreateCompany(props) {
                             label: "website",
                             name: "website",
                             autoComplete: "on",
-                        })}
-                        <br />
-                        
-                        {VerifiedTextField({
-                            type: "text",
-                            label: "City",
-                            name: "city",
-                            autoComplete: "address-level1",
+                            placeholder: "https://mycompany.com",
                         })}
                         <br />
                         {VerifiedTextField({
@@ -227,7 +236,6 @@ export default function CreateCompany(props) {
                 </form>
             </div>
             <br />
-            
         </div>
     );
 }

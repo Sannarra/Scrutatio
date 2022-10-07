@@ -15,7 +15,13 @@ Route::get('/manage-posts', 'App\Http\Controllers\IndexController@managePosts');
 
 Route::get('login', [AuthController::class , 'index'])->name('login');
 Route::post('custom-login', [AuthController::class , 'customLogin'])->name('login.custom');
+
 Route::get('register', [AuthController::class , 'register'])->name('register-user');
+
+Route::get('register-company', [AuthController::class , 'registerCompany'])->name('register-company');
+
 Route::post('custom-register', [AuthController::class , 'customRegistration'])->name('register.custom');
 Route::post('member-register', [AuthController::class , 'memberRegistration'])->name('register.member');
+Route::post('company-register', [AuthController::class , 'companyRegistration'])->name('register.company');
 Route::get('signout', [AuthController::class , 'signOut'])->name('signout');
+
