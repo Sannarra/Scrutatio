@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
 use Illuminate\Http\Request;
+use App\Models\Company;
 
 class AdvertisementController extends Controller
 {
@@ -98,5 +99,51 @@ class AdvertisementController extends Controller
             $request->query('minHours'),
             $request->query('maxHours'),
             $request->query('location')), 200);
+    }
+
+    public function createPost(Request $request)
+    {
+        /// To Change
+        $company = Company::all()->find(1);
+
+        return react_view("create_post", ["post" => [],
+            "company" => [
+                "company_name" => $company->name,
+                "sectors" => $company->sectors->pluck('sector.name'),
+            ]]);
+    }
+
+    public function editPost(Request $request, Advertisement $advertisement)
+    {
+        return react_view("edit_post", [
+            "post" => [
+                "job_title" => $advertisement->title,
+                "city" => $advertisement->city,
+                "contract_type" => $advertisement->contract_type,
+                "short_brief" => $advertisement->short_brief,
+                "description" => $advertisement->description,
+                "salary" => $advertisement->salary,
+                "working_time" => $advertisement->working_time,
+                "publication_date" => $advertisement->publication_date,
+                "company_icon" => $advertisement->icon_src,
+                "id" => $advertisement->id
+            ],
+            "company" => [
+                "company_name" => $advertisement->company->name,
+                "sectors" => $advertisement->company->sectors->pluck('sector.name'),
+            ]]);
+    }
+
+    public function managePosts(Request $request)
+    {
+        return react_view("manage_posts", AdvertisementController::getJobCardsData($request->query('order'),
+            $request->query('searchWords'),
+            $request->query('minSalary'),
+            $request->query('maxSalary'),
+            $request->query('minHours'),
+            $request->query('maxHours'),
+            $request->query('location'),
+            intval($request->query('pageSize', 10)),
+            intval($request->query('page', 1))));
     }
 }
