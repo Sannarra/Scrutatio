@@ -52,7 +52,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect("home")->withSuccess('You have signed-in');
+        return redirect("profile")->withSuccess('You have signed-in');
     }
 
     public function memberRegistration(Request $request)
@@ -72,7 +72,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect("home")->withSuccess('You have signed-in');
+        return redirect("profile")->withSuccess('You have signed-in');
     }
 
     public function createUser(array $data, Account $account)

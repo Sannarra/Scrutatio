@@ -27,6 +27,7 @@ import Register from "./Page/Register.jsx";
 import ManagePosts from "./Page/ManagePosts.jsx";
 import EditPosts from "./Page/EditPosts.jsx";
 import RegisterCompany from "./Page/RegisterCompany";
+import Profile from "./Page/Profile";
 
 let with_sidebar = false;
 
@@ -37,6 +38,8 @@ function getPage() {
             return () => <Home data={pageData} />;
         case "login":
             return () => <Login csrf_token={csrf_token} />;
+        case "profile":
+            return () => <Profile data={pageData} />;    
         case "register_company":
             return () => <RegisterCompany csrf_token={csrf_token} />;
         case "register":
@@ -44,9 +47,7 @@ function getPage() {
         case "create_post":
             return () => <EditPosts creation_mode data={pageData} />;
         case "edit_post": 
-        // change that before push
-            return () => <Profile data={pageData} />;
-        
+            return () => <EditPosts data={pageData} />;
         case "manage_posts":
             with_sidebar = true;
             return () => <ManagePosts data={pageData} />;
