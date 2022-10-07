@@ -18,8 +18,8 @@ export default function FilterSidebar({
     SelectTextFields,
 }) {
     const [order, setOrder] = React.useState("desc");
-    const [valueSalary, setValueSalary] = React.useState([500, 4000]);
-    const [valueWorktime, setValueWorktime] = React.useState([5, 40]);
+    const [valueSalary, setValueSalary] = React.useState([0, 4000]);
+    const [valueWorktime, setValueWorktime] = React.useState([0, 40]);
     const [selectedChips, setSelectedChips] = React.useState([]);
 
     const toggleChip = (chip) => {

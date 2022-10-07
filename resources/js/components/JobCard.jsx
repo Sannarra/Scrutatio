@@ -18,6 +18,7 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Unstable_Grid2";
+import ReactDOM from "react-dom/client";
 
 const LearnMore = styled((props) => {
     const { ...other } = props;
@@ -52,6 +53,7 @@ export default class JobCard extends React.Component {
         this.handleExpandClick = this.handleExpandClick.bind(this);
         this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
         this.cardAction = this.cardAction.bind(this);
+        this.deleteCard = this.deleteCard.bind(this);
         this.state = {
             edit_mode: props.edit_mode,
             expanded: Boolean(props.expanded),
@@ -78,6 +80,15 @@ export default class JobCard extends React.Component {
         });
     }
 
+    deleteCard() {
+        fetch("/api/posts/" + this.props.data.id, {
+            method: "DELETE",
+            headers: {
+                "Content-type": "application/json",
+            },
+        });
+    }
+
     cardAction() {
         if (this.state.edit_mode)
             return (
@@ -88,7 +99,7 @@ export default class JobCard extends React.Component {
                     >
                         <EditIcon />
                     </IconButton>
-                    <IconButton aria-label="save">
+                    <IconButton aria-label="save" onClick={this.deleteCard}>
                         <DeleteIcon />
                     </IconButton>
                 </>
@@ -108,7 +119,6 @@ export default class JobCard extends React.Component {
     render() {
         return (
             <Card
-                {...this.props}
                 ref={this.cardRef}
                 sx={{ width: "90%", border: 1, borderRadius: 3, boxShadow: 5 }}
             >
@@ -120,7 +130,7 @@ export default class JobCard extends React.Component {
                         />
                     }
                     action={this.cardAction()}
-                    title={this.props.data.job_title}
+                    title={this.props.data.title}
                     subheader={
                         <div>
                             <div

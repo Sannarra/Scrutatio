@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\CompanySector;
-use App\Models\Advertisement;
+use App\Models\Post;
 
 class Company extends Model
 {
@@ -30,8 +30,8 @@ class Company extends Model
         return $this->hasMany(CompanySector::class);
     }
 
-    public function advertisements()
+    public function posts()
     {
-        return $this->hasMany(Advertisement::class);
+        return $this->hasMany(Post::class);
     }
 }
