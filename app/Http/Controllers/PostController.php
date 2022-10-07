@@ -113,24 +113,24 @@ class PostController extends Controller
             ]]);
     }
 
-    public function editPost(Request $request, Post $advertisement)
+    public function editPost(Request $request, Post $post)
     {
         return react_view("edit_post", [
             "post" => [
-                "job_title" => $advertisement->title,
-                "city" => $advertisement->city,
-                "contract_type" => $advertisement->contract_type,
-                "short_brief" => $advertisement->short_brief,
-                "description" => $advertisement->description,
-                "salary" => $advertisement->salary,
-                "working_time" => $advertisement->working_time,
-                "publication_date" => $advertisement->publication_date,
-                "company_icon" => $advertisement->icon_src,
-                "id" => $advertisement->id
+                "job_title" => $post->title,
+                "city" => $post->city,
+                "contract_type" => $post->contract_type,
+                "short_brief" => $post->short_brief,
+                "description" => $post->description,
+                "salary" => $post->salary,
+                "working_time" => $post->working_time,
+                "publication_date" => $post->publication_date,
+                "company_icon" => $post->icon_src,
+                "id" => $post->id
             ],
             "company" => [
-                "company_name" => $advertisement->company->name,
-                "sectors" => $advertisement->company->sectors->pluck('sector.name'),
+                "company_name" => $post->company->name,
+                "sectors" => $post->company->sectors->pluck('sector.name'),
             ]]);
     }
 

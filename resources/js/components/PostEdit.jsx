@@ -98,107 +98,118 @@ export default function PostEdit(props) {
 
     return (
         <div {...props}>
-            <div style={{ paddingLeft: "10%", paddingRight: "10%" }}>
-                <h1 style={{ justifyContent: "center", display: "flex" }}>
-                    {props.creation_mode ? "Create" : "Edit"} post
-                </h1>
-                <form
-                    method="POST"
-                    action={
-                        props.creation_mode ? "/create-post" : "/update-post"
-                    }
-                >
-                    <input
-                        type="hidden"
-                        name="_token"
-                        value={props.csrf_token}
-                    />
-                    <FormGroup>
-                        {VerifiedTextField({
-                            type: "text",
-                            label: "Title",
-                            name: "job_title",
-                            autoComplete: "on",
-                        })}
-                        <br />
-                        {VerifiedTextField({
-                            type: "text",
-                            label: "City",
-                            name: "city",
-                            autoComplete: "address-level1",
-                        })}
-                        <br />
-                        {VerifiedTextField({
-                            type: "text",
-                            label: "Contract Type",
-                            name: "contract_type",
-                            autoComplete: "on",
-                        })}
-                        <br />
-                        {VerifiedTextField({
-                            type: "text",
-                            label: "Short Brief",
-                            name: "short_brief",
-                            autoComplete: "on",
-                            multiline: "true",
-                            maxLength: 170,
-                        })}
-                        <br />
-                        {VerifiedTextField({
-                            type: "text",
-                            label: "Description",
-                            name: "description",
-                            autoComplete: "on",
-                            multiline: "true",
-                        })}
-
-                        <br />
-                        <Grid container spacing={4}>
-                            <Grid xs={6}>
-                                {VerifiedTextField({
-                                    type: "number",
-                                    label: "Salary (month)",
-                                    name: "salary",
-                                    autoComplete: "on",
-                                    unit: "$",
-                                })}
-                            </Grid>
-                            <Grid xs={6}>
-                                {VerifiedTextField({
-                                    type: "number",
-                                    label: "Working Time (month)",
-                                    name: "working_time",
-                                    autoComplete: "on",
-                                    unit: "h",
-                                })}
-                            </Grid>
-                        </Grid>
-                        <br />
-                        <JobCard
-                            data={input}
-                            expanded="true"
-                            style={{ width: "100%" }}
+            <Grid
+                container
+                style={{
+                    paddingLeft: "10%",
+                    paddingRight: "10%",
+                }}
+            >
+                <Grid xs={12} md={6} paddingRight={{ xs: 0, md: 3 }}>
+                    <h1 style={{ justifyContent: "center", display: "flex" }}>
+                        {props.creation_mode ? "Create" : "Edit"} post
+                    </h1>
+                    <form
+                        method="POST"
+                        action={
+                            props.creation_mode
+                                ? "/create-post"
+                                : "/update-post"
+                        }
+                    >
+                        <input
+                            type="hidden"
+                            name="_token"
+                            value={props.csrf_token}
                         />
-                        <br />
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            sx={{
-                                width: "200px",
-                                alignSelf: "center",
-                                backgroundColor: "var(--accent)",
-                                color: "black",
-                                borderRadius: 50,
-                                marginBottom: "10px",
-                            }}
-                            disabled={!validateInputs()}
-                        >
-                            {props.creation_mode ? "Create" : "Edit"}
-                        </Button>
-                    </FormGroup>
-                </form>
-            </div>
+                        <FormGroup>
+                            {VerifiedTextField({
+                                type: "text",
+                                label: "Title",
+                                name: "job_title",
+                                autoComplete: "on",
+                            })}
+                            <br />
+                            {VerifiedTextField({
+                                type: "text",
+                                label: "City",
+                                name: "city",
+                                autoComplete: "address-level1",
+                            })}
+                            <br />
+                            {VerifiedTextField({
+                                type: "text",
+                                label: "Contract Type",
+                                name: "contract_type",
+                                autoComplete: "on",
+                            })}
+                            <br />
+                            {VerifiedTextField({
+                                type: "text",
+                                label: "Short Brief",
+                                name: "short_brief",
+                                autoComplete: "on",
+                                multiline: "true",
+                                maxLength: 170,
+                            })}
+                            <br />
+                            {VerifiedTextField({
+                                type: "text",
+                                label: "Description",
+                                name: "description",
+                                autoComplete: "on",
+                                multiline: "true",
+                            })}
+
+                            <br />
+                            <Grid container spacing={4}>
+                                <Grid xs={6}>
+                                    {VerifiedTextField({
+                                        type: "number",
+                                        label: "Salary (month)",
+                                        name: "salary",
+                                        autoComplete: "on",
+                                        unit: "$",
+                                    })}
+                                </Grid>
+                                <Grid xs={6}>
+                                    {VerifiedTextField({
+                                        type: "number",
+                                        label: "Working Time (month)",
+                                        name: "working_time",
+                                        autoComplete: "on",
+                                        unit: "h",
+                                    })}
+                                </Grid>
+                            </Grid>
+                            <br />
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                sx={{
+                                    width: "200px",
+                                    alignSelf: "center",
+                                    backgroundColor: "var(--accent)",
+                                    color: "black",
+                                    borderRadius: 50,
+                                    marginBottom: "10px",
+                                }}
+                                disabled={!validateInputs()}
+                            >
+                                {props.creation_mode ? "Create" : "Edit"}
+                            </Button>
+                        </FormGroup>
+                    </form>
+                </Grid>
+                <Grid xs={12} md={6} paddingLeft={{ xs: 0, md: 3 }}>
+                    <JobCard
+                        data={input}
+                        expanded="true"
+                        style={{ width: "100%" }}
+                    />
+                </Grid>
+            </Grid>
         </div>
     );
 }
