@@ -173,6 +173,18 @@ export default function FilterSidebar({
                         <Chip
                             sx={{ m: 0.5 }}
                             color={
+                                selectedChips.includes(0)
+                                    ? "primary"
+                                    : "default"
+                            }
+                            label="Not Defined"
+                            onClick={() => {
+                                toggleChip(0);
+                            }}
+                        />
+                        <Chip
+                            sx={{ m: 0.5 }}
+                            color={
                                 selectedChips.includes(1)
                                     ? "primary"
                                     : "default"

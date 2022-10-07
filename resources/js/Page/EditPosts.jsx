@@ -8,8 +8,33 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Unstable_Grid2";
 import JobCard from "../components/JobCard.jsx";
 import InputAdornment from "@mui/material/InputAdornment";
+import MenuItem from "@mui/material/MenuItem";
 
 export default function EditPosts(props) {
+    const contractTypes = [
+        { value: "Not Defined", label: "Not Defined" },
+        {
+            value: "Fixed-term",
+            label: "Fixed-term",
+        },
+        {
+            value: "Permanent",
+            label: "Permanent",
+        },
+        {
+            value: "Internship",
+            label: "Internship",
+        },
+        {
+            value: "Apprenticeship",
+            label: "Apprenticeship",
+        },
+        {
+            value: "Seasonal",
+            label: "Seasonal",
+        },
+    ];
+
     let now = new Date();
     const [input, setInput] = useState({
         title: props.data.post.title || "",
@@ -37,6 +62,10 @@ export default function EditPosts(props) {
         salary: "",
         working_time: "",
     });
+
+    const handleContractChange = (event) => {
+        setInput((prev) => ({ ...prev, contract_type: event.target.value }));
+    };
 
     const onInputChange = (e) => {
         const { name, value } = e.target;
@@ -135,12 +164,34 @@ export default function EditPosts(props) {
                                 autoComplete: "address-level1",
                             })}
                             <br />
-                            {VerifiedTextField({
-                                type: "text",
-                                label: "Contract Type",
-                                name: "contract_type",
-                                autoComplete: "on",
-                            })}
+
+                            <TextField
+                                select
+                                label="Contract Type"
+                                name="contract_type"
+                                value={input.contract_type}
+                                onChange={handleContractChange}
+                                autoComplete="on"
+                                error={error.contract_type != ""}
+                                helperText={error.contract_type}
+                                variant="filled"
+                                onBlur={validateInput}
+                                required
+                                style={{
+                                    backgroundColor: "white",
+                                    width: "100%",
+                                }}
+                            >
+                                {contractTypes.map((option) => (
+                                    <MenuItem
+                                        key={option.value}
+                                        value={option.value}
+                                    >
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+
                             <br />
                             {VerifiedTextField({
                                 type: "text",
