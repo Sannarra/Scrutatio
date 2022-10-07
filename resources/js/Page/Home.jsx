@@ -1,34 +1,26 @@
 import CardsList from "../components/CardsList";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
-import { Component } from "react";
 
-export default class Home extends Component {
-    constructor(props) {
-        super(props);
-        this.onPageChange = this.onPageChange.bind(this);
-    }
-
-    onPageChange(e, value) {
+export default function Home(props) {
+    const onPageChange = (e, value) => {
         let url = new URL(window.location.href);
         url.searchParams.set("page", value);
         window.location.href = url.href;
-    }
+    };
 
-    render() {
-        return (
-            <div>
-                <CardsList data={this.props.data} />
-                <br />
-                <div style={{ justifyContent: "center", display: "flex" }}>
-                    <Pagination
-                        count={this.props.data.page.count}
-                        page={this.props.data.page.current}
-                        color="primary"
-                        onChange={this.onPageChange}
-                    />
-                </div>
+    return (
+        <div>
+            <CardsList data={props.data} />
+            <br />
+            <div style={{ justifyContent: "center", display: "flex" }}>
+                <Pagination
+                    count={props.data.page.count}
+                    page={props.data.page.current}
+                    color="primary"
+                    onChange={onPageChange}
+                />
             </div>
-        );
-    }
+        </div>
+    );
 }
