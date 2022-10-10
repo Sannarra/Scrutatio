@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\Account;
 use App\Models\User;
+use App\Models\Company;
 use Illuminate\Support\Facades\Auth;
+
 
 class AuthController extends Controller
 {
@@ -50,7 +52,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect("home")->withSuccess('You have signed-in');
+        return redirect("profile")->withSuccess('You have signed-in');
     }
 
     public function memberRegistration(Request $request)
@@ -70,7 +72,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect("home")->withSuccess('You have signed-in');
+        return redirect("profile")->withSuccess('You have signed-in');
     }
 
     public function createUser(array $data, Account $account)
@@ -84,6 +86,47 @@ class AuthController extends Controller
             'account_id' => $account->id
         ]);
     }
+
+    public function registerCompany()
+    {
+        return react_view("register_company");
+    }
+    public function companyRegistration(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'creation_date' => 'required',
+            'size' => 'required',
+            'headquarter' => 'required',
+            'website' => 'required',
+            'email' => 'required|email|unique:accounts',
+            'password' => 'required|min:6',
+        ]);
+
+        $data = $request->all();
+        $account = $this->create($data);
+        $member = $this->createCompany($data, $account);
+
+        $request->session()->regenerate();
+
+        return redirect("manage-posts")->withSuccess('You have signed-in');
+    }
+
+
+    public function createCompany(array $data, Account $account)
+    {
+        return Company::create([
+            'name' => $data['name'],
+            'creation_date' =>  $data['creation_date'],
+            'size' => $data["size"],
+            'headquarter' => $data["headquarter"],
+            'postal_code' => 0,
+            'website' => $data["website"],
+            'account_id' => $account->id
+        ]);
+    }
+
+
 
     public function create(array $data)
     {
