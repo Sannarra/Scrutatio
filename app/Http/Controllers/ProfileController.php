@@ -12,28 +12,12 @@ use App\Models\Account;
 
 class ProfileController extends Controller
 {
-    public static function getAuthentifiedProfile(int $account_id)
-    {
-        $res = ["user" => null, "company" => null];
-
-
-        $query = User::where("account_id", $account_id);
-        if ($query->count() != 0)
-            $res["user"] = $query->get()[0];
-
-        $query = Company::where("account_id", $account_id);
-        if ($query->count() != 0)
-            $res["company"] = $query->get()[0];
-        return $res;
-    }
-
     public function index()
     {
-        $profile = ProfileController::getAuthentifiedProfile(Auth::id());
+        $user = Auth::user()->user;
+        $company = Auth::user()->company;
 
-        if ($profile["company"] != null) {
-            $company = $profile["company"];
-
+        if ($company !== null) {
             return react_view("company_profile", [
                 "company" => [
                     "id" => $company->id,
@@ -46,9 +30,7 @@ class ProfileController extends Controller
                 ]
             ]);
         }
-        if ($profile["user"] != null) {
-            $user = $profile["user"];
-
+        if ($user !== null) {
             return react_view("profile", [
                 "user" => [
                     "id" => $user->id,
@@ -64,11 +46,10 @@ class ProfileController extends Controller
 
     public function edit()
     {
-        $profile = ProfileController::getAuthentifiedProfile(Auth::id());
+        $user = Auth::user()->user;
+        $company = Auth::user()->company;
 
-        if ($profile["company"] != null) {
-            $company = $profile["company"];
-
+        if ($company !== null) {
             return react_view("edit_company_profile", [
                 "company" => [
                     "id" => $company->id,
@@ -82,9 +63,7 @@ class ProfileController extends Controller
             ]);
         }
 
-        if ($profile["user"] != null) {
-            $user = $profile["user"];
-
+        if ($user !== null) {
             return react_view("edit_profile", [
                 "user" => [
                     "id" => $user->id,
@@ -100,9 +79,8 @@ class ProfileController extends Controller
 
     public function doEdit(Request $request)
     {
-        $profile = ProfileController::getAuthentifiedProfile(Auth::id());
-        $user = $profile["user"];
-        $company = $profile["company"];
+        $user = Auth::user()->user;
+        $company = Auth::user()->company;
 
         /// If profile is a user profile
         if ($user !== null) {
@@ -129,7 +107,7 @@ class ProfileController extends Controller
 
 
         /// If account was modified
-        $account = Account::where("id", Auth::id())->get()[0];
+        $account = Auth::user();
         $accountData = [];
         $accountData["email"] = $request->input('email', $account->email);
         $accountData["password"] = $request->password !== null ?Hash::make($request->password) : $account->password;

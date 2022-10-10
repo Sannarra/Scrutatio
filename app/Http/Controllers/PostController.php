@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Models\Company;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    /// CRUD api
     public function index()
     {
         return Post::all();
@@ -43,6 +45,7 @@ class PostController extends Controller
         return response()->json(null, 204);
     }
 
+    /// Web api
     static public function search($order, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $query = null)
     {
         if ($query == null)
@@ -103,8 +106,7 @@ class PostController extends Controller
 
     public function createPost(Request $request)
     {
-        /// To Change
-        $company = Company::all()->find(1);
+        $company = Auth::user()->company;
 
         return react_view("create_post", ["post" => [],
             "company" => [
@@ -144,7 +146,8 @@ class PostController extends Controller
             $request->query('maxHours'),
             $request->query('location'),
             intval($request->query('pageSize', 10)),
-            intval($request->query('page', 1))));
+            intval($request->query('page', 1)),
+            (new Post)->newQuery()->where("company_id", "=", Auth::id())));
     }
 
     public function doCreatePost(Request $request)
@@ -160,7 +163,7 @@ class PostController extends Controller
 
         ]);
         $data = $request->all();
-        $data['company_id'] = 1; /// TO REPLACE with authentified company
+        $data['company_id'] = Auth::user()->company->id;
 
         Post::create($data);
         return redirect("manage-posts");
