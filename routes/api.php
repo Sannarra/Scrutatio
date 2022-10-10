@@ -22,8 +22,7 @@ Route::get('users', 'App\Http\Controllers\UserController@index');
 Route::get('users/{user}', 'App\Http\Controllers\UserController@show');
 Route::post('users', 'App\Http\Controllers\UserController@store');
 Route::put('users/{user}', 'App\Http\Controllers\UserController@update');
-Route::delete('users/{user/delete}', 'App\Http\Controllers\UserController@delete');
-Route::get('user/{user}/email', 'App\Http\Controllers\UserController@getEmail');
+Route::delete('users/{user}', 'App\Http\Controllers\UserController@delete');
 
 /// Company
 Route::get('companies', 'App\Http\Controllers\CompanyController@index');

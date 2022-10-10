@@ -27,7 +27,7 @@ class ApplicationSeeder extends Seeder
 
         for ($i = 0; $i < 20; $i++) {
             Application::create([
-                'post_id' => $faker->numberBetween(1, Post::count()),
+                'advertisement_id' => $faker->numberBetween(1, Post::count()),
                 'user_id' => $faker->numberBetween(1, User::count())
             ]);
         }
