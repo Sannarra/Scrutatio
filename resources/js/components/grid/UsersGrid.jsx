@@ -10,11 +10,33 @@ export default function UsersGrid(props) {
                     delete: "/api/users",
                 },
                 columns: [
-                    { field: "firstname", headerName: "First Name" },
-                    { field: "lastname", headerName: "Last Name" },
-                    { field: "phone", headerName: "Phone Number" },
-                    { field: "city", headerName: "City" },
-                    { field: "account_id", headerName: "Account Id" },
+                    {
+                        field: "firstname",
+                        headerName: "First Name",
+                        editable: true,
+                    },
+                    {
+                        field: "lastname",
+                        headerName: "Last Name",
+                        editable: true,
+                    },
+                    {
+                        field: "phone",
+                        headerName: "Phone Number",
+                        editable: true,
+                        width: 150,
+                    },
+                    {
+                        field: "city",
+                        headerName: "City",
+                        editable: true,
+                        width: 170,
+                    },
+                    {
+                        field: "account_id",
+                        headerName: "Account Id",
+                        editable: true,
+                    },
                 ],
             })}
         </>

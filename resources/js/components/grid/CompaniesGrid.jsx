@@ -10,12 +10,41 @@ export default function CompaniesGrid(props) {
                     delete: "/api/companies",
                 },
                 columns: [
-                    { field: "name", headerName: "Name" },
-                    { field: "creation_date", headerName: "Creation Date" },
-                    { field: "size", headerName: "Company Workforce" },
-                    { field: "headquarter", headerName: "Heaquarter location" },
-                    { field: "website", headerName: "Website" },
-                    { field: "account_id", headerName: "Account Id" },
+                    {
+                        field: "name",
+                        headerName: "Name",
+                        width: 250,
+                        editable: true,
+                    },
+                    {
+                        field: "creation_date",
+                        headerName: "Creation Date",
+                        width: 150,
+                        editable: true,
+                    },
+                    {
+                        field: "size",
+                        headerName: "Company Workforce",
+                        width: 150,
+                        editable: true,
+                    },
+                    {
+                        field: "headquarter",
+                        headerName: "Heaquarter location",
+                        width: 170,
+                        editable: true,
+                    },
+                    {
+                        field: "website",
+                        headerName: "Website",
+                        width: 250,
+                        editable: true,
+                    },
+                    {
+                        field: "account_id",
+                        headerName: "Account Id",
+                        editable: true,
+                    },
                 ],
             })}
         </>
