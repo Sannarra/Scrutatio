@@ -4,7 +4,7 @@ export default function PostsGrid(props) {
     return (
         <>
             {DBGrid({
-                table_name: "Props",
+                table_name: "Posts",
                 crud: {
                     create: "/create-post",
                     read: "/api/posts",

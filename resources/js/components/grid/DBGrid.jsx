@@ -23,23 +23,25 @@ export default function PostsGrid(props) {
 
     function CustomFooter() {
         return (
-            <GridFooterContainer>
-                {props.crud.create ? (
-                    <Button
-                        variant="contained"
-                        sx={{
-                            backgroundColor: "var(--accent)",
-                            color: "black",
-                            borderRadius: 50,
-                        }}
-                        href={props.crud.create}
-                    >
-                        Create
-                        <AddIcon />
-                    </Button>
-                ) : (
-                    <div>Create not available</div>
-                )}
+            <GridFooterContainer sx={{ borderTop: "solid 0px" }}>
+                <div style={{ marginLeft: "10px" }}>
+                    {props.crud.create ? (
+                        <Button
+                            variant="contained"
+                            sx={{
+                                backgroundColor: "var(--accent)",
+                                color: "black",
+                                borderRadius: 50,
+                            }}
+                            href={props.crud.create}
+                        >
+                            Create
+                            <AddIcon />
+                        </Button>
+                    ) : (
+                        <div>Create not available</div>
+                    )}
+                </div>
                 <GridFooter />
             </GridFooterContainer>
         );
@@ -113,6 +115,19 @@ export default function PostsGrid(props) {
                 <div style={{ display: "flex", height: "100%" }}>
                     <DataGrid
                         style={{ flex: "1" }}
+                        sx={{
+                            border: "solid 1px",
+                            borderColor: "grey",
+                            "& .MuiDataGrid-cell": {
+                                border: "0px",
+                            },
+                            "& .MuiDataGrid-row": {
+                                borderTop: "0px",
+                                borderBottom: "solid 1px",
+                                borderColor: "grey",
+                            },
+                        }}
+                        showColumnRightBorder
                         rows={rows}
                         columns={columns}
                         pageSize={5}
