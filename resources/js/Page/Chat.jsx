@@ -30,7 +30,7 @@ export default function Chat(props) {
             user: "conv2",
             messages: [
                 {
-                    content: "2 - Bonjour je suis un message",
+                    content: "2 - AAAAAA AAAAAA AAAAAA AAAAAA AAAAAA",
                     timestamp: "2022-10-10T12:45:27+00:00",
                     in: true,
                 },
@@ -50,7 +50,7 @@ export default function Chat(props) {
                     return (
                         <h3
                             key={conv.user}
-                            onClick={() => console.log(messages[i])}
+                            onClick={() => setCurrentConversation(i)}
                         >
                             {conv.user}
                         </h3>
@@ -58,6 +58,7 @@ export default function Chat(props) {
                 })}
             </div>
             <Grid>
+
                 {/* header */}
                 <div
                     style={{
