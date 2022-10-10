@@ -14,6 +14,7 @@ export default function AccountsGrid(props) {
                         field: "email",
                         headerName: "Email",
                         width: 250,
+                        editable: true,
                     },
                 ],
             })}

@@ -1,8 +1,9 @@
 import {
     DataGrid,
+    GridToolbarContainer,
     GridToolbar,
-    GridFooterContainer,
-    GridFooter,
+    GridRowModes,
+    GridActionsCellItem,
 } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -10,10 +11,51 @@ import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Close";
+import PropTypes from "prop-types";
+
+function EditToolbar(props) {
+    let currentID = -1;
+
+    const handleClick = () => {
+        const id = currentID--;
+        props.setRows((oldRows) => [
+            ...oldRows,
+            { id, firstname: "", isNew: true },
+        ]);
+        props.setRowModesModel((oldModel) => ({
+            ...oldModel,
+            [id]: { mode: GridRowModes.Edit, fieldToFocus: "firstname" },
+        }));
+    };
+
+    return (
+        <GridToolbarContainer>
+            <GridToolbar />
+            <Button
+                color="primary"
+                startIcon={<AddIcon />}
+                onClick={props.props.crud.create ? undefined : handleClick}
+                href={props.props.crud.create}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Add record
+            </Button>
+        </GridToolbarContainer>
+    );
+}
+
+EditToolbar.propTypes = {
+    setRowModesModel: PropTypes.func.isRequired,
+    setRows: PropTypes.func.isRequired,
+};
 
 export default function PostsGrid(props) {
     const [pageSize, setPageSize] = useState(5);
     const [rows, setRows] = useState([]);
+    const [rowModesModel, setRowModesModel] = useState({});
 
     useEffect(() => {
         fetch(props.crud.read)
@@ -21,78 +63,113 @@ export default function PostsGrid(props) {
             .then((data) => setRows(data));
     }, []);
 
-    function CustomFooter() {
-        return (
-            <GridFooterContainer sx={{ borderTop: "solid 0px" }}>
-                <div style={{ marginLeft: "10px" }}>
-                    {props.crud.create ? (
-                        <Button
-                            variant="contained"
-                            sx={{
-                                backgroundColor: "var(--accent)",
-                                color: "black",
-                                borderRadius: 50,
-                            }}
-                            href={props.crud.create}
-                        >
-                            Create
-                            <AddIcon />
-                        </Button>
-                    ) : (
-                        <div>Create not available</div>
-                    )}
-                </div>
-                <GridFooter />
-            </GridFooterContainer>
-        );
-    }
+    const handleRowEditStart = (params, event) => {
+        event.defaultMuiPrevented = true;
+    };
+
+    const handleRowEditStop = (params, event) => {
+        event.defaultMuiPrevented = true;
+    };
+
+    const handleEditClick = (id) => () => {
+        setRowModesModel({
+            ...rowModesModel,
+            [id]: { mode: GridRowModes.Edit },
+        });
+    };
+
+    const handleSaveClick = (id) => () => {
+        setRowModesModel({
+            ...rowModesModel,
+            [id]: { mode: GridRowModes.View },
+        });
+    };
+
+    const handleDeleteClick = (id) => () => {
+        fetch(`${props.crud.delete}/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-type": "application/json",
+            },
+        });
+        setRows(rows.filter((row) => row.id !== id));
+    };
+
+    const handleCancelClick = (id) => () => {
+        setRowModesModel({
+            ...rowModesModel,
+            [id]: { mode: GridRowModes.View, ignoreModifications: true },
+        });
+
+        const editedRow = rows.find((row) => row.id === id);
+        if (editedRow.isNew) {
+            setRows(rows.filter((row) => row.id !== id));
+        }
+    };
+
+    const processRowUpdate = (newRow) => {
+        const updatedRow = { ...newRow, isNew: false };
+        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+        return updatedRow;
+    };
 
     const crud_columns = () => {
-        let columns = [];
+        let columns = [
+            {
+                field: "actions",
+                type: "actions",
+                headerName: "Actions",
+                width: 100,
+                cellClassName: "actions",
+                getActions: ({ id }) => {
+                    const isInEditMode =
+                        rowModesModel[id]?.mode === GridRowModes.Edit;
 
-        if (props.crud.delete)
-            columns.push({
-                field: "delete",
-                headerName: "Delete",
-                renderCell: (row) => {
-                    return (
-                        <IconButton
-                            aria-label="save"
-                            onClick={(event) => {
-                                fetch(`${props.crud.delete}/${row.id}`, {
-                                    method: "DELETE",
-                                    headers: {
-                                        "Content-type": "application/json",
-                                    },
-                                }).then((res) => {
-                                    window.location.reload();
-                                });
-                            }}
-                        >
-                            <DeleteIcon />
-                        </IconButton>
-                    );
+                    if (isInEditMode) {
+                        return [
+                            <GridActionsCellItem
+                                icon={<SaveIcon />}
+                                label="Save"
+                                onClick={handleSaveClick(id)}
+                            />,
+                            <GridActionsCellItem
+                                icon={<CancelIcon />}
+                                label="Cancel"
+                                className="textPrimary"
+                                onClick={handleCancelClick(id)}
+                                color="inherit"
+                            />,
+                        ];
+                    }
+
+                    return [
+                        <GridActionsCellItem
+                            icon={<EditIcon />}
+                            label="Edit"
+                            className="textPrimary"
+                            onClick={
+                                props.crud.update
+                                    ? undefined
+                                    : handleEditClick(id)
+                            }
+                            href={
+                                props.crud.update &&
+                                `${props.crud.update}/${id}`
+                            }
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            color="inherit"
+                        />,
+                        <GridActionsCellItem
+                            icon={<DeleteIcon />}
+                            label="Delete"
+                            onClick={handleDeleteClick(id)}
+                            color="inherit"
+                        />,
+                    ];
                 },
-                sortable: false,
-                width: 70,
-            });
-        if (props.crud.update)
-            columns.push({
-                field: "edit",
-                headerName: "Edit",
-                renderCell: (row) => {
-                    return (
-                        <IconButton
-                            aria-label="save"
-                            href={`${props.crud.update}/${row.id}`}
-                        >
-                            <EditIcon />
-                        </IconButton>
-                    );
-                },
-                sortable: false,
-                width: 0,
-            });
+            },
+        ];
         columns.push({ field: "id", headerName: "ID", width: 50 });
         return columns;
     };
@@ -126,8 +203,14 @@ export default function PostsGrid(props) {
                                 borderBottom: "solid 1px",
                                 borderColor: "grey",
                             },
+                            "& .actions": {
+                                color: "text.secondary",
+                            },
+                            "& .textPrimary": {
+                                color: "text.primary",
+                            },
                         }}
-                        showColumnRightBorder
+                        editMode="row"
                         rows={rows}
                         columns={columns}
                         pageSize={5}
@@ -141,9 +224,18 @@ export default function PostsGrid(props) {
                             setPageSize(newPageSize)
                         }
                         rowsPerPageOptions={[5, 10, 25, 50, 100]}
+                        rowModesModel={rowModesModel}
+                        onRowModesModelChange={(newModel) =>
+                            setRowModesModel(newModel)
+                        }
+                        onRowEditStart={handleRowEditStart}
+                        onRowEditStop={handleRowEditStop}
+                        processRowUpdate={processRowUpdate}
                         components={{
-                            Toolbar: GridToolbar,
-                            Footer: CustomFooter,
+                            Toolbar: EditToolbar,
+                        }}
+                        componentsProps={{
+                            toolbar: { setRows, setRowModesModel, props },
                         }}
                     />
                 </div>
