@@ -15,7 +15,7 @@ Route::get('/', 'App\Http\Controllers\IndexController@index')->name('index');
 // profile
 Route::get('profile', [ProfileController::class , 'index'])->name('profile')->middleware('auth');
 Route::get('edit-profile', [ProfileController::class , 'edit'])->name('edit-profile')->middleware('auth');
-Route::post('edit-profile', [ProfileController::class , 'doEdit'])->name('edit-profile')->middleware('auth');
+Route::post('edit-profile', [ProfileController::class , 'doEdit'])->middleware('auth');
 
 
 //post
@@ -25,14 +25,13 @@ Route::get('edit-post/{post}', 'App\Http\Controllers\PostController@editPost');
 Route::post('edit-post/{post}', 'App\Http\Controllers\PostController@doEditPost');
 Route::get('manage-posts', 'App\Http\Controllers\PostController@managePosts')->name("manage.posts");
 
-//connexion
-Route::get('login', [AuthController::class , 'index'])->name('login');
-Route::post('custom-login', [AuthController::class , 'customLogin'])->name('login.custom');
-Route::get('register', [AuthController::class , 'register'])->name('register-user');
-Route::get('register-company', [AuthController::class , 'registerCompany'])->name('register-company');
-Route::post('custom-register', [AuthController::class , 'customRegistration'])->name('register.custom');
-Route::post('member-register', [AuthController::class , 'memberRegistration'])->name('register.member');
-Route::post('company-register', [AuthController::class , 'companyRegistration'])->name('register.company');
+// authentication
+Route::get('login', [AuthController::class , 'loginView'])->name('login');
+Route::post('login', [AuthController::class , 'login']);
+Route::get('register', [AuthController::class , 'registerMemberView'])->name('register');
+Route::post('register', [AuthController::class , 'registerMember']);
+Route::get('register-company', [AuthController::class , 'registerCompanyView'])->name('register-company');
+Route::post('register-company', [AuthController::class , 'registerCompany']);
 Route::get('signout', [AuthController::class , 'signOut'])->name('signout');
 
 //admin
