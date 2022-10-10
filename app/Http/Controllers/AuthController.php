@@ -28,7 +28,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, filter_var($request->query("remember", "false"), FILTER_VALIDATE_BOOLEAN))) {
             $request->session()->regenerate();
 
-            return redirect()->intended('home')
+            return redirect()->intended('profile')
                 ->withSuccess('Signed in');
         }
 
@@ -117,7 +117,7 @@ class AuthController extends Controller
     {
         return Company::create([
             'name' => $data['name'],
-            'creation_date' =>  $data['creation_date'],
+            'creation_date' => $data['creation_date'],
             'size' => $data["size"],
             'headquarter' => $data["headquarter"],
             'postal_code' => 0,

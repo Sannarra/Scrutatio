@@ -104,7 +104,7 @@ export default function Register(props) {
                 <h1 style={{ justifyContent: "center", display: "flex" }}>
                     Edit {props.data.user.firstname}'s profile
                 </h1>
-                <form method="POST" action="/edit-member">
+                <form method="POST" action="/edit-profile">
                     <input
                         type="hidden"
                         name="_token"
