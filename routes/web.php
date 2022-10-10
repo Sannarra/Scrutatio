@@ -4,16 +4,24 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CompanyProfileController;
 use App\Http\Controllers\UserController;
 
 /* |-------------------------------------------------------------------------- | Web Routes |-------------------------------------------------------------------------- | | Here is where you can register web routes for your application. These | routes are loaded by the RouteServiceProvider within a group which | contains the "web" middleware group. Now create something great! | */
 
-Route::get('/', 'App\Http\Controllers\IndexController@index');
+Route::get('/','App\Http\Controllers\IndexController@index')->name('index');
 Route::get('home', [IndexController::class , 'index'])->name('home')->middleware('auth');
+
+
+//user
 Route::get('profile', [ProfileController::class , 'index'])->name('profile')->middleware('auth');
-Route::get('company-profile', [CompanyProfileController::class , 'index'])->name('company-profile')->middleware('auth');
 Route::get('edit-profile', [ProfileController::class , 'edit'])->name('edit-profile')->middleware('auth');
 Route::post('edit-member', [UserController::class , 'update'])->name('edit-member')->middleware('auth');
+
+//company
+Route::get('company-profile', [CompanyProfileController::class , 'index'])->name('company-profile');
+Route::get('edit-company', [CompanyProfileController::class , 'edit'])->name('edit-company');
+Route::post('edit-company', [CompanyController::class , 'update'])->name('edit-compamy');
 
 //post
 Route::get('create-post', 'App\Http\Controllers\PostController@createPost');

@@ -12,7 +12,7 @@ export default function CompanyProfile(props) {
     return (
         <div>
             <Grid container justifyContent="space-between">
-                <Button href="/edit-profile" variant="contained" startIcon={<EditIcon />}>
+                <Button href="/edit-company" variant="contained" startIcon={<EditIcon />}>
                     Edit profile
                 </Button>
 <div>
@@ -30,8 +30,7 @@ export default function CompanyProfile(props) {
                     startIcon={<DeleteIcon />}
                     onClick={
                         () => {
-                            console.log(props.csrf_token);
-                            fetch("/api/users/" + props.data.user.id, {
+                            fetch("/api/companies/" + props.data.company.id, {
                                 method: "delete",
                                 headers: {
                                     "X-CSRF-TOKEN": props.csrf_token
@@ -40,7 +39,7 @@ export default function CompanyProfile(props) {
                                     _token: props.csrf_token
                                 }
                             }).then(res => {
-                                // window.location.replace("/signout");
+                                window.location.replace("/signout");
                             });
                         }
                     }
@@ -73,43 +72,37 @@ export default function CompanyProfile(props) {
                         backgroundColor: "white",
                     }}
                 >
-                    <UserInfo data={props.data.user} />
+                    <CompanyInfo data={props.data.company} />
                 </Box>
             </Grid>
 
             <Box sx={{display:"flex", justifyContent: "center"}}>
                 <Button
                     sx={{ color: "black" }}
-                    href="#"
+                    href="/manage-posts"
                     variant="outlined"
                     startIcon={<StarIcon />}
                 >
-                    saved offers
+                    Manage offers
                 </Button>
-                
-                <Button
-                    sx={{ color: "black" }}
-                    href="/register-company"
-                    variant="outlined"
-                    startIcon={<AddCircleIcon />}
-                >
-                    Create company account
-                </Button>
+            
 
             </Box>
         </div>
     );
 }
-function UserInfo({ data }) {
+function CompanyInfo({ data }) {
     return (
         <div>
-            Firstname: {data.firstname}
+            Name: {data.name}
             <br />
-            Lastname: {data.lastname}
+            Creation date: {data.creation_date}
             <br />
-            Phone: {data.phone}
+            Size: {data.size} employees
             <br />
-            City: {data.city}
+            Headquarter: {data.headquarter}
+            <br />
+            Website:  <a href={data.website}>{data.website}</a>
             <br />
             Email: {data.email}
             <br />

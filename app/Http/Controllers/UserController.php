@@ -49,7 +49,7 @@ class UserController extends Controller
         
         $account->update($accountData);
         
-        return redirect("profile")->withSuccess("Successfully edited your profile");
+        return response()->json(null, 204);
     }
 
     public function delete(User $user)
@@ -59,6 +59,4 @@ class UserController extends Controller
 
         return response()->json(null, 204);
     }
-
- 
 }

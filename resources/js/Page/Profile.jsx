@@ -40,7 +40,7 @@ export default function Profile(props) {
                                     _token: props.csrf_token
                                 }
                             }).then(res => {
-                                // window.location.replace("/signout");
+                                window.location.replace("/signout");
                             });
                         }
                     }
