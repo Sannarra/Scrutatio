@@ -41,5 +41,5 @@ Route::post('member-register', [AuthController::class , 'memberRegistration'])->
 Route::post('company-register', [AuthController::class , 'companyRegistration'])->name('register.company');
 Route::get('signout', [AuthController::class , 'signOut'])->name('signout');
 
-
+//admin
 Route::get('admin-panel', 'App\Http\Controllers\AdministrationController@index');
