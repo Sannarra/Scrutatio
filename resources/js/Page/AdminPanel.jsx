@@ -7,9 +7,9 @@ export default function AdminPanel(props) {
     return (
         <div style={{ paddingLeft: "10%", paddingRight: "10%" }}>
             <PostsGrid />
-            <AccountsGrid />
-            <CompaniesGrid />
             <UsersGrid />
+            <CompaniesGrid />
+            <AccountsGrid />
         </div>
     );
 }

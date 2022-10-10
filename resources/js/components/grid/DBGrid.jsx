@@ -16,33 +16,36 @@ import CancelIcon from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
 
 function EditToolbar(props) {
-    let currentID = -1;
+    const [currentID, setCurrentId] = useState(-1);
 
     const handleClick = () => {
-        const id = currentID--;
+        const id = currentID;
+        setCurrentId(currentID - 1);
         props.setRows((oldRows) => [
-            ...oldRows,
             { id, firstname: "", isNew: true },
+            ...oldRows,
         ]);
         props.setRowModesModel((oldModel) => ({
-            ...oldModel,
             [id]: { mode: GridRowModes.Edit, fieldToFocus: "firstname" },
+            ...oldModel,
         }));
     };
 
     return (
         <GridToolbarContainer>
             <GridToolbar />
-            <Button
-                color="primary"
-                startIcon={<AddIcon />}
-                onClick={props.props.crud.create ? undefined : handleClick}
-                href={props.props.crud.create}
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                Add record
-            </Button>
+            {props.props.crud.create !== false && (
+                <Button
+                    color="primary"
+                    startIcon={<AddIcon />}
+                    onClick={props.props.crud.create ? undefined : handleClick}
+                    href={props.props.crud.create}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Add record
+                </Button>
+            )}
         </GridToolbarContainer>
     );
 }
