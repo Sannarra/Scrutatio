@@ -31,6 +31,7 @@ import Profile from "./Page/Profile";
 import EditProfile from "./Page/EditProfile";
 import CompanyProfile from "./Page/CompanyProfile";
 import EditCompanyProfile from './Page/EditCompanyProfile';
+import AdminPanel from "./Page/AdminPanel.jsx";
 
 let with_sidebar = false;
 
@@ -70,6 +71,8 @@ function getPage() {
         case "manage_posts":
             with_sidebar = true;
             return () => <ManagePosts data={pageData} />;
+        case "admin_panel":
+            return () => <AdminPanel />;
         default:
             return () => <h1>Undefined page name </h1>;
     }

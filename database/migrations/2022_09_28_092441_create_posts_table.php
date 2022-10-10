@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->integer('salary')->unsigned();
             $table->integer('working_time')->unsigned();
             $table->string('city');
-            $table->integer('contract_type')->unsigned();
+            $table->enum('contract_type', ["Not Defined", "Fixed-term", 'Permanent', "Internship", "Apprenticeship", "Seasonal"]);
             $table->text('short_brief');
             $table->text('icon_src')->nullable();
             $table->foreignId('company_id')->constrained("companies")->onUpdate('cascade')->onDelete('cascade');

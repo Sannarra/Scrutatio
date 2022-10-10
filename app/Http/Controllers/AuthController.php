@@ -25,7 +25,7 @@ class AuthController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, filter_var($request->query("remember", "false"), FILTER_VALIDATE_BOOLEAN))) {
             $request->session()->regenerate();
 
             return redirect()->intended('home')

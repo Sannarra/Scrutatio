@@ -38,3 +38,10 @@ Route::get('posts/search', 'App\Http\Controllers\PostController@searchRoute');
 Route::post('posts', 'App\Http\Controllers\PostController@store');
 Route::put('posts/{post}', 'App\Http\Controllers\PostController@update');
 Route::delete('posts/{post}', 'App\Http\Controllers\PostController@delete');
+
+/// Account
+Route::get('accounts', 'App\Http\Controllers\AccountController@index');
+Route::get('accounts/{account}', 'App\Http\Controllers\AccountController@show');
+Route::post('accounts', 'App\Http\Controllers\AccountController@store');
+Route::put('accounts/{account}', 'App\Http\Controllers\AccountController@update');
+Route::delete('accounts/{account}', 'App\Http\Controllers\AccountController@delete');

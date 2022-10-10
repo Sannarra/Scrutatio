@@ -32,7 +32,7 @@ class PostSeeder extends Seeder
                 'salary' => $faker->numberBetween(500, 4000),
                 'working_time' => $faker->numberBetween(15, 40),
                 'city' => $faker->city(),
-                'contract_type' => $faker->numberBetween(0, 5),
+                'contract_type' => $faker->randomElement(["Not Defined", "Fixed-term", 'Permanent', "Internship", "Apprenticeship", "Seasonal"]),
                 'company_id' => $faker->numberBetween(1, Company::count()),
                 'icon_src' => $faker->imageUrl(40, 40)
             ]);

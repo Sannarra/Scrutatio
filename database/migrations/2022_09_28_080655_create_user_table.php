@@ -19,7 +19,6 @@ return new class extends Migration {
             $table->string('lastname');
             $table->string('phone');
             $table->string('city');
-            $table->integer('status')->unsigned();
             $table->foreignId('account_id')->constrained('accounts')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
