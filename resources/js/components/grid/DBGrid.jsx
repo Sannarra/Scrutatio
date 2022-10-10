@@ -16,17 +16,19 @@ import CancelIcon from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
 
 function EditToolbar(props) {
-    const [currentID, setCurrentId] = useState(-1);
-
     const handleClick = () => {
-        const id = currentID;
-        setCurrentId(currentID - 1);
-        props.setRows((oldRows) => [
-            { id, firstname: "", isNew: true },
-            ...oldRows,
-        ]);
+        const id = -1;
+        let valid = true;
+        props.setRows((oldRows) => {
+            if (oldRows.find((row) => row.id === -1)) {
+                valid = false;
+                return [...oldRows];
+            }
+            return [{ id, isNew: true }, ...oldRows];
+        });
+        if (!valid) return;
         props.setRowModesModel((oldModel) => ({
-            [id]: { mode: GridRowModes.Edit, fieldToFocus: "firstname" },
+            [id]: { mode: GridRowModes.Edit },
             ...oldModel,
         }));
     };
@@ -94,8 +96,7 @@ export default function PostsGrid(props) {
             headers: {
                 "Content-type": "application/json",
             },
-        });
-        setRows(rows.filter((row) => row.id !== id));
+        }).then((res) => setRows(rows.filter((row) => row.id !== id)));
     };
 
     const handleCancelClick = (id) => () => {
@@ -112,7 +113,23 @@ export default function PostsGrid(props) {
 
     const processRowUpdate = (newRow) => {
         const updatedRow = { ...newRow, isNew: false };
-        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+        let route = props.crud.delete;
+        if (!newRow.isNew) route = route + "/" + newRow.id;
+        console.log(updatedRow);
+        fetch(route, {
+            method: newRow.isNew ? "POST" : "PUT",
+            headers: {
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify(updatedRow),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                setRows(
+                    rows.map((row) => (row.id === newRow.id ? updatedRow : row))
+                );
+            });
         return updatedRow;
     };
 
@@ -217,7 +234,6 @@ export default function PostsGrid(props) {
                         rows={rows}
                         columns={columns}
                         pageSize={5}
-                        rowsPerPageOptions={[5]}
                         disableSelectionOnClick
                         experimentalFeatures={{ newEditingApi: true }}
                         pagination
@@ -234,6 +250,9 @@ export default function PostsGrid(props) {
                         onRowEditStart={handleRowEditStart}
                         onRowEditStop={handleRowEditStop}
                         processRowUpdate={processRowUpdate}
+                        onProcessRowUpdateError={(error) =>
+                            console.error(error)
+                        }
                         components={{
                             Toolbar: EditToolbar,
                         }}
