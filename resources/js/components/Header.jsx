@@ -57,7 +57,7 @@ export default function Header({ with_sidebar, openSidebar }) {
                     </a>
                 </div>
                 <div>
-                    <a style={{ color: "var(--light)" }} href="/home">
+                    <a style={{ color: "var(--light)" }} href="/profile">
                         <AccountCircleIcon />
                     </a>
                 </div>
