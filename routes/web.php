@@ -17,13 +17,14 @@ Route::get('profile', [ProfileController::class , 'index'])->name('profile')->mi
 Route::get('edit-profile', [ProfileController::class , 'edit'])->name('edit-profile')->middleware('auth');
 Route::post('edit-profile', [ProfileController::class , 'doEdit'])->middleware('auth');
 
-
-//post
-Route::get('create-post', 'App\Http\Controllers\PostController@createPost');
-Route::post('create-post', 'App\Http\Controllers\PostController@doCreatePost');
-Route::get('edit-post/{post}', 'App\Http\Controllers\PostController@editPost');
-Route::post('edit-post/{post}', 'App\Http\Controllers\PostController@doEditPost');
-Route::get('manage-posts', 'App\Http\Controllers\PostController@managePosts')->name("manage.posts");
+// Posts management
+Route::middleware('can:manage-posts')->group(function () {
+    Route::get('create-post', 'App\Http\Controllers\PostController@createPost')->middleware('auth');
+    Route::post('create-post', 'App\Http\Controllers\PostController@doCreatePost')->middleware('auth');
+    Route::get('edit-post/{post}', 'App\Http\Controllers\PostController@editPost')->middleware('auth');
+    Route::post('edit-post/{post}', 'App\Http\Controllers\PostController@doEditPost')->middleware('auth');
+    Route::get('manage-posts', 'App\Http\Controllers\PostController@managePosts')->name("manage.posts")->middleware('auth');
+});
 
 // authentication
 Route::get('login', [AuthController::class , 'loginView'])->name('login');
@@ -35,4 +36,4 @@ Route::post('register-company', [AuthController::class , 'registerCompany']);
 Route::get('signout', [AuthController::class , 'signOut'])->name('signout');
 
 //admin
-Route::get('admin-panel', 'App\Http\Controllers\AdministrationController@index');
+Route::get('admin-panel', 'App\Http\Controllers\AdministrationController@index')->middleware('auth');
