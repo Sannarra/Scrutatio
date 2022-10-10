@@ -30,6 +30,7 @@ import RegisterCompany from "./Page/RegisterCompany";
 import Profile from "./Page/Profile";
 import EditProfile from "./Page/EditProfile";
 import CompanyProfile from "./Page/CompanyProfile";
+import EditCompanyProfile from './Page/EditCompanyProfile';
 
 let with_sidebar = false;
 

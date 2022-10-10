@@ -42,7 +42,8 @@ class CompanyController extends Controller
 
         $company->update($companyData);
 
-        $account = Account::where("id", Auth::id())->take(1)->get()[0];
+        $account = Account::where("id", $company->account_id)->get()[0];
+        // $account = Account::where("id", Auth::id())->take(1)->get()[0];
 
         $accountData = [];
         $accountData["email"] = $request->email !== null ? $request->email : $account->email;

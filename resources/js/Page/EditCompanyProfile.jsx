@@ -1,12 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Unstable_Grid2";
 
-export default function Register(props) {
+export default function RegisterCompany(props) {
     const [input, setInput] = useState({
         ...props.data.company,
         password: "",
@@ -14,10 +13,11 @@ export default function Register(props) {
     });
 
     const [error, setError] = useState({
-        firstname: "",
-        lastname: "",
-        phone: "",
-        city: "",
+        name: "",
+        creation_date: "",
+        size: "",
+        headquarter: "",
+        website: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -38,9 +38,10 @@ export default function Register(props) {
             const stateObj = { ...prev, [name]: "" };
 
             switch (name) {
+                
                 case "password":
                     if (!value) {
-                        break;
+                      break;
                     } else if (value.length < 6) {
                         stateObj[name] =
                             "Password must be at least 6 characters wide.";
@@ -59,7 +60,7 @@ export default function Register(props) {
 
                 case "confirmPassword":
                     if (!value) {
-                        break;
+                       break;
                     } else if (input.password && value !== input.password) {
                         stateObj[name] =
                             "Password and Confirm Password does not match.";
@@ -79,6 +80,7 @@ export default function Register(props) {
             key={props.name}
             type={props.type}
             label={props.label}
+            placeholder={props.placeholder}
             name={props.name}
             autoComplete={props.autoComplete}
             value={input[props.name]}
@@ -102,51 +104,61 @@ export default function Register(props) {
         <div {...props}>
             <div style={{ paddingLeft: "10%", paddingRight: "10%" }}>
                 <h1 style={{ justifyContent: "center", display: "flex" }}>
-                    Edit {props.data.user.firstname}'s profile
+                Edit {props.data.company.name}'s profile
                 </h1>
-                <form method="POST" action="/edit-member">
+                <div style={{ justifyContent: "center", display: "flex" }}>
+                    <img
+                        style={{ width: "20%" }}
+                        src="/company.png"
+                        alt="company-picture"
+                    />
+                </div>
+                <form method="POST" action="/edit-company">
                     <input
                         type="hidden"
                         name="_token"
                         value={props.csrf_token}
                     />
                     <FormGroup>
-                        <Grid container spacing={4}>
-                            <Grid xs={6}>
-                                {VerifiedTextField({
-                                    type: "text",
-                                    label: "First Name",
-                                    name: "firstname",
-                                    autoComplete: "given-name",
-                                })}
-                            </Grid>
-                            <Grid xs={6}>
-                                {VerifiedTextField({
-                                    type: "text",
-                                    label: "Last Name",
-                                    name: "lastname",
-                                    autoComplete: "family-name",
-                                })}
-                            </Grid>
-                        </Grid>
-                        <br />
                         {VerifiedTextField({
                             type: "text",
-                            label: "Phone Number",
-                            name: "phone",
-                            autoComplete: "tel",
+                            label: "Your company name",
+                            name: "name",
+                            autoComplete: "on",
+                        })}
+                        <br />
+                        {VerifiedTextField({
+                            type: "date",
+                            label: "Creation date",
+                            name: "creation_date",
+                            autoComplete: "on",
+                        })}
+                        <br />
+                        {VerifiedTextField({
+                            type: "number",
+                            label: "Company's workforce",
+                            name: "size",
+                            autoComplete: "on",
                         })}
                         <br />
                         {VerifiedTextField({
                             type: "text",
-                            label: "City",
-                            name: "city",
-                            autoComplete: "address-level1",
+                            label: "Headquarter",
+                            name: "headquarter",
+                            autoComplete: "on",
+                        })}
+                        <br />
+                        {VerifiedTextField({
+                            type: "url",
+                            label: "website",
+                            name: "website",
+                            autoComplete: "on",
+                            placeholder: "https://mycompany.com",
                         })}
                         <br />
                         {VerifiedTextField({
                             type: "email",
-                            label: "Email",
+                            label: "Email for your company account",
                             name: "email",
                             autoComplete: "email",
                         })}
@@ -184,6 +196,7 @@ export default function Register(props) {
                     </FormGroup>
                 </form>
             </div>
+            <br />
         </div>
     );
 }
