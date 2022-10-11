@@ -116,6 +116,23 @@ export default function FilterSidebar({
                 >
                     <CancelIcon />
                 </IconButton>
+                <Button
+                    variant="contained"
+                    endIcon={<CancelIcon />}
+                    onClick={() => {
+                        setSearchWords("");
+                        setSortField("created_at");
+                        setSortOrder("desc");
+                        setValueSalary([0, 4000]);
+                        setValueWorktime([0, 40]);
+                        setLocation("");
+                        setField("");
+                        setSelectedChips([]);
+                    }}
+                    style={{ float: "right" }}
+                >
+                    Clear
+                </Button>
                 <h2>Search :</h2> {/*add auto-complete */}
                 <label>
                     <TextField
