@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Account;
+use App\Models\User;
+use App\Models\Company;
 use Illuminate\Support\Facades\Gate;
 
 
@@ -95,6 +97,16 @@ class ProfileController extends Controller
     {
         Gate::authorize('edit-profile', [$profile]);
         return ProfileController::editProfileView($profile);
+    }
+
+    public function userProfileEditView(User $user)
+    {
+        return redirect("edit-profile/" . $user->account_id);
+    }
+
+    public function companyProfileEditView(Company $company)
+    {
+        return redirect("edit-profile/" . $company->account_id);
     }
 
     static public function editProfile(Request $request, Account $account)

@@ -6,7 +6,9 @@ export default function CompaniesGrid(props) {
             {DBGrid({
                 table_name: "Companies",
                 crud: {
+                    create: "/register-company",
                     read: "/api/companies",
+                    update: "/edit-company",
                     delete: "/api/companies",
                 },
                 columns: [

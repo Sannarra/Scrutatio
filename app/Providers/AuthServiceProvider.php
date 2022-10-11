@@ -33,11 +33,14 @@ class AuthServiceProvider extends ServiceProvider
                 return true;
             }
         });
-        Gate::define('manage-posts', function (Account $user) {
+        Gate::define('isMember', function (Account $user) {
+            return $user->user !== null;
+        });
+        Gate::define('isCompany', function (Account $user) {
             return $user->company !== null;
         });
         Gate::define('edit-post', function (Account $user, Post $post) {
-            return $user->company !== null && $user->company->id == $post->company_id;
+            return Gate::check('isCompany') && $user->company->id == $post->company_id;
         });
         Gate::define('edit-profile', function (Account $user, Account $profile) {
             return $user->id == $profile->id;

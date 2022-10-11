@@ -16,8 +16,6 @@ Route::get('login', [AuthController::class , 'loginView'])->name('login');
 Route::post('login', [AuthController::class , 'login']);
 Route::get('register', [AuthController::class , 'registerMemberView'])->name('register');
 Route::post('register', [AuthController::class , 'registerMember']);
-Route::get('register-company', [AuthController::class , 'registerCompanyView']);
-Route::post('register-company', [AuthController::class , 'registerCompany']);
 Route::get('signout', [AuthController::class , 'signOut']);
 
 
@@ -28,17 +26,26 @@ Route::middleware("auth")->group(function () {
     Route::get('profile/{profile}', [ProfileController::class , 'viewProfile']);
     Route::get('edit-profile', [ProfileController::class , 'currentProfileEditView'])->name('edit-profile');
     Route::get('edit-profile/{profile}', [ProfileController::class , 'profileEditView']);
+    Route::get('edit-user/{user}', [ProfileController::class , 'userProfileEditView']);
+    Route::get('edit-company/{company}', [ProfileController::class , 'companyProfileEditView']);
     Route::post('edit-profile', [ProfileController::class , 'doEditCurrentProfile']);
     Route::post('edit-profile/{profile}', [ProfileController::class , 'doEditProfile']);
 
 
     // Posts management
-    Route::middleware('can:manage-posts')->group(function () {
+    Route::middleware('can:isCompany')->group(function () {
             Route::get('create-post', 'App\Http\Controllers\PostController@createPost');
             Route::post('create-post', 'App\Http\Controllers\PostController@doCreatePost');
             Route::get('edit-post/{post}', 'App\Http\Controllers\PostController@editPost');
             Route::post('edit-post/{post}', 'App\Http\Controllers\PostController@doEditPost');
             Route::get('manage-posts', 'App\Http\Controllers\PostController@managePosts');
+        }
+        );
+
+        // Creating company
+        Route::middleware("can:isMember")->group(function () {
+            Route::get('register-company', [AuthController::class , 'registerCompanyView']);
+            Route::post('register-company', [AuthController::class , 'registerCompany']);
         }
         );
 
