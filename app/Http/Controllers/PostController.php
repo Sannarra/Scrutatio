@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Models\Company;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
+    /// CRUD api
     public function index()
     {
         return Post::all();
@@ -43,6 +46,7 @@ class PostController extends Controller
         return response()->json(null, 204);
     }
 
+    /// Web api
     static public function search($order, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $query = null)
     {
         if ($query == null)
@@ -80,8 +84,9 @@ class PostController extends Controller
             $location,
             $query);
 
-        $pageCount = 1 + intdiv(($posts->count() - 1), $pageSize);
-        $data = ["jobs" => [], "page" => ["count" => $pageCount, "current" => $currentPage]];
+        if ($currentPage < 1)
+            $currentPage = 1;
+        $data = ["jobs" => [], "page" => ["count" => $posts->count(), "current" => $currentPage, "size" => $pageSize]];
 
 
         for ($i = 0; $i <= $pageSize && ($i + ($pageSize * ($currentPage - 1)) < $posts->count()); $i++)
@@ -103,8 +108,10 @@ class PostController extends Controller
 
     public function createPost(Request $request)
     {
-        /// To Change
-        $company = Company::all()->find(1);
+        $company = Auth::user()->company;
+
+        if ($company == null)
+            $company = Company::all()->find(1);
 
         return react_view("create_post", ["post" => [],
             "company" => [
@@ -115,6 +122,7 @@ class PostController extends Controller
 
     public function editPost(Request $request, Post $post)
     {
+        Gate::authorize('edit-post', [$post]);
         return react_view("edit_post", [
             "post" => [
                 "title" => $post->title,
@@ -136,6 +144,11 @@ class PostController extends Controller
 
     public function managePosts(Request $request)
     {
+        $query = (new Post)->newQuery();
+
+        if (!Gate::check('admin', [Auth::user()]))
+            $query = $query->where("company_id", "=", Auth::user()->company->id);
+
         return react_view("manage_posts", PostController::getJobCardsData($request->query('order'),
             $request->query('searchWords'),
             $request->query('minSalary'),
@@ -144,7 +157,8 @@ class PostController extends Controller
             $request->query('maxHours'),
             $request->query('location'),
             intval($request->query('pageSize', 10)),
-            intval($request->query('page', 1))));
+            intval($request->query('page', 1)),
+            $query));
     }
 
     public function doCreatePost(Request $request)
@@ -160,7 +174,7 @@ class PostController extends Controller
 
         ]);
         $data = $request->all();
-        $data['company_id'] = 1; /// TO REPLACE with authentified company
+        $data['company_id'] = Auth::user()->company->id;
 
         Post::create($data);
         return redirect("manage-posts");

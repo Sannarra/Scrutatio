@@ -6,6 +6,7 @@ export default function AccountsGrid(props) {
             {DBGrid({
                 table_name: "Accounts",
                 crud: {
+                    create: false,
                     read: "/api/accounts",
                     delete: "/api/accounts",
                 },
@@ -14,6 +15,13 @@ export default function AccountsGrid(props) {
                         field: "email",
                         headerName: "Email",
                         width: 250,
+                        editable: true,
+                    },
+                    {
+                        field: "is_admin",
+                        headerName: "Admin",
+                        width: 250,
+                        editable: true,
                     },
                 ],
             })}

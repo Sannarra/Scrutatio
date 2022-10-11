@@ -30,7 +30,7 @@ import RegisterCompany from "./Page/RegisterCompany";
 import Profile from "./Page/Profile";
 import EditProfile from "./Page/EditProfile";
 import CompanyProfile from "./Page/CompanyProfile";
-import EditCompanyProfile from './Page/EditCompanyProfile';
+import EditCompanyProfile from "./Page/EditCompanyProfile";
 import AdminPanel from "./Page/AdminPanel.jsx";
 import Message from "./Page/Message.jsx";
 
@@ -38,27 +38,40 @@ let with_sidebar = false;
 
 function getPage() {
     switch (pageName) {
+        /// Misc
         case "home":
             with_sidebar = true;
-            return () => <Home data={pageData} />; //change when route created
+            return () => <Home data={pageData} />;
+        case "admin_panel":
+            return () => <AdminPanel />;
+        /// Authentication
         case "login":
-            return () => <Login csrf_token={csrf_token} />;
+            return () => <Login csrf_token={csrf_token} errors={errors} />;
+        case "register_company":
+            return () => (
+                <RegisterCompany csrf_token={csrf_token} errors={errors} />
+            );
+        case "register":
+            return () => <Register csrf_token={csrf_token} errors={errors} />;
+        /// Profiles
         case "profile":
             return () => <Profile data={pageData} csrf_token={csrf_token} />;
         case "company_profile":
-            return () => 
+            return () => (
                 <CompanyProfile data={pageData} csrf_token={csrf_token} />
+            );
         case "edit_profile":
-            return () => 
+            return () => (
                 <EditProfile data={pageData} csrf_token={csrf_token} />
+            );
         case "edit_company_profile":
-            return () => 
+            return () => (
                 <EditCompanyProfile data={pageData} csrf_token={csrf_token} />
-        case "register_company":
-            return () => <RegisterCompany csrf_token={csrf_token} />;
-        case "register":
-            return () => <Register csrf_token={csrf_token} />;
-
+            );
+        /// Posts
+        case "manage_posts":
+            with_sidebar = true;
+            return () => <ManagePosts data={pageData} />;
         case "create_post":
             return () => (
                 <EditPosts
@@ -71,11 +84,6 @@ function getPage() {
             return () => <EditPosts data={pageData} csrf_token={csrf_token} />;
         case "message":
             return () => <Message data={pageData} csrf_token={csrf_token} />;
-        case "manage_posts":
-            with_sidebar = true;
-            return () => <ManagePosts data={pageData} />;
-        case "admin_panel":
-            return () => <AdminPanel />;
         default:
             return () => <h1>Undefined page name </h1>;
     }

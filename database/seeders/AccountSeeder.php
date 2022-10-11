@@ -26,14 +26,21 @@ class AccountSeeder extends Seeder
         Schema::enableForeignKeyConstraints();
 
         Account::create([
+            'email' => "company@scrutatio.fr",
+            'password' => Hash::make("scrutatio"),
+            'is_admin' => false
+        ]);
+        Account::create([
             'email' => "admin@scrutatio.fr",
-            'password' => Hash::make("scrutatio")
+            'password' => Hash::make("scrutatio"),
+            'is_admin' => true
         ]);
 
         for ($i = 1; $i < 70; $i++) {
             Account::create([
                 'email' => $faker->email(),
-                'password' => Hash::make($faker->password())
+                'password' => Hash::make($faker->password()),
+                'is_admin' => false
             ]);
         }
     }

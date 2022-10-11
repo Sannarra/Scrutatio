@@ -3,6 +3,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
+import Errors from "../components/Errors.jsx";
 
 export default function Login(props) {
     return (
@@ -11,7 +12,7 @@ export default function Login(props) {
                 <h1 style={{ justifyContent: "center", display: "flex" }}>
                     Login
                 </h1>
-                <form method="POST" action="/custom-login">
+                <form method="POST" action="/login">
                     <input
                         type="hidden"
                         name="_token"
@@ -22,11 +23,13 @@ export default function Login(props) {
                             label="Email"
                             name="email"
                             variant="filled"
+                            required
                             style={{ backgroundColor: "white" }}
                             autoComplete="email"
                         />
                         <br />
                         <TextField
+                            required
                             type="password"
                             label="Password"
                             variant="filled"
@@ -40,6 +43,7 @@ export default function Login(props) {
                             label="Remember me"
                             name="remember"
                         />
+                        {Errors(props.errors)}
                         <Button
                             type="submit"
                             variant="contained"

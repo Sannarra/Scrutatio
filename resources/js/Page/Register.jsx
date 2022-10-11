@@ -5,6 +5,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Unstable_Grid2";
+import Errors from "../components/Errors.jsx";
 
 export default function Register(props) {
     const [input, setInput] = useState({
@@ -127,7 +128,7 @@ export default function Register(props) {
                 <h1 style={{ justifyContent: "center", display: "flex" }}>
                     Register
                 </h1>
-                <form method="POST" action="/member-register">
+                <form method="POST" action="/register">
                     <input
                         type="hidden"
                         name="_token"
@@ -194,6 +195,7 @@ export default function Register(props) {
                             label="Remember me"
                             name="remember"
                         />
+                        {Errors(props.errors)}
                         <Button
                             type="submit"
                             variant="contained"

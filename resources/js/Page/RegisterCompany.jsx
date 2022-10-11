@@ -4,6 +4,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
+import Errors from "../components/Errors.jsx";
 
 export default function RegisterCompany(props) {
     const [input, setInput] = useState({
@@ -147,7 +148,7 @@ export default function RegisterCompany(props) {
                         alt="company-picture"
                     />
                 </div>
-                <form method="POST" action="/company-register">
+                <form method="POST" action="/register-company">
                     <input
                         type="hidden"
                         name="_token"
@@ -217,6 +218,7 @@ export default function RegisterCompany(props) {
                             label="Remember me"
                             name="remember"
                         />
+                        {Errors(props.errors)}
                         <Button
                             type="submit"
                             variant="contained"

@@ -38,10 +38,9 @@ export default function RegisterCompany(props) {
             const stateObj = { ...prev, [name]: "" };
 
             switch (name) {
-                
                 case "password":
                     if (!value) {
-                      break;
+                        break;
                     } else if (value.length < 6) {
                         stateObj[name] =
                             "Password must be at least 6 characters wide.";
@@ -60,7 +59,7 @@ export default function RegisterCompany(props) {
 
                 case "confirmPassword":
                     if (!value) {
-                       break;
+                        break;
                     } else if (input.password && value !== input.password) {
                         stateObj[name] =
                             "Password and Confirm Password does not match.";
@@ -93,18 +92,11 @@ export default function RegisterCompany(props) {
         />
     );
 
-    const validateInputs = () => {
-        // for (const [key, value] of Object.entries(error)) {
-        //     if (value != "" || input[key] === "") return false;
-        // }
-        return true;
-    };
-
     return (
         <div {...props}>
             <div style={{ paddingLeft: "10%", paddingRight: "10%" }}>
                 <h1 style={{ justifyContent: "center", display: "flex" }}>
-                Edit {props.data.company.name}'s profile
+                    Edit {props.data.company.name}'s profile
                 </h1>
                 <div style={{ justifyContent: "center", display: "flex" }}>
                     <img
@@ -113,7 +105,10 @@ export default function RegisterCompany(props) {
                         alt="company-picture"
                     />
                 </div>
-                <form method="POST" action="/edit-company">
+                <form
+                    method="POST"
+                    action={`/edit-profile/${props.data.company.account_id}`}
+                >
                     <input
                         type="hidden"
                         name="_token"
@@ -189,7 +184,6 @@ export default function RegisterCompany(props) {
                                 color: "black",
                                 borderRadius: 50,
                             }}
-                            disabled={!validateInputs()}
                         >
                             Edit
                         </Button>
