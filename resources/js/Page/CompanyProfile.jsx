@@ -13,7 +13,11 @@ export default function CompanyProfile(props) {
         <div>
             <Grid container justifyContent="space-between">
                 <Button
-                    href="/edit-profile"
+                    href={`/edit-profile/${
+                        props.data.company.account_id
+                            ? props.data.company.account_id
+                            : ""
+                    }`}
                     variant="contained"
                     startIcon={<EditIcon />}
                 >
@@ -42,7 +46,8 @@ export default function CompanyProfile(props) {
                                     _token: props.csrf_token,
                                 },
                             }).then((res) => {
-                                window.location.replace("/signout");
+                                if (!props.data.user.account_id)
+                                    window.location.replace("/signout");
                             });
                         }}
                     ></Button>

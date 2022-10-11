@@ -92,13 +92,6 @@ export default function RegisterCompany(props) {
         />
     );
 
-    const validateInputs = () => {
-        // for (const [key, value] of Object.entries(error)) {
-        //     if (value != "" || input[key] === "") return false;
-        // }
-        return true;
-    };
-
     return (
         <div {...props}>
             <div style={{ paddingLeft: "10%", paddingRight: "10%" }}>
@@ -112,7 +105,10 @@ export default function RegisterCompany(props) {
                         alt="company-picture"
                     />
                 </div>
-                <form method="POST" action="/edit-profile">
+                <form
+                    method="POST"
+                    action={`/edit-profile/${props.data.company.account_id}`}
+                >
                     <input
                         type="hidden"
                         name="_token"
@@ -188,7 +184,6 @@ export default function RegisterCompany(props) {
                                 color: "black",
                                 borderRadius: 50,
                             }}
-                            disabled={!validateInputs()}
                         >
                             Edit
                         </Button>

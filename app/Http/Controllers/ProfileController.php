@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Gate;
 
 class ProfileController extends Controller
 {
-    static public function profileView(Account $account)
+    static public function profileView(Account $account, bool $include_id = true)
     {
         $user = $account->user;
         $company = $account->company;
@@ -28,6 +28,7 @@ class ProfileController extends Controller
                     "headquarter" => $company->headquarter,
                     "website" => $company->website,
                     "email" => $company->account->email,
+                    "account_id" => $include_id ? $account->id : null
                 ]
             ]);
         }
@@ -40,6 +41,7 @@ class ProfileController extends Controller
                     "phone" => $user->phone,
                     "city" => $user->city,
                     "email" => $user->account->email,
+                    "account_id" => $include_id ? $account->id : null
                 ]
             ]);
         }
@@ -47,7 +49,7 @@ class ProfileController extends Controller
 
     public function viewCurrentProfile()
     {
-        return ProfileController::profileView(Auth::user());
+        return ProfileController::profileView(Auth::user(), false);
     }
 
     public function viewProfile(Account $profile)
@@ -70,6 +72,7 @@ class ProfileController extends Controller
                     "headquarter" => $company->headquarter,
                     "website" => $company->website,
                     "email" => $company->account->email,
+                    "account_id" => $account->id
                 ]
             ]);
         }
@@ -83,6 +86,7 @@ class ProfileController extends Controller
                     "phone" => $user->phone,
                     "city" => $user->city,
                     "email" => $user->account->email,
+                    "account_id" => $account->id
                 ]
             ]);
         }
