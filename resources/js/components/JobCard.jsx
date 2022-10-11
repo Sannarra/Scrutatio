@@ -19,6 +19,7 @@ import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Unstable_Grid2";
 import ReactDOM from "react-dom/client";
+import ConfirmDialog from "./Confirm.jsx";
 
 const LearnMore = styled((props) => {
     const { ...other } = props;
@@ -54,10 +55,12 @@ export default class JobCard extends React.Component {
         this.handleFavoriteClick = this.handleFavoriteClick.bind(this);
         this.cardAction = this.cardAction.bind(this);
         this.deleteCard = this.deleteCard.bind(this);
+        this.setDeleteOpen = this.setDeleteOpen.bind(this);
         this.state = {
             edit_mode: props.edit_mode,
             expanded: Boolean(props.expanded),
             favorite: props.data.favorite,
+            deleteOpen: false,
         };
         this.collapseRef = React.createRef();
         this.cardRef = React.createRef();
@@ -71,6 +74,12 @@ export default class JobCard extends React.Component {
     setExpanded(state) {
         this.setState({
             expanded: state,
+        });
+    }
+
+    setDeleteOpen(state) {
+        this.setState({
+            deleteOpen: state,
         });
     }
 
@@ -101,9 +110,20 @@ export default class JobCard extends React.Component {
                     >
                         <EditIcon />
                     </IconButton>
-                    <IconButton aria-label="save" onClick={this.deleteCard}>
+                    <IconButton
+                        aria-label="save"
+                        onClick={() => this.setDeleteOpen(true)}
+                    >
                         <DeleteIcon />
                     </IconButton>
+                    <ConfirmDialog
+                        title="Delete Post ?"
+                        open={this.state.deleteOpen}
+                        setOpen={this.setDeleteOpen}
+                        onConfirm={this.deleteCard}
+                    >
+                        Are you sure you want to delete this post?
+                    </ConfirmDialog>
                 </>
             );
         else

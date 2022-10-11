@@ -7,8 +7,11 @@ import StarIcon from "@mui/icons-material/Star";
 import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import ConfirmDialog from "../components/Confirm.jsx";
 
 export default function Profile(props) {
+    const [deleteOpen, setDeleteOpen] = useState(false);
+
     return (
         <div>
             <Grid container justifyContent="space-between">
@@ -36,8 +39,13 @@ export default function Profile(props) {
                         sx={{ backgroundColor: "lightgrey" }}
                         variant="contained"
                         startIcon={<DeleteIcon />}
-                        onClick={() => {
-                            console.log(props.csrf_token);
+                        onClick={() => setDeleteOpen(true)}
+                    />
+                    <ConfirmDialog
+                        title="Delete account ?"
+                        open={deleteOpen}
+                        setOpen={setDeleteOpen}
+                        onConfirm={() => {
                             fetch("/api/users/" + props.data.user.id, {
                                 method: "delete",
                             }).then((res) => {
@@ -45,7 +53,9 @@ export default function Profile(props) {
                                     window.location.replace("/signout");
                             });
                         }}
-                    ></Button>
+                    >
+                        Are you sure you want to delete this account?
+                    </ConfirmDialog>
                 </div>
             </Grid>
             <Grid container sx={{ mt: 3, justifyContent: "center" }}>
