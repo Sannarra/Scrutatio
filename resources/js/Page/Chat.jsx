@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import TextareaAutosize from "@mui/base/TextareaAutosize";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
@@ -8,11 +6,12 @@ import SendIcon from "@mui/icons-material/Send";
 import IconButton from "@mui/material/IconButton";
 import { TextField } from "@mui/material";
 
-export default function Chat(props) {
-    const [currentConversation, setCurrentConversation] = useState(0);
-    const [messages, setMessages] = useState([
+export default function Chat() {
+    const [currentConversations, setCurrentConversations] = useState(0);
+
+    const [conversations, setConversations] = useState([
         {
-            user: "conv1",
+            user: "user1",
             messages: [
                 {
                     content: "1 - Bonjour je suis un message",
@@ -27,10 +26,11 @@ export default function Chat(props) {
             ],
         },
         {
-            user: "conv2",
+            user: "user2",
             messages: [
                 {
-                    content: "2 - AAAAAA AAAAAA AAAAAA AAAAAA AAAAAA",
+                    content:
+                        "2 - AAAAAA AAAAAA AAAAAA AAAAAA AAAA AAAAAAAA AAAAAA AAAAAA",
                     timestamp: "2022-10-10T12:45:27+00:00",
                     in: true,
                 },
@@ -43,14 +43,27 @@ export default function Chat(props) {
         },
     ]);
 
+    const [message, setMessage] = useState("Hello");
+    const send = () => {
+      const newConversations = [...conversations]; 
+      newConversations[currentConversations].messages.push({
+        content: message, 
+        timestamp: new Date().toISOString(),
+        in: false 
+      });
+      setConversations(newConversations);
+    }
+
+    const [input, setinput] = useState(null);
+
     return (
         <Container>
             <div>
-                {messages.map((conv, i) => {
+                {conversations.map((conv, i) => {
                     return (
                         <h3
                             key={conv.user}
-                            onClick={() => setCurrentConversation(i)}
+                            onClick={() => setCurrentConversations(i)}
                         >
                             {conv.user}
                         </h3>
@@ -58,7 +71,6 @@ export default function Chat(props) {
                 })}
             </div>
             <Grid>
-
                 {/* header */}
                 <div
                     style={{
@@ -68,19 +80,20 @@ export default function Chat(props) {
                         textAlign: "center",
                         alignItems: "center",
                         gap: "3%",
-
                         padding: "3vh",
                     }}
                 >
-                    <Avatar sx={{ bgcolor: "orange" }}>AA</Avatar>
-                    {messages[currentConversation].user}
+                    <Avatar sx={{ bgcolor: "orange" }}>
+                        {conversations[currentConversations].user[0]}
+                    </Avatar>
+                    {conversations[currentConversations].user}
                 </div>
             </Grid>
             {/* content */}
 
             <Grid sx={{ bgcolor: "white" }}>
                 <ul>
-                    {messages[currentConversation].messages.map(
+                    {conversations[currentConversations].messages.map(
                         (message, i) => {
                             return (
                                 <li key={i}>
@@ -104,22 +117,22 @@ export default function Chat(props) {
                     <TextField
                         multiline
                         placeholder="Send a message"
-                        defaultValue="Hello"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        // onChange={newConversations => setConversations(newConversations.target.value)}
                         style={{
                             borderColor: "black",
                             backgroundColor: "lightgrey",
                             border: "0",
                             textJustify: "center",
+
                         }}
                     />
                 </div>
-                {/* input */}
 
+                {/* input */}
                 <div>
-                    <IconButton
-                        sx={{ color: "orange" }}
-                        onClick={() => AAAAAAAAA(i)}
-                    >
+                    <IconButton sx={{ color: "orange" }} onClick={() => send()}>
                         <SendIcon />
                     </IconButton>
                 </div>
