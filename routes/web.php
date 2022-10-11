@@ -7,7 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CompanyProfileController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ChatController;
+use App\Http\Controllers\MessageController;
 
 /* |-------------------------------------------------------------------------- | Web Routes |-------------------------------------------------------------------------- | | Here is where you can register web routes for your application. These | routes are loaded by the RouteServiceProvider within a group which | contains the "web" middleware group. Now create something great! | */
 
@@ -45,5 +45,5 @@ Route::get('signout', [AuthController::class , 'signOut'])->name('signout');
 //admin
 Route::get('admin-panel', 'App\Http\Controllers\AdministrationController@index');
 
-//chat
-Route::get('chat', [ChatController::class , 'index'])->name('chat');
+//messsage
+Route::get('message', [MessageController::class , 'chat'])->name('message');

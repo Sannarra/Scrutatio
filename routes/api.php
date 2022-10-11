@@ -45,3 +45,10 @@ Route::get('accounts/{account}', 'App\Http\Controllers\AccountController@show');
 Route::post('accounts', 'App\Http\Controllers\AccountController@store');
 Route::put('accounts/{account}', 'App\Http\Controllers\AccountController@update');
 Route::delete('accounts/{account}', 'App\Http\Controllers\AccountController@delete');
+
+// Message
+Route::get('messages', 'App\Http\Controllers\MessageController@index');
+Route::get('messages/{message}', 'App\Http\Controllers\MessageController@show');
+Route::post('messages', 'App\Http\Controllers\MessageController@store');
+Route::put('messages/{message}', 'App\Http\Controllers\MessageController@update');
+Route::delete('messages/{message}', 'App\Http\Controllers\Messagetontroller@delete');

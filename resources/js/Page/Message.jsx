@@ -6,7 +6,7 @@ import SendIcon from "@mui/icons-material/Send";
 import IconButton from "@mui/material/IconButton";
 import { TextField } from "@mui/material";
 
-export default function Chat() {
+export default function Message() {
     const [currentConversations, setCurrentConversations] = useState(0);
 
     const [conversations, setConversations] = useState([

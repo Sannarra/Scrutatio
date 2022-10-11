@@ -11,9 +11,9 @@ class Message extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['application_id',
+    protected $fillable = [
+        'application_id', //with company_id
         'sender_user_id',
-        'subject',
         'content'];
 
     public function application()
