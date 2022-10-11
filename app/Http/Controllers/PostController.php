@@ -73,10 +73,13 @@ class PostController extends Controller
         if ($contractTypes != null)
             for ($i = 0; $i < count($contractTypes); $i++)
                 $result = $result->where('contract_type', 'like', "%" . $contractTypes[$i] . "%", ($i == 0) ? 'and' : 'or');
-        // if ($field != null)
-        //     $result = $result->whereHas('company', function (Builder $query) use ($field) {
-        //         $query->where('name', 'like', "%$field%");
-        //     });
+        if ($field != null)
+            $result = $result->whereHas('company', function (Builder $query) use ($field) {
+                return $query->whereHas('sectors', function (Builder $query) use ($field) {
+                        return $query->whereRelation('sector', 'name', 'like', "%$field%");
+                    }
+                    );
+                });
         if ($sortField != null && $sortOrder != null)
             $result = $result->orderBy($sortField, $sortOrder);
 
