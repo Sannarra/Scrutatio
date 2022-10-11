@@ -39,6 +39,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('edit-post', function (Account $user, Post $post) {
             return $user->company !== null && $user->company->id == $post->company_id;
         });
+        Gate::define('edit-profile', function (Account $user, Account $profile) {
+            return $user->id == $profile->id;
+        });
         Gate::define('admin', function (Account $user) {
             return $user->is_admin == true;
         });

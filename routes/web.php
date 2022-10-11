@@ -24,9 +24,13 @@ Route::get('signout', [AuthController::class , 'signOut']);
 /// Authentified routes
 Route::middleware("auth")->group(function () {
     // profile
-    Route::get('profile', [ProfileController::class , 'index'])->name('profile');
-    Route::get('edit-profile', [ProfileController::class , 'edit'])->name('edit-profile');
-    Route::post('edit-profile', [ProfileController::class , 'doEdit']);
+    Route::get('profile', [ProfileController::class , 'viewCurrentProfile'])->name('profile');
+    Route::get('profile/{profile}', [ProfileController::class , 'viewProfile']);
+    Route::get('edit-profile', [ProfileController::class , 'currentProfileEditView'])->name('edit-profile');
+    Route::get('edit-profile/{profile}', [ProfileController::class , 'profileEditView']);
+    Route::post('edit-profile', [ProfileController::class , 'doEditCurrentProfile']);
+    Route::post('edit-profile/{profile}', [ProfileController::class , 'doEditProfile']);
+
 
     // Posts management
     Route::middleware('can:manage-posts')->group(function () {

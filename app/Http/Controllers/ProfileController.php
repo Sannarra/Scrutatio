@@ -5,17 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
-use App\Models\Company;
 use App\Models\Account;
+use Illuminate\Support\Facades\Gate;
 
 
 class ProfileController extends Controller
 {
-    public function index()
+    static public function profileView(Account $account)
     {
-        $user = Auth::user()->user;
-        $company = Auth::user()->company;
+        $user = $account->user;
+        $company = $account->company;
 
         if ($company !== null) {
             return react_view("company_profile", [
@@ -44,10 +43,20 @@ class ProfileController extends Controller
         }
     }
 
-    public function edit()
+    public function viewCurrentProfile()
     {
-        $user = Auth::user()->user;
-        $company = Auth::user()->company;
+        return ProfileController::profileView(Auth::user());
+    }
+
+    public function viewProfile(Account $profile)
+    {
+        return ProfileController::profileView($profile);
+    }
+
+    static public function editProfileView(Account $account)
+    {
+        $user = $account->user;
+        $company = $account->company;
 
         if ($company !== null) {
             return react_view("edit_company_profile", [
@@ -77,7 +86,18 @@ class ProfileController extends Controller
         }
     }
 
-    public function doEdit(Request $request)
+    public function currentProfileEditView()
+    {
+        return ProfileController::editProfileView(Auth::user());
+    }
+
+    public function profileEditView(Account $profile)
+    {
+        Gate::authorize('edit-profile', [$profile]);
+        return ProfileController::editProfileView($profile);
+    }
+
+    static public function editProfile(Request $request, Account $account)
     {
         $user = Auth::user()->user;
         $company = Auth::user()->company;
@@ -113,6 +133,19 @@ class ProfileController extends Controller
         $accountData["password"] = $request->password !== null ?Hash::make($request->password) : $account->password;
 
         $account->update($accountData);
+    }
+
+    public function doEditCurrentProfile(Request $request)
+    {
+        ProfileController::editProfile($request, Auth::user());
+
+        return redirect()->intended('profile');
+    }
+
+    public function doEditProfile(Request $request, Account $profile)
+    {
+        Gate::authorize('edit-profile', [$profile]);
+        ProfileController::editProfile($request, $profile);
 
         return redirect()->intended('profile');
     }
