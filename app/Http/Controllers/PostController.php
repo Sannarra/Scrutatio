@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Company;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Database\Eloquent\Builder;
 
 class PostController extends Controller
 {
@@ -47,7 +48,7 @@ class PostController extends Controller
     }
 
     /// Web api
-    static public function search($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $contractTypes, $query = null)
+    static public function search($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $contractTypes, $field, $query = null)
     {
         if ($query == null)
             $query = (new Post)->newQuery();
@@ -55,7 +56,10 @@ class PostController extends Controller
 
 
         if ($searchWords != null)
-            $result = $result->where('title', 'like', "%$searchWords%")->orWhere('description', 'like', "%$searchWords%")->orWhere('short_brief', 'like', "%$searchWords%");
+            $result = $result->where('title', 'like', "%$searchWords%")
+                ->orWhere('description', 'like', "%$searchWords%")
+                ->orWhere('short_brief', 'like', "%$searchWords%")
+                ->orWhereRelation('company', 'name', 'like', "%$searchWords%");
         if ($minSalary != null)
             $result = $result->where('salary', '>', $minSalary);
         if ($maxSalary != null)
@@ -69,6 +73,10 @@ class PostController extends Controller
         if ($contractTypes != null)
             for ($i = 0; $i < count($contractTypes); $i++)
                 $result = $result->where('contract_type', 'like', "%" . $contractTypes[$i] . "%", ($i == 0) ? 'and' : 'or');
+        // if ($field != null)
+        //     $result = $result->whereHas('company', function (Builder $query) use ($field) {
+        //         $query->where('name', 'like', "%$field%");
+        //     });
         if ($sortField != null && $sortOrder != null)
             $result = $result->orderBy($sortField, $sortOrder);
 
@@ -76,7 +84,7 @@ class PostController extends Controller
         return $result;
     }
 
-    static public function getJobCardsData($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $contractTypes, $pageSize, $currentPage, $query = null)
+    static public function getJobCardsData($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $contractTypes, $field, $pageSize, $currentPage, $query = null)
     {
         $posts = PostController::search($sortField,
             $sortOrder,
@@ -87,6 +95,7 @@ class PostController extends Controller
             $maxHours,
             $location,
             $contractTypes,
+            $field,
             $query);
 
         if ($currentPage < 1)
@@ -110,7 +119,8 @@ class PostController extends Controller
             $request->query('minHours'),
             $request->query('maxHours'),
             $request->query('location'),
-            explode(",", $request->query('contractTypes'))), 200);
+            explode(",", $request->query('contractTypes')),
+            $request->query('field')), 200);
     }
 
     public function createPost(Request $request)
@@ -165,6 +175,8 @@ class PostController extends Controller
             $request->query('minHours'),
             $request->query('maxHours'),
             $request->query('location'),
+            explode(',', $request->query('contractTypes')),
+            $request->query('field'),
             intval($request->query('pageSize', 10)),
             intval($request->query('page', 1)),
             $query));

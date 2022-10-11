@@ -20,6 +20,7 @@ class IndexController extends Controller
             $request->query('maxHours'),
             $request->query('location'),
             explode(",", $request->query('contractTypes')),
+            $request->query('field'),
             intval($request->query('pageSize', 10)),
             intval($request->query('page', 1))));
     }
