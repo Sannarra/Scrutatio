@@ -54,8 +54,6 @@ export default function Chat() {
       setConversations(newConversations);
     }
 
-    const [input, setinput] = useState(null);
-
     return (
         <Container>
             <div>
@@ -83,6 +81,8 @@ export default function Chat() {
                         padding: "3vh",
                     }}
                 >
+
+                  {/* Todo: adapt avatar */}
                     <Avatar sx={{ bgcolor: "orange" }}>
                         {conversations[currentConversations].user[0]}
                     </Avatar>
@@ -119,7 +119,6 @@ export default function Chat() {
                         placeholder="Send a message"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
-                        // onChange={newConversations => setConversations(newConversations.target.value)}
                         style={{
                             borderColor: "black",
                             backgroundColor: "lightgrey",

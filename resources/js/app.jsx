@@ -32,6 +32,7 @@ import EditProfile from "./Page/EditProfile";
 import CompanyProfile from "./Page/CompanyProfile";
 import EditCompanyProfile from './Page/EditCompanyProfile';
 import AdminPanel from "./Page/AdminPanel.jsx";
+import Chat from "./Page/Chat.jsx";
 
 let with_sidebar = false;
 
@@ -39,7 +40,7 @@ function getPage() {
     switch (pageName) {
         case "home":
             with_sidebar = true;
-            return () => <Home data={pageData} />;
+            return () => <Home data={pageData} />; //change when route created
         case "login":
             return () => <Login csrf_token={csrf_token} />;
         case "profile":
@@ -68,6 +69,8 @@ function getPage() {
             );
         case "edit_post":
             return () => <EditPosts data={pageData} csrf_token={csrf_token} />;
+        case "chat":
+            return () => <Chat data={pageData} csrf_token={csrf_token} />;
         case "manage_posts":
             with_sidebar = true;
             return () => <ManagePosts data={pageData} />;
