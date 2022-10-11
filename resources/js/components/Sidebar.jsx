@@ -26,7 +26,12 @@ export default function FilterSidebar({
     );
     const [location, setLocation] = React.useState(urlParams.location || "");
     const [field, setField] = React.useState(urlParams.field || "");
-    const [order, setOrder] = React.useState(urlParams.order || "desc");
+    const [sortField, setSortField] = React.useState(
+        urlParams.sortField || "created_at"
+    );
+    const [sortOrder, setSortOrder] = React.useState(
+        urlParams.sortOrder || "desc"
+    );
     const [valueSalary, setValueSalary] = React.useState([
         parseInt(urlParams.minSalary) || 0,
         parseInt(urlParams.maxSalary) || 4000,
@@ -35,7 +40,9 @@ export default function FilterSidebar({
         parseInt(urlParams.minHours) || 0,
         parseInt(urlParams.maxHours) || 40,
     ]);
-    const [selectedChips, setSelectedChips] = React.useState([]);
+    const [selectedChips, setSelectedChips] = React.useState(
+        urlParams.contractTypes ? urlParams.contractTypes.split(",") : []
+    );
 
     const toggleChip = (chip) => {
         if (selectedChips.includes(chip)) {
@@ -53,20 +60,40 @@ export default function FilterSidebar({
         setOpen(false);
     };
 
-    const sortBy = [
+    const sortFields = [
         {
-            value: "desc",
-            label: "Latest first",
+            value: "created_at",
+            label: "Date",
         },
         {
-            value: "asc",
-            label: "Oldest first",
+            value: "salary",
+            label: "Salary",
+        },
+        {
+            value: "working_time",
+            label: "Working Time",
         },
     ];
 
-    const handleChange = (event) => {
-        setOrder(event.target.value);
-    };
+    const sortOrders = [
+        {
+            value: "desc",
+            label: "🠗",
+        },
+        {
+            value: "asc",
+            label: "🠕",
+        },
+    ];
+
+    const sectors = [
+        "Not Defined",
+        "Fixed-term",
+        "Permanent",
+        "Internship",
+        "Apprenticeship",
+        "Seasonal",
+    ];
 
     const Form = () => (
         <Box sx={{ width: 250, m: 2, ml: 4 }}>
@@ -76,6 +103,11 @@ export default function FilterSidebar({
                 <input type="hidden" name="maxSalary" value={valueSalary[1]} />
                 <input type="hidden" name="minHours" value={valueWorktime[0]} />
                 <input type="hidden" name="maxHours" value={valueWorktime[1]} />
+                <input
+                    type="hidden"
+                    name="contractTypes"
+                    value={selectedChips}
+                />
                 <IconButton
                     title="Close"
                     onClick={() => {
@@ -97,14 +129,26 @@ export default function FilterSidebar({
                 </label>
                 <h2>Sort by :</h2>
                 <TextField
-                    id="outlined-select-order"
                     select
-                    label="Select"
-                    name="order"
-                    value={order}
-                    onChange={handleChange}
+                    label="Field"
+                    name="sortField"
+                    value={sortField}
+                    onChange={(e) => setSortField(e.target.value)}
                 >
-                    {sortBy.map((option) => (
+                    {sortFields.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField
+                    select
+                    label="Order"
+                    name="sortOrder"
+                    value={sortOrder}
+                    onChange={(e) => setSortOrder(e.target.value)}
+                >
+                    {sortOrders.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
                             {option.label}
                         </MenuItem>
@@ -117,7 +161,7 @@ export default function FilterSidebar({
                     <Box sx={{ width: 225, mt: 5 }}>
                         <Slider
                             value={valueSalary}
-                            min={500}
+                            min={0}
                             step={50}
                             max={4000}
                             onChange={(_event, newValue) => {
@@ -134,7 +178,7 @@ export default function FilterSidebar({
                     <Box sx={{ width: 225, mt: 5 }}>
                         <Slider
                             value={valueWorktime}
-                            min={5}
+                            min={0}
                             step={1}
                             max={40}
                             onChange={(_event, newValue) => {
@@ -170,78 +214,23 @@ export default function FilterSidebar({
                 <label>
                     <h3>Contract type</h3>
                     <Grid container>
-                        <Chip
-                            sx={{ m: 0.5 }}
-                            color={
-                                selectedChips.includes(0)
-                                    ? "primary"
-                                    : "default"
-                            }
-                            label="Not Defined"
-                            onClick={() => {
-                                toggleChip(0);
-                            }}
-                        />
-                        <Chip
-                            sx={{ m: 0.5 }}
-                            color={
-                                selectedChips.includes(1)
-                                    ? "primary"
-                                    : "default"
-                            }
-                            label="Fixed-term"
-                            onClick={() => {
-                                toggleChip(1);
-                            }}
-                        />
-                        <Chip
-                            sx={{ m: 0.5 }}
-                            color={
-                                selectedChips.includes(2)
-                                    ? "primary"
-                                    : "default"
-                            }
-                            label="Permanent"
-                            onClick={() => {
-                                toggleChip(2);
-                            }}
-                        />
-                        <Chip
-                            sx={{ m: 0.5 }}
-                            color={
-                                selectedChips.includes(3)
-                                    ? "primary"
-                                    : "default"
-                            }
-                            label="Internship"
-                            onClick={() => {
-                                toggleChip(3);
-                            }}
-                        />
-                        <Chip
-                            sx={{ m: 0.5 }}
-                            color={
-                                selectedChips.includes(4)
-                                    ? "primary"
-                                    : "default"
-                            }
-                            label="Apprenticeship"
-                            onClick={() => {
-                                toggleChip(4);
-                            }}
-                        />
-                        <Chip
-                            sx={{ m: 0.5 }}
-                            color={
-                                selectedChips.includes(5)
-                                    ? "primary"
-                                    : "default"
-                            }
-                            label="Seasonal"
-                            onClick={() => {
-                                toggleChip(5);
-                            }}
-                        />
+                        {sectors.map((sector, index) => {
+                            return (
+                                <Chip
+                                    key={index}
+                                    sx={{ m: 0.5 }}
+                                    color={
+                                        selectedChips.includes(sector)
+                                            ? "primary"
+                                            : "default"
+                                    }
+                                    label={sector}
+                                    onClick={() => {
+                                        toggleChip(sector);
+                                    }}
+                                />
+                            );
+                        })}
                     </Grid>
                 </label>
                 <label>
