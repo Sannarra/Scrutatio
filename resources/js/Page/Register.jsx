@@ -194,6 +194,23 @@ export default function Register(props) {
                             label="Remember me"
                             name="remember"
                         />
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                marginBottom: "10px",
+                            }}
+                        >
+                            {props.errors &&
+                                props.errors.map((error, idx) => {
+                                    return (
+                                        <span style={{ color: "red" }}>
+                                            &#x26A0; {error} &#x26A0;
+                                        </span>
+                                    );
+                                })}
+                        </div>
+
                         <Button
                             type="submit"
                             variant="contained"

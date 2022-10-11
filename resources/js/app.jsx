@@ -30,7 +30,7 @@ import RegisterCompany from "./Page/RegisterCompany";
 import Profile from "./Page/Profile";
 import EditProfile from "./Page/EditProfile";
 import CompanyProfile from "./Page/CompanyProfile";
-import EditCompanyProfile from './Page/EditCompanyProfile';
+import EditCompanyProfile from "./Page/EditCompanyProfile";
 import AdminPanel from "./Page/AdminPanel.jsx";
 
 let with_sidebar = false;
@@ -45,18 +45,21 @@ function getPage() {
         case "profile":
             return () => <Profile data={pageData} csrf_token={csrf_token} />;
         case "company_profile":
-            return () => 
+            return () => (
                 <CompanyProfile data={pageData} csrf_token={csrf_token} />
+            );
         case "edit_profile":
-            return () => 
+            return () => (
                 <EditProfile data={pageData} csrf_token={csrf_token} />
+            );
         case "edit_company_profile":
-            return () => 
+            return () => (
                 <EditCompanyProfile data={pageData} csrf_token={csrf_token} />
+            );
         case "register_company":
             return () => <RegisterCompany csrf_token={csrf_token} />;
         case "register":
-            return () => <Register csrf_token={csrf_token} />;
+            return () => <Register csrf_token={csrf_token} errors={errors} />;
 
         case "create_post":
             return () => (
