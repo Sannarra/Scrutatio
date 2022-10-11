@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Message;
 
@@ -39,7 +39,13 @@ class MessageController extends Controller
 
     public function chat (Request $request)
     {
-        
+        $account = Auth::user(); /// Model::Account
+        $user = $account->user; /// Model::User
+        $applications = $user->applications;
+        $applications_id = $applications->pluck('id');
+        $applications_title = $applications->pluck('post.title');
+        echo $applications_id, $applications_title;
+        //send data to react then fecth 
         return react_view("message", ["post" => [],
     ]);
     }
