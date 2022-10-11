@@ -26,7 +26,12 @@ export default function FilterSidebar({
     );
     const [location, setLocation] = React.useState(urlParams.location || "");
     const [field, setField] = React.useState(urlParams.field || "");
-    const [order, setOrder] = React.useState(urlParams.order || "desc");
+    const [sortField, setSortField] = React.useState(
+        urlParams.sortField || "created_at"
+    );
+    const [sortOrder, setSortOrder] = React.useState(
+        urlParams.sortOrder || "desc"
+    );
     const [valueSalary, setValueSalary] = React.useState([
         parseInt(urlParams.minSalary) || 0,
         parseInt(urlParams.maxSalary) || 4000,
@@ -53,20 +58,31 @@ export default function FilterSidebar({
         setOpen(false);
     };
 
-    const sortBy = [
+    const sortFields = [
         {
-            value: "desc",
-            label: "Latest first",
+            value: "created_at",
+            label: "Date",
         },
         {
-            value: "asc",
-            label: "Oldest first",
+            value: "salary",
+            label: "Salary",
+        },
+        {
+            value: "working_time",
+            label: "Working Time",
         },
     ];
 
-    const handleChange = (event) => {
-        setOrder(event.target.value);
-    };
+    const sortOrders = [
+        {
+            value: "desc",
+            label: "🠗",
+        },
+        {
+            value: "asc",
+            label: "🠕",
+        },
+    ];
 
     const Form = () => (
         <Box sx={{ width: 250, m: 2, ml: 4 }}>
@@ -97,14 +113,26 @@ export default function FilterSidebar({
                 </label>
                 <h2>Sort by :</h2>
                 <TextField
-                    id="outlined-select-order"
                     select
-                    label="Select"
-                    name="order"
-                    value={order}
-                    onChange={handleChange}
+                    label="Field"
+                    name="sortField"
+                    value={sortField}
+                    onChange={(e) => setSortField(e.target.value)}
                 >
-                    {sortBy.map((option) => (
+                    {sortFields.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField
+                    select
+                    label="Order"
+                    name="sortOrder"
+                    value={sortOrder}
+                    onChange={(e) => setSortOrder(e.target.value)}
+                >
+                    {sortOrders.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
                             {option.label}
                         </MenuItem>

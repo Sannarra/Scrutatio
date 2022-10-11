@@ -47,7 +47,7 @@ class PostController extends Controller
     }
 
     /// Web api
-    static public function search($order, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $query = null)
+    static public function search($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $query = null)
     {
         if ($query == null)
             $query = (new Post)->newQuery();
@@ -66,16 +66,17 @@ class PostController extends Controller
             $result = $result->where('working_time', '<', $maxHours);
         if ($location != null)
             $result = $result->where('city', 'like', "%$location%");
-        if ($order != null)
-            $result = $result->orderBy("created_at", $order);
+        if ($sortField != null && $sortOrder != null)
+            $result = $result->orderBy($sortField, $sortOrder);
 
         $result = $result->get();
         return $result;
     }
 
-    static public function getJobCardsData($order, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $pageSize, $currentPage, $query = null)
+    static public function getJobCardsData($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $pageSize, $currentPage, $query = null)
     {
-        $posts = PostController::search($order,
+        $posts = PostController::search($sortField,
+            $sortOrder,
             $searchWords,
             $minSalary,
             $maxSalary,
@@ -97,7 +98,8 @@ class PostController extends Controller
     public function searchRoute(Request $request)
     {
         return response()->json(PostController::search(
-            $request->query('order'),
+            $request->query('sortField'),
+            $request->query('sortOrder'),
             $request->query('searchWords'),
             $request->query('minSalary'),
             $request->query('maxSalary'),
@@ -149,7 +151,9 @@ class PostController extends Controller
         if (!Gate::check('admin', [Auth::user()]))
             $query = $query->where("company_id", "=", Auth::user()->company->id);
 
-        return react_view("manage_posts", PostController::getJobCardsData($request->query('order'),
+        return react_view("manage_posts", PostController::getJobCardsData(
+            $request->query('sortField'),
+            $request->query('sortOrder'),
             $request->query('searchWords'),
             $request->query('minSalary'),
             $request->query('maxSalary'),
