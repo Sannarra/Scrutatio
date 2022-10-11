@@ -14,6 +14,7 @@ import AddIcon from "@mui/icons-material/Add";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
+import ConfirmDialog from "../Confirm.jsx";
 
 function EditToolbar(props) {
     const handleClick = () => {
@@ -57,10 +58,12 @@ EditToolbar.propTypes = {
     setRows: PropTypes.func.isRequired,
 };
 
-export default function PostsGrid(props) {
+export default function DBGrid(props) {
     const [pageSize, setPageSize] = useState(5);
     const [rows, setRows] = useState([]);
     const [rowModesModel, setRowModesModel] = useState({});
+    const [deleteOpen, setDeleteOpen] = useState(false);
+    const [toDeleteID, setToDeleteID] = useState(undefined);
 
     useEffect(() => {
         fetch(props.crud.read)
@@ -90,7 +93,7 @@ export default function PostsGrid(props) {
         });
     };
 
-    const handleDeleteClick = (id) => () => {
+    const handleDeleteClick = (id) => {
         fetch(`${props.crud.delete}/${id}`, {
             method: "DELETE",
             headers: {
@@ -115,7 +118,6 @@ export default function PostsGrid(props) {
         const updatedRow = { ...newRow, isNew: false };
         let route = props.crud.delete;
         if (!newRow.isNew) route = route + "/" + newRow.id;
-        console.log(updatedRow);
         fetch(route, {
             method: newRow.isNew ? "POST" : "PUT",
             headers: {
@@ -125,7 +127,6 @@ export default function PostsGrid(props) {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
                 setRows(
                     rows.map((row) => (row.id === newRow.id ? updatedRow : row))
                 );
@@ -183,7 +184,10 @@ export default function PostsGrid(props) {
                         <GridActionsCellItem
                             icon={<DeleteIcon />}
                             label="Delete"
-                            onClick={handleDeleteClick(id)}
+                            onClick={() => {
+                                setToDeleteID(id);
+                                setDeleteOpen(true);
+                            }}
                             color="inherit"
                         />,
                     ];
@@ -260,6 +264,15 @@ export default function PostsGrid(props) {
                             toolbar: { setRows, setRowModesModel, props },
                         }}
                     />
+                    <ConfirmDialog
+                        title="Delete record ?"
+                        open={deleteOpen}
+                        setOpen={setDeleteOpen}
+                        onConfirm={() => handleDeleteClick(toDeleteID)}
+                    >
+                        Are you sure you want to delete this record?
+                    </ConfirmDialog>
+                    ,
                 </div>
             </div>
         </div>
