@@ -84,8 +84,9 @@ class PostController extends Controller
             $location,
             $query);
 
-        $pageCount = 1 + intdiv(($posts->count() - 1), $pageSize);
-        $data = ["jobs" => [], "page" => ["count" => $pageCount, "current" => $currentPage]];
+        if ($currentPage < 1)
+            $currentPage = 1;
+        $data = ["jobs" => [], "page" => ["count" => $posts->count(), "current" => $currentPage, "size" => $pageSize]];
 
 
         for ($i = 0; $i <= $pageSize && ($i + ($pageSize * ($currentPage - 1)) < $posts->count()); $i++)
