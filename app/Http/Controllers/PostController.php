@@ -47,7 +47,7 @@ class PostController extends Controller
     }
 
     /// Web api
-    static public function search($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $query = null)
+    static public function search($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $contractTypes, $query = null)
     {
         if ($query == null)
             $query = (new Post)->newQuery();
@@ -66,6 +66,9 @@ class PostController extends Controller
             $result = $result->where('working_time', '<', $maxHours);
         if ($location != null)
             $result = $result->where('city', 'like', "%$location%");
+        if ($contractTypes != null)
+            for ($i = 0; $i < count($contractTypes); $i++)
+                $result = $result->where('contract_type', 'like', "%" . $contractTypes[$i] . "%", ($i == 0) ? 'and' : 'or');
         if ($sortField != null && $sortOrder != null)
             $result = $result->orderBy($sortField, $sortOrder);
 
@@ -73,7 +76,7 @@ class PostController extends Controller
         return $result;
     }
 
-    static public function getJobCardsData($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $pageSize, $currentPage, $query = null)
+    static public function getJobCardsData($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $contractTypes, $pageSize, $currentPage, $query = null)
     {
         $posts = PostController::search($sortField,
             $sortOrder,
@@ -83,6 +86,7 @@ class PostController extends Controller
             $minHours,
             $maxHours,
             $location,
+            $contractTypes,
             $query);
 
         if ($currentPage < 1)
@@ -105,7 +109,8 @@ class PostController extends Controller
             $request->query('maxSalary'),
             $request->query('minHours'),
             $request->query('maxHours'),
-            $request->query('location')), 200);
+            $request->query('location'),
+            explode(",", $request->query('contractTypes'))), 200);
     }
 
     public function createPost(Request $request)

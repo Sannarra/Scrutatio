@@ -40,7 +40,9 @@ export default function FilterSidebar({
         parseInt(urlParams.minHours) || 0,
         parseInt(urlParams.maxHours) || 40,
     ]);
-    const [selectedChips, setSelectedChips] = React.useState([]);
+    const [selectedChips, setSelectedChips] = React.useState(
+        urlParams.contractTypes ? urlParams.contractTypes.split(",") : []
+    );
 
     const toggleChip = (chip) => {
         if (selectedChips.includes(chip)) {
@@ -84,6 +86,15 @@ export default function FilterSidebar({
         },
     ];
 
+    const sectors = [
+        "Not Defined",
+        "Fixed-term",
+        "Permanent",
+        "Internship",
+        "Apprenticeship",
+        "Seasonal",
+    ];
+
     const Form = () => (
         <Box sx={{ width: 250, m: 2, ml: 4 }}>
             <form action="#" onSubmit={filterAction}>
@@ -92,6 +103,11 @@ export default function FilterSidebar({
                 <input type="hidden" name="maxSalary" value={valueSalary[1]} />
                 <input type="hidden" name="minHours" value={valueWorktime[0]} />
                 <input type="hidden" name="maxHours" value={valueWorktime[1]} />
+                <input
+                    type="hidden"
+                    name="contractTypes"
+                    value={selectedChips}
+                />
                 <IconButton
                     title="Close"
                     onClick={() => {
@@ -145,7 +161,7 @@ export default function FilterSidebar({
                     <Box sx={{ width: 225, mt: 5 }}>
                         <Slider
                             value={valueSalary}
-                            min={500}
+                            min={0}
                             step={50}
                             max={4000}
                             onChange={(_event, newValue) => {
@@ -162,7 +178,7 @@ export default function FilterSidebar({
                     <Box sx={{ width: 225, mt: 5 }}>
                         <Slider
                             value={valueWorktime}
-                            min={5}
+                            min={0}
                             step={1}
                             max={40}
                             onChange={(_event, newValue) => {
@@ -198,78 +214,23 @@ export default function FilterSidebar({
                 <label>
                     <h3>Contract type</h3>
                     <Grid container>
-                        <Chip
-                            sx={{ m: 0.5 }}
-                            color={
-                                selectedChips.includes(0)
-                                    ? "primary"
-                                    : "default"
-                            }
-                            label="Not Defined"
-                            onClick={() => {
-                                toggleChip(0);
-                            }}
-                        />
-                        <Chip
-                            sx={{ m: 0.5 }}
-                            color={
-                                selectedChips.includes(1)
-                                    ? "primary"
-                                    : "default"
-                            }
-                            label="Fixed-term"
-                            onClick={() => {
-                                toggleChip(1);
-                            }}
-                        />
-                        <Chip
-                            sx={{ m: 0.5 }}
-                            color={
-                                selectedChips.includes(2)
-                                    ? "primary"
-                                    : "default"
-                            }
-                            label="Permanent"
-                            onClick={() => {
-                                toggleChip(2);
-                            }}
-                        />
-                        <Chip
-                            sx={{ m: 0.5 }}
-                            color={
-                                selectedChips.includes(3)
-                                    ? "primary"
-                                    : "default"
-                            }
-                            label="Internship"
-                            onClick={() => {
-                                toggleChip(3);
-                            }}
-                        />
-                        <Chip
-                            sx={{ m: 0.5 }}
-                            color={
-                                selectedChips.includes(4)
-                                    ? "primary"
-                                    : "default"
-                            }
-                            label="Apprenticeship"
-                            onClick={() => {
-                                toggleChip(4);
-                            }}
-                        />
-                        <Chip
-                            sx={{ m: 0.5 }}
-                            color={
-                                selectedChips.includes(5)
-                                    ? "primary"
-                                    : "default"
-                            }
-                            label="Seasonal"
-                            onClick={() => {
-                                toggleChip(5);
-                            }}
-                        />
+                        {sectors.map((sector, index) => {
+                            return (
+                                <Chip
+                                    key={index}
+                                    sx={{ m: 0.5 }}
+                                    color={
+                                        selectedChips.includes(sector)
+                                            ? "primary"
+                                            : "default"
+                                    }
+                                    label={sector}
+                                    onClick={() => {
+                                        toggleChip(sector);
+                                    }}
+                                />
+                            );
+                        })}
                     </Grid>
                 </label>
                 <label>

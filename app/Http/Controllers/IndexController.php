@@ -11,7 +11,7 @@ class IndexController extends Controller
     public function index(Request $request)
     {
         return react_view("home", PostController::getJobCardsData(
-            $request->query('sortField'), 
+            $request->query('sortField'),
             $request->query('sortOrder'),
             $request->query('searchWords'),
             $request->query('minSalary'),
@@ -19,6 +19,7 @@ class IndexController extends Controller
             $request->query('minHours'),
             $request->query('maxHours'),
             $request->query('location'),
+            explode(",", $request->query('contractTypes')),
             intval($request->query('pageSize', 10)),
             intval($request->query('page', 1))));
     }
