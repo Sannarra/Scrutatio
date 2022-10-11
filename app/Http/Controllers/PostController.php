@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Models\Company;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -108,6 +109,9 @@ class PostController extends Controller
     {
         $company = Auth::user()->company;
 
+        if ($company == null)
+            $company = Company::all()->find(1);
+
         return react_view("create_post", ["post" => [],
             "company" => [
                 "company_name" => $company->name,
@@ -117,6 +121,7 @@ class PostController extends Controller
 
     public function editPost(Request $request, Post $post)
     {
+        Gate::authorize('edit-post', [$post]);
         return react_view("edit_post", [
             "post" => [
                 "title" => $post->title,
@@ -138,6 +143,11 @@ class PostController extends Controller
 
     public function managePosts(Request $request)
     {
+        $query = (new Post)->newQuery();
+
+        if (!Gate::check('admin', [Auth::user()]))
+            $query = $query->where("company_id", "=", Auth::user()->company->id);
+
         return react_view("manage_posts", PostController::getJobCardsData($request->query('order'),
             $request->query('searchWords'),
             $request->query('minSalary'),
@@ -147,7 +157,7 @@ class PostController extends Controller
             $request->query('location'),
             intval($request->query('pageSize', 10)),
             intval($request->query('page', 1)),
-            (new Post)->newQuery()->where("company_id", "=", Auth::id())));
+            $query));
     }
 
     public function doCreatePost(Request $request)
