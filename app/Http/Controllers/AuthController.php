@@ -12,12 +12,20 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function index()
+    private function createAccount(array $data)
+    {
+        return Account::create([
+            'email' => $data['email'],
+            'password' => Hash::make($data['password'])
+        ]);
+    }
+
+    public function loginView()
     {
         return react_view("login");
     }
 
-    public function customLogin(Request $request)
+    public function login(Request $request)
     {
         $request->validate([
             'email' => 'required',
@@ -28,112 +36,81 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, filter_var($request->query("remember", "false"), FILTER_VALIDATE_BOOLEAN))) {
             $request->session()->regenerate();
 
-            return redirect()->intended('home')
-                ->withSuccess('Signed in');
+            return redirect()->intended();
         }
 
         return redirect("login")->withSuccess('Login details are not valid');
     }
 
-    public function register()
+    private function register(Request $request, bool $isMember)
+    {
+        /// Validate request
+        if ($isMember)
+            $request->validate([
+                'firstname' => 'required',
+                'lastname' => 'required',
+                'phone' => 'required',
+                'city' => 'required',
+                'email' => 'required|email|unique:accounts',
+                'password' => 'required|min:6',
+            ]);
+        else
+            $request->validate([
+                'name' => 'required',
+                'creation_date' => 'required',
+                'size' => 'required',
+                'headquarter' => 'required',
+                'website' => 'required',
+                'email' => 'required|email|unique:accounts',
+                'password' => 'required|min:6',
+            ]);
+        $data = $request->all();
+
+        /// Create account
+        $account = $this->createAccount($data);
+        if ($isMember)
+            User::create([
+                'firstname' => $data['firstname'],
+                'lastname' => $data["lastname"],
+                'phone' => $data["phone"],
+                'city' => $data["city"],
+                'account_id' => $account->id
+            ]);
+        else
+            Company::create([
+                'name' => $data['name'],
+                'creation_date' => $data['creation_date'],
+                'size' => $data["size"],
+                'headquarter' => $data["headquarter"],
+                'postal_code' => 0,
+                'website' => $data["website"],
+                'account_id' => $account->id
+            ]);
+
+        /// Log to newly created account
+        Auth::login($account, filter_var($request->query("remember", "false"), FILTER_VALIDATE_BOOLEAN));
+        $request->session()->regenerate();
+        return redirect()->intended();
+    }
+
+    public function registerMemberView()
     {
         return react_view("register");
     }
 
-    public function customRegistration(Request $request)
+    public function registerMember(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email|unique:accounts',
-            'password' => 'required|min:6',
-        ]);
-
-        $data = $request->all();
-        $check = $this->create($data);
-
-        $request->session()->regenerate();
-
-        return redirect("profile")->withSuccess('You have signed-in');
+        return $this->register($request, true);
     }
 
-    public function memberRegistration(Request $request)
-    {
-        $request->validate([
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'phone' => 'required',
-            'city' => 'required',
-            'email' => 'required|email|unique:accounts',
-            'password' => 'required|min:6',
-        ]);
-
-        $data = $request->all();
-        $account = $this->create($data);
-        $member = $this->createUser($data, $account);
-
-        $request->session()->regenerate();
-
-        return redirect("profile")->withSuccess('You have signed-in');
-    }
-
-    public function createUser(array $data, Account $account)
-    {
-        return User::create([
-            'firstname' => $data['firstname'],
-            'lastname' => $data["lastname"],
-            'phone' => $data["phone"],
-            'city' => $data["city"],
-            'status' => 0,
-            'account_id' => $account->id
-        ]);
-    }
-
-    public function registerCompany()
+    public function registerCompanyView()
     {
         return react_view("register_company");
     }
-    public function companyRegistration(Request $request)
+
+    public function registerCompany(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'creation_date' => 'required',
-            'size' => 'required',
-            'headquarter' => 'required',
-            'website' => 'required',
-            'email' => 'required|email|unique:accounts',
-            'password' => 'required|min:6',
-        ]);
-
-        $data = $request->all();
-        $account = $this->create($data);
-        $member = $this->createCompany($data, $account);
-
-        $request->session()->regenerate();
-
-        return redirect("manage-posts")->withSuccess('You have signed-in');
-    }
-
-
-    public function createCompany(array $data, Account $account)
-    {
-        return Company::create([
-            'name' => $data['name'],
-            'creation_date' =>  $data['creation_date'],
-            'size' => $data["size"],
-            'headquarter' => $data["headquarter"],
-            'postal_code' => 0,
-            'website' => $data["website"],
-            'account_id' => $account->id
-        ]);
-    }
-
-
-
-    public function create(array $data)
-    {
-        return Account::create([
-            'email' => $data['email'],
-            'password' => Hash::make($data['password'])
-        ]);
+        return $this->register($request, false);
     }
 
     public function signOut()
@@ -141,6 +118,6 @@ class AuthController extends Controller
         Session::flush();
         Auth::logout();
 
-        return Redirect('login');
+        return Redirect('/');
     }
 }

@@ -4,42 +4,51 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CompanyProfileController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\UserController;
 
 /* |-------------------------------------------------------------------------- | Web Routes |-------------------------------------------------------------------------- | | Here is where you can register web routes for your application. These | routes are loaded by the RouteServiceProvider within a group which | contains the "web" middleware group. Now create something great! | */
 
-Route::get('/','App\Http\Controllers\IndexController@index')->name('index');
-Route::get('home', [IndexController::class , 'index'])->name('home')->middleware('auth');
+Route::get('/', 'App\Http\Controllers\IndexController@index');
+
+// authentication
+Route::get('login', [AuthController::class , 'loginView'])->name('login');
+Route::post('login', [AuthController::class , 'login']);
+Route::get('register', [AuthController::class , 'registerMemberView'])->name('register');
+Route::post('register', [AuthController::class , 'registerMember']);
+Route::get('signout', [AuthController::class , 'signOut']);
 
 
-//user
-Route::get('profile', [ProfileController::class , 'index'])->name('profile')->middleware('auth');
-Route::get('edit-profile', [ProfileController::class , 'edit'])->name('edit-profile')->middleware('auth');
-Route::post('edit-member', [UserController::class , 'update'])->name('edit-member')->middleware('auth');
+/// Authentified routes
+Route::middleware("auth")->group(function () {
+    // profile
+    Route::get('profile', [ProfileController::class , 'viewCurrentProfile'])->name('profile');
+    Route::get('profile/{profile}', [ProfileController::class , 'viewProfile']);
+    Route::get('edit-profile', [ProfileController::class , 'currentProfileEditView'])->name('edit-profile');
+    Route::get('edit-profile/{profile}', [ProfileController::class , 'profileEditView']);
+    Route::get('edit-user/{user}', [ProfileController::class , 'userProfileEditView']);
+    Route::get('edit-company/{company}', [ProfileController::class , 'companyProfileEditView']);
+    Route::post('edit-profile', [ProfileController::class , 'doEditCurrentProfile']);
+    Route::post('edit-profile/{profile}', [ProfileController::class , 'doEditProfile']);
 
-//company
-Route::get('company-profile', [CompanyProfileController::class , 'index'])->name('company-profile');
-Route::get('edit-company', [CompanyProfileController::class , 'edit'])->name('edit-company');
-Route::post('edit-company', [CompanyController::class , 'update'])->name('edit-compamy');
 
-//post
-Route::get('create-post', 'App\Http\Controllers\PostController@createPost');
-Route::post('create-post', 'App\Http\Controllers\PostController@doCreatePost');
-Route::get('edit-post/{post}', 'App\Http\Controllers\PostController@editPost');
-Route::post('edit-post/{post}', 'App\Http\Controllers\PostController@doEditPost');
-Route::get('manage-posts', 'App\Http\Controllers\PostController@managePosts')->name("manage.posts");
+    // Posts management
+    Route::middleware('can:isCompany')->group(function () {
+            Route::get('create-post', 'App\Http\Controllers\PostController@createPost');
+            Route::post('create-post', 'App\Http\Controllers\PostController@doCreatePost');
+            Route::get('edit-post/{post}', 'App\Http\Controllers\PostController@editPost');
+            Route::post('edit-post/{post}', 'App\Http\Controllers\PostController@doEditPost');
+            Route::get('manage-posts', 'App\Http\Controllers\PostController@managePosts');
+        }
+        );
 
-//connexion
-Route::get('login', [AuthController::class , 'index'])->name('login');
-Route::post('custom-login', [AuthController::class , 'customLogin'])->name('login.custom');
-Route::get('register', [AuthController::class , 'register'])->name('register-user');
-Route::get('register-company', [AuthController::class , 'registerCompany'])->name('register-company');
-Route::post('custom-register', [AuthController::class , 'customRegistration'])->name('register.custom');
-Route::post('member-register', [AuthController::class , 'memberRegistration'])->name('register.member');
-Route::post('company-register', [AuthController::class , 'companyRegistration'])->name('register.company');
-Route::get('signout', [AuthController::class , 'signOut'])->name('signout');
+        // Creating company
+        Route::middleware("can:isMember")->group(function () {
+            Route::get('register-company', [AuthController::class , 'registerCompanyView']);
+            Route::post('register-company', [AuthController::class , 'registerCompany']);
+        }
+        );
 
-//admin
-Route::get('admin-panel', 'App\Http\Controllers\AdministrationController@index');
+        //admin
+        Route::middleware('can:admin')->get('admin-panel', 'App\Http\Controllers\AdministrationController@index');
+    });

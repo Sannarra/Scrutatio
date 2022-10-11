@@ -19,7 +19,6 @@ class User extends Model
         'lastname',
         'phone',
         'city',
-        'status',
         'account_id'
     ];
 

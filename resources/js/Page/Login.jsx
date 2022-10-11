@@ -11,7 +11,7 @@ export default function Login(props) {
                 <h1 style={{ justifyContent: "center", display: "flex" }}>
                     Login
                 </h1>
-                <form method="POST" action="/custom-login">
+                <form method="POST" action="/login">
                     <input
                         type="hidden"
                         name="_token"

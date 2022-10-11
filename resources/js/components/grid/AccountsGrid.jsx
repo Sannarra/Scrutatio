@@ -17,6 +17,12 @@ export default function AccountsGrid(props) {
                         width: 250,
                         editable: true,
                     },
+                    {
+                        field: "is_admin",
+                        headerName: "Admin",
+                        width: 250,
+                        editable: true,
+                    },
                 ],
             })}
         </>

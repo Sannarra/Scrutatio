@@ -6,7 +6,9 @@ export default function UsersGrid(props) {
             {DBGrid({
                 table_name: "Users",
                 crud: {
+                    create: "/register",
                     read: "/api/users",
+                    update: "/edit-user",
                     delete: "/api/users",
                 },
                 columns: [

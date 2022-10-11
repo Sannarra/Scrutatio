@@ -6,46 +6,46 @@ import Grid from "@mui/material/Grid";
 import StarIcon from "@mui/icons-material/Star";
 import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 export default function Profile(props) {
     return (
         <div>
             <Grid container justifyContent="space-between">
-                <Button href="/edit-profile" variant="contained" startIcon={<EditIcon />}>
+                <Button
+                    href={`/edit-profile/${
+                        props.data.user.account_id
+                            ? props.data.user.account_id
+                            : ""
+                    }`}
+                    variant="contained"
+                    startIcon={<EditIcon />}
+                >
                     Edit profile
                 </Button>
-<div>
-                <Button
-                    sx={{ backgroundColor: "lightgrey" }}
-                    href="/signout"
-                    variant="contained"
-                    startIcon={<LogoutIcon />}
-                >
-                    Sign Out
-                </Button>
-                <Button
-                    sx={{ backgroundColor: "lightgrey" }}
-                    variant="contained"
-                    startIcon={<DeleteIcon />}
-                    onClick={
-                        () => {
+                <div>
+                    <Button
+                        sx={{ backgroundColor: "lightgrey" }}
+                        href="/signout"
+                        variant="contained"
+                        startIcon={<LogoutIcon />}
+                    >
+                        Sign Out
+                    </Button>
+                    <Button
+                        sx={{ backgroundColor: "lightgrey" }}
+                        variant="contained"
+                        startIcon={<DeleteIcon />}
+                        onClick={() => {
                             console.log(props.csrf_token);
                             fetch("/api/users/" + props.data.user.id, {
                                 method: "delete",
-                                headers: {
-                                    "X-CSRF-TOKEN": props.csrf_token
-                                },
-                                body: {
-                                    _token: props.csrf_token
-                                }
-                            }).then(res => {
-                                window.location.replace("/signout");
+                            }).then((res) => {
+                                if (!props.data.user.account_id)
+                                    window.location.replace("/signout");
                             });
-                        }
-                    }
-                >
-                </Button>
+                        }}
+                    ></Button>
                 </div>
             </Grid>
             <Grid container sx={{ mt: 3, justifyContent: "center" }}>
@@ -77,7 +77,7 @@ export default function Profile(props) {
                 </Box>
             </Grid>
 
-            <Box sx={{display:"flex", justifyContent: "center"}}>
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
                 <Button
                     sx={{ color: "black" }}
                     href="#"
@@ -86,7 +86,7 @@ export default function Profile(props) {
                 >
                     saved offers
                 </Button>
-                
+
                 <Button
                     sx={{ color: "black" }}
                     href="/register-company"
@@ -95,7 +95,6 @@ export default function Profile(props) {
                 >
                     Create company account
                 </Button>
-
             </Box>
         </div>
     );

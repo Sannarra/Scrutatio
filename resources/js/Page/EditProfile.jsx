@@ -91,20 +91,16 @@ export default function Register(props) {
         />
     );
 
-    const validateInputs = () => {
-        // for (const [key, value] of Object.entries(error)) {
-        //     if (value != "" || input[key] === "") return false;
-        // }
-        return true;
-    };
-
     return (
         <div {...props}>
             <div style={{ paddingLeft: "10%", paddingRight: "10%" }}>
                 <h1 style={{ justifyContent: "center", display: "flex" }}>
                     Edit {props.data.user.firstname}'s profile
                 </h1>
-                <form method="POST" action="/edit-member">
+                <form
+                    method="POST"
+                    action={`/edit-profile/${props.data.user.account_id}`}
+                >
                     <input
                         type="hidden"
                         name="_token"
@@ -177,7 +173,6 @@ export default function Register(props) {
                                 color: "black",
                                 borderRadius: 50,
                             }}
-                            disabled={!validateInputs()}
                         >
                             Edit
                         </Button>

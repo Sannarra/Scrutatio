@@ -147,7 +147,7 @@ export default function RegisterCompany(props) {
                         alt="company-picture"
                     />
                 </div>
-                <form method="POST" action="/company-register">
+                <form method="POST" action="/register-company">
                     <input
                         type="hidden"
                         name="_token"

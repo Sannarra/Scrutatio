@@ -31,7 +31,7 @@ class CompanySeeder extends Seeder
                 'size' => $faker->numberBetween(10, 50000),
                 'headquarter' => $faker->city(),
                 'postal_code' => $faker->postcode(),
-                'account_id' => $i + 51,
+                'account_id' => ($i == 0 ? 1 : $i + 51),
                 'website' => $faker->url(),
             ]);
         }
