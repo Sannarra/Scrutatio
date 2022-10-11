@@ -19,6 +19,7 @@
     pageName='{{$pageName}}';
     pageData=@json($data);
     csrf_token="{{csrf_token()}}"
+    errors=@json($errors->all())
 </script>
 
 </html>

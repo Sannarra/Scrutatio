@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Throwable;
@@ -52,14 +53,20 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
-        if ($e instanceof ModelNotFoundException) {
-            return response()->json([
-                'message' => 'Resource not found.'
-            ], 404);
-        }
-        else if ($e instanceof ValidationException) {
+        if ($request->expectsJson()) {
+            if ($e instanceof ModelNotFoundException) {
+                return response()->json([
+                    'message' => 'Resource not found.'
+                ], 404);
+            }
+            else if ($e instanceof ValidationException) {
 
-            return response()->json(['message' => 'Invalid query parameters: ' . $e->getMessage()], 400);
+                return response()->json(['message' => 'Invalid query parameters: ' . $e->getMessage()], 400);
+            }
+        }
+        else {
+            if ($e instanceof AuthorizationException)
+                return redirect()->intended();
         }
 
         return parent::render($request, $e);
