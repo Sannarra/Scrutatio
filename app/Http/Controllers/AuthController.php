@@ -28,8 +28,8 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required',
-            'password' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:6',
         ]);
 
         $credentials = $request->only('email', 'password');
@@ -39,7 +39,7 @@ class AuthController extends Controller
             return redirect()->intended();
         }
 
-        return redirect("login")->withSuccess('Login details are not valid');
+        return redirect("login")->withErrors('Login details are not valid');
     }
 
     private function register(Request $request, bool $isMember)

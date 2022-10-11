@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Throwable;
@@ -62,6 +63,10 @@ class Handler extends ExceptionHandler
 
                 return response()->json(['message' => 'Invalid query parameters: ' . $e->getMessage()], 400);
             }
+        }
+        else {
+            if ($e instanceof AuthorizationException)
+                return redirect()->intended();
         }
 
         return parent::render($request, $e);

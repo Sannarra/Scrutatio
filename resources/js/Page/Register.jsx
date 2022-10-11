@@ -5,6 +5,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Unstable_Grid2";
+import Errors from "../components/Errors.jsx";
 
 export default function Register(props) {
     const [input, setInput] = useState({
@@ -194,23 +195,7 @@ export default function Register(props) {
                             label="Remember me"
                             name="remember"
                         />
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                marginBottom: "10px",
-                            }}
-                        >
-                            {props.errors &&
-                                props.errors.map((error, idx) => {
-                                    return (
-                                        <span style={{ color: "red" }}>
-                                            &#x26A0; {error} &#x26A0;
-                                        </span>
-                                    );
-                                })}
-                        </div>
-
+                        {Errors(props.errors)}
                         <Button
                             type="submit"
                             variant="contained"
