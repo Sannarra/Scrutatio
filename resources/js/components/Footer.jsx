@@ -7,11 +7,15 @@ export default function Footer() {
                 bottom: "0px",
                 height: "8%",
                 display: "flex",
-                justifyContent:'center',
-                alignItems:'center'
+                justifyContent: "center",
+                alignItems: "center",
             }}
         >
-            <img src="./logo-white.png" alt="logo" style={{width:'100px', margin:'10px'}}/>
+            <img
+                src="/logo-white.png"
+                alt="logo"
+                style={{ width: "100px", margin: "10px" }}
+            />
             © 2022 All Rights Reserved
         </footer>
     );
