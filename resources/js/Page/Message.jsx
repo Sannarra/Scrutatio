@@ -16,7 +16,11 @@ export default function Message(props) {
     // State used for storing the current conversation id
     /// Id in conversations state
     const [currentConversationId, setCurrentConversationId] = useState(
-        conversations.length > 0 ? 0 : null
+        conversations.length > 0
+            ? props.data.conversationId != undefined
+                ? props.data.conversationId
+                : 0
+            : null
     );
     const currentConversation = () => {
         if (currentConversationId == null) return null;
@@ -119,6 +123,11 @@ export default function Message(props) {
                                 backgroundColor: conv.new
                                     ? "var(--accent)"
                                     : "var(--accent2)",
+                                borderColor: "var(--dark)",
+                                border:
+                                    i == currentConversationId
+                                        ? "solid 1px"
+                                        : 0,
                             }}
                         >
                             {conv.new && "NEW: "} {conv.title}

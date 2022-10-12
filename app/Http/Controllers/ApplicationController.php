@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Account;
 use App\Models\Post;
+use Illuminate\Support\Facades\Session;
 
 
 class ApplicationController extends Controller
@@ -95,13 +96,25 @@ class ApplicationController extends Controller
 
     public function chat()
     {
-        return react_view("message", ["conversations" => $this->getApplications()]);
+        $conversations = $this->getApplications();
+        $conversationId = Session::get("conversationId");
+        if ($conversationId == null)
+            $conversationId = 0;
+        else
+            foreach ($conversations as $i => $conv)
+                if ($conv['id'] == $conversationId) {
+                    $conversationId = $i;
+                    break;
+                }
+
+        return react_view("message", ["conversations" => $conversations, "conversationId" => $conversationId]);
     }
 
     public function apply(Post $post)
     {
-        if (Application::where('user_id', Auth::user()->user->id)->where('post_id', $post->id)->get()->count() > 0)
-            return redirect('/chat');
+        $conversation = Application::where('user_id', Auth::user()->user->id)->where('post_id', $post->id)->get();
+        if ($conversation->count() > 0)
+            return redirect('/chat')->with("conversationId", $conversation->first()->id);
         $conversations = $this->getApplications();
 
         array_unshift($conversations, ["title" => $post->title, "new" => true, "post_id" => $post->id]);
