@@ -20,6 +20,7 @@ export default function RegisterCompany(props) {
         size: "",
         headquarter: "",
         website: "",
+        description: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -78,12 +79,8 @@ export default function RegisterCompany(props) {
 
     const VerifiedTextField = (props) => (
         <TextField
+            {...props}
             key={props.name}
-            type={props.type}
-            label={props.label}
-            placeholder={props.placeholder}
-            name={props.name}
-            autoComplete={props.autoComplete}
             value={input[props.name]}
             error={error[props.name] != ""}
             helperText={error[props.name]}
@@ -155,6 +152,14 @@ export default function RegisterCompany(props) {
                                 name: "website",
                                 autoComplete: "on",
                                 placeholder: "https://mycompany.com",
+                            })}
+                            <br />
+                            {VerifiedTextField({
+                                type: "text",
+                                label: "Description",
+                                name: "description",
+                                autoComplete: "on",
+                                multiline: true,
                             })}
                             <br />
                             {VerifiedTextField({

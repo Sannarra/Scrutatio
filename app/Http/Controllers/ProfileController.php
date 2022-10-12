@@ -27,7 +27,8 @@ class ProfileController extends Controller
                     "size" => $company->size,
                     "headquarter" => $company->headquarter,
                     "website" => $company->website,
-                    "email" => $company->account->email,
+                    "description" => $company->description,
+                    "email" => $account->email,
                     "account_id" => $include_id ? $account->id : null
                 ]
             ]);
@@ -71,8 +72,9 @@ class ProfileController extends Controller
                     "size" => $company->size,
                     "headquarter" => $company->headquarter,
                     "website" => $company->website,
-                    "email" => $company->account->email,
-                    "account_id" => $account->id
+                    "description" => $company->description,
+                    "email" => $account->email,
+                    "account_id" => $account->id,
                 ]
             ]);
         }
@@ -115,16 +117,23 @@ class ProfileController extends Controller
 
     static public function editProfile(Request $request, Account $account)
     {
-        $user = Auth::user()->user;
-        $company = Auth::user()->company;
+        $user = $account->user;
+        $company = $account->company;
+
+        $addIfSet = function ($array, $key) use ($request) {
+            $val = $request->input($key);
+            if ($val != null && $val != "")
+                $array[$key] = $val;
+            return $array;
+        };
 
         /// If profile is a user profile
         if ($user !== null) {
             $userData = [];
-            $userData["firstname"] = $request->input('firstname', $user->firstname);
-            $userData["lastname"] = $request->input('lastname', $user->lastname);
-            $userData["phone"] = $request->input('phone', $user->phone);
-            $userData["city"] = $request->input('city', $user->city);
+            $userData = $addIfSet($userData, "firstname");
+            $userData = $addIfSet($userData, "lastname");
+            $userData = $addIfSet($userData, "phone");
+            $userData = $addIfSet($userData, "city");
 
             $user->update($userData);
         }
@@ -132,22 +141,23 @@ class ProfileController extends Controller
         /// If profile is a company profile
         if ($company !== null) {
             $companyData = [];
-            $companyData["name"] = $request->input('name', $company->name);
-            $companyData["creation_date"] = $request->input('creation_date', $company->creation_date);
-            $companyData["size"] = $request->input('size', $company->size);
-            $companyData["headquarter"] = $request->input('headquarter', $company->headquarter);
-            $companyData["website"] = $request->input('website', $company->website);
+            $companyData = $addIfSet($companyData, "name");
+            $companyData = $addIfSet($companyData, "creation_date");
+            $companyData = $addIfSet($companyData, "size");
+            $companyData = $addIfSet($companyData, "headquarter");
+            $companyData = $addIfSet($companyData, "website");
+            $companyData = $addIfSet($companyData, "description");
 
             $company->update($companyData);
         }
 
 
         /// If account was modified
-        $account = Auth::user();
         $accountData = [];
-        $accountData["email"] = $request->input('email', $account->email);
-        $accountData["password"] = $request->password !== null ?Hash::make($request->password) : $account->password;
-
+        $accountData = $addIfSet($accountData, "email");
+        $newPwd = $request->input("password");
+        if ($newPwd != null)
+            $accountData["password"] = $newPwd;
         $account->update($accountData);
     }
 

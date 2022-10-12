@@ -116,6 +116,8 @@ function CompanyInfo({ data }) {
             <br />
             Email: {data.email}
             <br />
+            <br />
+            Description: {data.description}
         </div>
     );
 }
