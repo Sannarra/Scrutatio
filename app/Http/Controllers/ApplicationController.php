@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Account;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Support\Facades\Session;
 
 
@@ -111,6 +112,16 @@ class ApplicationController extends Controller
         return react_view("message", ["conversations" => $conversations, "conversationId" => $conversationId]);
     }
 
+    public function getApplyMessage(Post $post, User $user)
+    {
+        return "Hello,
+Your {$post->title} job offer interests me.
+
+{$user->firstname} {$user->lastname}
+{$user->account->email}
+{$user->phone}";
+    }
+
     public function apply(Post $post)
     {
         $conversation = Application::where('user_id', Auth::user()->user->id)->where('post_id', $post->id)->get();
@@ -119,6 +130,9 @@ class ApplicationController extends Controller
         $conversations = $this->getApplications();
 
         array_unshift($conversations, ["title" => $post->title, "new" => true, "post_id" => $post->id]);
-        return react_view("message", ["user" => Auth::user()->user->id, "conversations" => $conversations, "icebreaker" => "Hello from the back"]);
+        return react_view("message", [
+            "user" => Auth::user()->user->id,
+            "conversations" => $conversations,
+            "icebreaker" => $this->getApplyMessage($post, Auth::user()->user)]);
     }
 }
