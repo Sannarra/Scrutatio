@@ -175,6 +175,8 @@ class ProfileController extends Controller
         Gate::authorize('edit-profile', [$profile]);
         ProfileController::editProfile($request, $profile);
 
+        if ($profile->id != Auth::id())
+            return redirect("/profile/$profile->id");
         return redirect()->intended('profile');
     }
 }
