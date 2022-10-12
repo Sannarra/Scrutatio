@@ -88,16 +88,7 @@ export default function Message(props) {
                     );
                 })
             }
-           {currentConversation === null ? (
-                                <></>
-                            ) : (
-                <div
-                    style={{
-                        backgroundColor: "var(--dark)",
-                        padding: "10px",
-                        borderRadius: "5px",
-                    }}
-                >
+            
                     {/* if not apply -> find offer else -> click offer */}
                     {conversations.length == 0 ? (
                         <Container
@@ -127,6 +118,16 @@ export default function Message(props) {
                         <></>
                     )}
 
+           {currentConversation === null ? (
+                                <></>
+                            ) : (
+                <div
+                    style={{
+                        backgroundColor: "var(--dark)",
+                        padding: "10px",
+                        borderRadius: "5px",
+                    }}
+                >
                     {/* if not apply -> find offer else -> click offer */}
                     <Grid>
                         <div>
