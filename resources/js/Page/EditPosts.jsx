@@ -9,6 +9,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import JobCard from "../components/JobCard.jsx";
 import InputAdornment from "@mui/material/InputAdornment";
 import MenuItem from "@mui/material/MenuItem";
+import Errors from "../components/Errors.jsx";
 
 export default function EditPosts(props) {
     const contractTypes = [
@@ -239,6 +240,8 @@ export default function EditPosts(props) {
                                 })}
                             </Grid>
                         </Grid>
+                        <br />
+                        {Errors(props.errors)}
                         <br />
                         <Button
                             type="submit"

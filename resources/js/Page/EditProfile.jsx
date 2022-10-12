@@ -5,6 +5,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Unstable_Grid2";
+import Errors from "../components/Errors.jsx";
 
 export default function Register(props) {
     const [input, setInput] = useState({
@@ -165,6 +166,8 @@ export default function Register(props) {
                                 autoComplete: "new-password",
                             })}
 
+                            <br />
+                            {Errors(props.errors)}
                             <br />
                             <Button
                                 type="submit"
