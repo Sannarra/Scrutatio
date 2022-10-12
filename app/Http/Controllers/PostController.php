@@ -108,7 +108,7 @@ class PostController extends Controller
 
         if ($currentPage < 1)
             $currentPage = 1;
-        $data = ["jobs" => [], "page" => ["count" => $posts->count(), "current" => $currentPage, "size" => $pageSize]];
+        $data = ["hasApply" => Auth::user() == null || Auth::user()->company == null, "jobs" => [], "page" => ["count" => $posts->count(), "current" => $currentPage, "size" => $pageSize]];
 
 
         for ($i = 0; $i <= $pageSize && ($i + ($pageSize * ($currentPage - 1)) < $posts->count()); $i++)

@@ -269,22 +269,25 @@ export default class JobCard extends React.Component {
                                     : "Not Defined"}
                             </Grid>
                         </Grid>
+                        {this.props.data.hasApply ? (
+                            <>
+                                <br />
+                                <br />
 
-                        <br />
-                        <br />
-
-                        <Button
-                            variant="contained"
-                            sx={{
-                                width: "100%",
-                                backgroundColor: "var(--accent)",
-                                color: "black",
-                                borderRadius: 50,
-                            }}
-                            href={`/apply/${this.props.data.id}`}
-                        >
-                            Apply
-                        </Button>
+                                <Button
+                                    variant="contained"
+                                    sx={{
+                                        width: "100%",
+                                        backgroundColor: "var(--accent)",
+                                        color: "black",
+                                        borderRadius: 50,
+                                    }}
+                                    href={`/apply/${this.props.data.id}`}
+                                >
+                                    Apply
+                                </Button>
+                            </>
+                        ) : null}
                     </CardContent>
                 </Collapse>
             </Card>
