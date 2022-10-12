@@ -218,9 +218,7 @@ class PostController extends Controller
             'city' => 'required',
             'short_brief' => 'required',
             'description' => 'required',
-            'contract_type' => 'required',
-            'salary' => 'required',
-            'working_time' => 'required'
+            'contract_type' => 'required'
         ]);
 
         $post->update($request->all());

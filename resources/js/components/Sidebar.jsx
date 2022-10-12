@@ -45,7 +45,9 @@ export default function FilterSidebar({
     const [selectedChips, setSelectedChips] = React.useState(
         urlParams.contractTypes ? urlParams.contractTypes.split(",") : []
     );
-    const [includeNull, setIncludeNull] = React.useState(true);
+    const [includeNull, setIncludeNull] = React.useState(
+        urlParams.includeNull == "true"
+    );
 
     const toggleChip = (chip) => {
         if (selectedChips.includes(chip)) {
@@ -258,7 +260,10 @@ export default function FilterSidebar({
                         control={<Checkbox />}
                         label="Include attributes not set"
                         name="includeNull"
-                        value={includeNull}
+                        checked={includeNull}
+                        onChange={(e) =>
+                            setIncludeNull(e.target.value == "true")
+                        }
                     />
                 </label>
                 <label>

@@ -42,8 +42,8 @@ export default function EditPosts(props) {
         contract_type: props.data.post.contract_type || "",
         short_brief: props.data.post.short_brief || "",
         description: props.data.post.description || "",
-        salary: props.data.post.salary || "0",
-        working_time: props.data.post.working_time || "0",
+        salary: props.data.post.salary || "",
+        working_time: props.data.post.working_time || "",
 
         publication_date:
             props.data.post.publication_date ||
@@ -81,7 +81,7 @@ export default function EditPosts(props) {
         setError((prev) => {
             const stateObj = { ...prev, [name]: "" };
 
-            if (!value) {
+            if (!value && name != "salary" && name != "working_time") {
                 stateObj[name] = "This field is required.";
                 return stateObj;
             }
@@ -99,7 +99,7 @@ export default function EditPosts(props) {
             variant="filled"
             onChange={onInputChange}
             onBlur={validateInput}
-            required
+            required={!(props.notrequired || false)}
             style={{ backgroundColor: "white", width: "100%" }}
             InputProps={{
                 startAdornment: (
@@ -118,147 +118,152 @@ export default function EditPosts(props) {
 
     const validateInputs = () => {
         for (const [key, value] of Object.entries(error)) {
-            if (value != "" || input[key] === "") return false;
+            if (
+                (value != "" || input[key] === "") &&
+                key != "salary" &&
+                key != "working_time"
+            )
+                return false;
         }
         return true;
     };
 
     return (
-        <div {...props}>
-            <Grid
-                container
-                style={{
-                    paddingLeft: "10%",
-                    paddingRight: "10%",
-                }}
-            >
-                <Grid xs={12} md={6} paddingRight={{ xs: 0, md: 3 }}>
-                    <h1 style={{ justifyContent: "center", display: "flex" }}>
-                        {props.creation_mode ? "Create" : "Edit"} post
-                    </h1>
-                    <form
-                        method="POST"
-                        action={
-                            props.creation_mode
-                                ? "/create-post"
-                                : `/edit-post/${props.data.post.id}`
-                        }
-                    >
-                        <input
-                            type="hidden"
-                            name="_token"
-                            value={props.csrf_token}
-                        />
-                        <FormGroup>
-                            {VerifiedTextField({
-                                type: "text",
-                                label: "Title",
-                                name: "title",
-                                autoComplete: "on",
-                            })}
-                            <br />
-                            {VerifiedTextField({
-                                type: "text",
-                                label: "City",
-                                name: "city",
-                                autoComplete: "address-level1",
-                            })}
-                            <br />
+        <Grid
+            container
+            style={{
+                paddingLeft: "10%",
+                paddingRight: "10%",
+            }}
+        >
+            <Grid xs={12} md={6} paddingRight={{ xs: 0, md: 3 }}>
+                <h1 style={{ justifyContent: "center", display: "flex" }}>
+                    {props.creation_mode ? "Create" : "Edit"} post
+                </h1>
+                <form
+                    method="POST"
+                    action={
+                        props.creation_mode
+                            ? "/create-post"
+                            : `/edit-post/${props.data.post.id}`
+                    }
+                >
+                    <input
+                        type="hidden"
+                        name="_token"
+                        value={props.csrf_token}
+                    />
+                    <FormGroup>
+                        {VerifiedTextField({
+                            type: "text",
+                            label: "Title",
+                            name: "title",
+                            autoComplete: "on",
+                        })}
+                        <br />
+                        {VerifiedTextField({
+                            type: "text",
+                            label: "City",
+                            name: "city",
+                            autoComplete: "address-level1",
+                        })}
+                        <br />
 
-                            <TextField
-                                select
-                                label="Contract Type"
-                                name="contract_type"
-                                value={input.contract_type}
-                                onChange={handleContractChange}
-                                autoComplete="on"
-                                error={error.contract_type != ""}
-                                helperText={error.contract_type}
-                                variant="filled"
-                                onBlur={validateInput}
-                                required
-                                style={{
-                                    backgroundColor: "white",
-                                    width: "100%",
-                                }}
-                            >
-                                {contractTypes.map((option) => (
-                                    <MenuItem
-                                        key={option.value}
-                                        value={option.value}
-                                    >
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
+                        <TextField
+                            select
+                            label="Contract Type"
+                            name="contract_type"
+                            value={input.contract_type}
+                            onChange={handleContractChange}
+                            autoComplete="on"
+                            error={error.contract_type != ""}
+                            helperText={error.contract_type}
+                            variant="filled"
+                            onBlur={validateInput}
+                            required
+                            style={{
+                                backgroundColor: "white",
+                                width: "100%",
+                            }}
+                        >
+                            {contractTypes.map((option) => (
+                                <MenuItem
+                                    key={option.value}
+                                    value={option.value}
+                                >
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </TextField>
 
-                            <br />
-                            {VerifiedTextField({
-                                type: "text",
-                                label: "Short Brief",
-                                name: "short_brief",
-                                autoComplete: "on",
-                                multiline: true,
-                                maxLength: 170,
-                            })}
-                            <br />
-                            {VerifiedTextField({
-                                type: "text",
-                                label: "Description",
-                                name: "description",
-                                autoComplete: "on",
-                                multiline: true,
-                            })}
+                        <br />
+                        {VerifiedTextField({
+                            type: "text",
+                            label: "Short Brief",
+                            name: "short_brief",
+                            autoComplete: "on",
+                            multiline: true,
+                            maxLength: 170,
+                        })}
+                        <br />
+                        {VerifiedTextField({
+                            type: "text",
+                            label: "Description",
+                            name: "description",
+                            autoComplete: "on",
+                            multiline: true,
+                        })}
 
-                            <br />
-                            <Grid container spacing={4}>
-                                <Grid xs={6}>
-                                    {VerifiedTextField({
-                                        type: "number",
-                                        label: "Salary (month)",
-                                        name: "salary",
-                                        autoComplete: "on",
-                                        unit: "$",
-                                        min: 0,
-                                    })}
-                                </Grid>
-                                <Grid xs={6}>
-                                    {VerifiedTextField({
-                                        type: "number",
-                                        label: "Working Time (month)",
-                                        name: "working_time",
-                                        autoComplete: "on",
-                                        unit: "h",
-                                        min: 0,
-                                    })}
-                                </Grid>
+                        <br />
+                        <Grid container spacing={4}>
+                            <Grid xs={6}>
+                                {VerifiedTextField({
+                                    type: "number",
+                                    label: "Salary (month)",
+                                    name: "salary",
+                                    autoComplete: "on",
+                                    unit: "$",
+                                    min: 0,
+                                    notrequired: "true",
+                                })}
                             </Grid>
-                            <br />
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                sx={{
-                                    width: "200px",
-                                    alignSelf: "center",
-                                    backgroundColor: "var(--accent)",
-                                    color: "black",
-                                    borderRadius: 50,
-                                    marginBottom: "10px",
-                                }}
-                                disabled={!validateInputs()}
-                            >
-                                {props.creation_mode ? "Create" : "Edit"}
-                            </Button>
-                        </FormGroup>
-                    </form>
-                </Grid>
-                <Grid xs={12} md={6} paddingLeft={{ xs: 0, md: 3 }}>
-                    <div style={{ width: "100%" }}>
-                        <JobCard data={input} expanded="true" />
-                    </div>
-                </Grid>
+                            <Grid xs={6}>
+                                {VerifiedTextField({
+                                    type: "number",
+                                    label: "Working Time (month)",
+                                    name: "working_time",
+                                    autoComplete: "on",
+                                    unit: "h",
+                                    min: 0,
+                                    notrequired: "true",
+                                })}
+                            </Grid>
+                        </Grid>
+                        <br />
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            sx={{
+                                width: "200px",
+                                alignSelf: "center",
+                                backgroundColor: "var(--accent)",
+                                color: "black",
+                                borderRadius: 50,
+                                marginBottom: "10px",
+                            }}
+                            disabled={!validateInputs()}
+                        >
+                            {props.creation_mode ? "Create" : "Edit"}
+                        </Button>
+                    </FormGroup>
+                </form>
             </Grid>
-        </div>
+            <Grid xs={12} md={6} paddingLeft={{ xs: 0, md: 3 }}>
+                <div style={{ width: "100%" }}>
+                    <JobCard data={input} expanded="true" />
+                </div>
+            </Grid>
+        </Grid>
     );
 }
