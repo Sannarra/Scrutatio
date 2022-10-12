@@ -1,12 +1,9 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\MessageController;
 
 /* |-------------------------------------------------------------------------- | Web Routes |-------------------------------------------------------------------------- | | Here is where you can register web routes for your application. These | routes are loaded by the RouteServiceProvider within a group which | contains the "web" middleware group. Now create something great! | */
 
@@ -54,9 +51,6 @@ Route::middleware("auth")->group(function () {
         Route::middleware('can:admin')->get('admin-panel', 'App\Http\Controllers\AdministrationController@index');
 
         //messsage
-Route::get('message', [MessageController::class , 'chat'])->name('message');
-Route::get('message/fetch', [MessageController::class , 'index'])->name('message.fetch');
-Route::get('message/{applicationId}/fetch', [MessageController::class , 'show'])->name('message.fetchMessages');
-Route::post('message/{applicationId}/send', [MessageController::class , 'store'])->name('message.send');
-//change to application/appilicationID/fetch-messages
-});
+        Route::get('chat', [ApplicationController::class , 'chat']);
+        Route::post('applications/{application}/send-message', 'App\Http\Controllers\ApplicationController@sendMessage');
+    });

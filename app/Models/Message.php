@@ -13,7 +13,7 @@ class Message extends Model
 
     protected $fillable = [
         'application_id', //with company_id
-        'sender_user_id',
+        'sender_account_id',
         'content'];
 
     public function application()
@@ -23,6 +23,6 @@ class Message extends Model
 
     public function sender()
     {
-        return $this->belongsTo(User::class , 'sender_user_id');
+        return $this->belongsTo(User::class , 'sender_account_id');
     }
 }

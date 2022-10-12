@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->timestamps();
             $table->foreignId('application_id')->constrained("applications")->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('sender_user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('sender_account_id')->constrained('accounts')->onUpdate('cascade')->onDelete('cascade');
             $table->text('content');
         });
     }

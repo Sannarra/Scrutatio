@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Message;
 use App\Models\Application;
 use Illuminate\Support\Facades\Schema;
-use App\Models\User;
+use App\Models\Account;
 
 class MessageSeeder extends Seeder
 {
@@ -29,7 +29,7 @@ class MessageSeeder extends Seeder
             Message::create([
                 'content' => $faker->text(),
                 'application_id' => $faker->numberBetween(1, Application::count()),
-                'sender_user_id' => $faker->numberBetween(1, User::count())
+                'sender_account_id' => $faker->numberBetween(1, Account::count())
             ]);
         }
     }

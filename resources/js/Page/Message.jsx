@@ -7,29 +7,20 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
 
-export default function Message({ csrf_token }) {
+export default function Message(props) {
     // State used for storing conversation names and ids
-    const [conversations, setConversations] = useState([]);
+    const [conversations, setConversations] = useState(
+        props.data.conversations || []
+    );
     // State used for storing the current conversation id
     const [currentConversation, setCurrentConversation] = useState(null);
     // State used for storing the current conversation's messages
     const [messages, setMessages] = useState([]);
 
-    // Function to fetch all conversation names and ids
-    function getConversations() {
-        fetch("/message/fetch", {
-            method: "get",
-        })
-            .then((res) => res.json())
-            .then((res) => {
-                setConversations(res);
-            });
-    }
-
     // Function to fetch all messages for a conversation
     function getMessages() {
         if (currentConversation == null) return;
-        fetch("/message/" + currentConversation + "/fetch", {
+        fetch("/api/applications/" + currentConversation + "/messages", {
             method: "get",
         })
             .then((res) => res.json())
@@ -37,11 +28,6 @@ export default function Message({ csrf_token }) {
                 setMessages(res);
             });
     }
-
-    // Effect to fetch all conversations on page load
-    useEffect(() => {
-        getConversations();
-    }, []);
 
     // Effect to fetch all messages for a conversation when the current conversation changes
     useEffect(() => {
@@ -51,29 +37,30 @@ export default function Message({ csrf_token }) {
     const [message, setMessage] = useState("Hello");
 
     const send = () => {
-        fetch("/message/" + currentConversation + "/send", {
+        fetch("/applications/" + currentConversation + "/send-message", {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRF-TOKEN": csrf_token,
+                "X-CSRF-TOKEN": props.csrf_token,
             },
             body: JSON.stringify({
                 message: message,
             }),
         })
-        .then((res) => {
-            if (res.ok) {
-                res.json().then((json) => {
-                    console.log(json);
-                });
-            } else {
-                console.log(res.status);
-                console.log(res.statusText);
-            }
-            getMessages();
-        }).catch((err) => {
-            console.log(err)
-        });
+            .then((res) => {
+                if (res.ok) {
+                    res.json().then((json) => {
+                        console.log(json);
+                    });
+                } else {
+                    console.log(res.status);
+                    console.log(res.statusText);
+                }
+                getMessages();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     return (
@@ -146,7 +133,7 @@ export default function Message({ csrf_token }) {
                         messages.map((message) => {
                             return (
                                 <li key={message.id}>
-                                    {message.sender_user_id} (
+                                    {message.sender_account_id} (
                                     {new Date(
                                         message.created_at
                                     ).toLocaleString("fr-FR")}
