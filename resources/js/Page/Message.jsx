@@ -26,16 +26,32 @@ export default function Message(props) {
         if (currentConversationId == null) return null;
         return conversations[currentConversationId];
     };
-
-    /// Application ID if existing
     const currentApplicationId = () => {
         if (currentConversation() == null || currentConversationId == -1)
             return null;
         return currentConversation().id;
     };
 
-    // State used for storing the current conversation's messages
+    // State used for storing the current conversation's messages, and the input field of the user
+    const initialInputMessages = () => {
+        let array = new Array(conversations.length).fill("");
+        if (props.data.icebreaker) array[0] = props.data.icebreaker;
+        return array;
+    };
     const [messages, setMessages] = useState([]);
+    const [inputMessages, setInputMessages] = useState(initialInputMessages());
+
+    function updateInputMessage(id, value) {
+        const newInputMessages = inputMessages.map((item, i) => {
+            if (i === id) return value;
+            return item;
+        });
+
+        setInputMessages(newInputMessages);
+    }
+    const inputMessage = () => {
+        return inputMessages[currentConversationId];
+    };
 
     // Function to fetch all messages for a conversation
     function getMessages() {
@@ -60,10 +76,8 @@ export default function Message(props) {
         getMessages();
     }, [currentConversationId]);
 
-    const [message, setMessage] = useState(props.data.icebreaker || "Hello");
-
     const send = () => {
-        if (message.trim() == "") return;
+        if (inputMessage().trim() == "") return;
         if (currentApplicationId() == null) {
             fetch("/api/applications", {
                 method: "post",
@@ -94,14 +108,14 @@ export default function Message(props) {
                 "X-CSRF-TOKEN": props.csrf_token,
             },
             body: JSON.stringify({
-                message: message.trim(),
+                message: inputMessage().trim(),
             }),
         })
             .then((res) => {
                 if (currentConversation().new) window.location.href = "/chat";
 
                 getMessages();
-                setMessage("");
+                updateInputMessage(currentConversationId, "");
             })
             .catch((err) => {
                 console.log(err);
@@ -292,8 +306,13 @@ export default function Message(props) {
                             <TextField
                                 multiline
                                 placeholder="Send a message"
-                                value={message}
-                                onChange={(e) => setMessage(e.target.value)}
+                                value={inputMessage()}
+                                onChange={(e) =>
+                                    updateInputMessage(
+                                        currentConversationId,
+                                        e.target.value
+                                    )
+                                }
                                 style={{
                                     width: "100%",
                                     borderColor: "black",
