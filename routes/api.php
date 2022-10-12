@@ -31,7 +31,7 @@ Route::post('companies', 'App\Http\Controllers\CompanyController@store');
 Route::put('companies/{company}', 'App\Http\Controllers\CompanyController@update');
 Route::delete('companies/{company}', 'App\Http\Controllers\CompanyController@delete');
 
-// Post 
+/// Post 
 Route::get('posts', 'App\Http\Controllers\PostController@index');
 Route::get('posts/{post}', 'App\Http\Controllers\PostController@show');
 Route::get('posts/search', 'App\Http\Controllers\PostController@searchRoute');
@@ -46,7 +46,7 @@ Route::post('accounts', 'App\Http\Controllers\AccountController@store');
 Route::put('accounts/{account}', 'App\Http\Controllers\AccountController@update');
 Route::delete('accounts/{account}', 'App\Http\Controllers\AccountController@delete');
 
-// Message
+/// Message
 Route::get('messages', 'App\Http\Controllers\MessageController@index');
 Route::get('messages/{message}', 'App\Http\Controllers\MessageController@show');
 Route::post('messages', 'App\Http\Controllers\MessageController@store');

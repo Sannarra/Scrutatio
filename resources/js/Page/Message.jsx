@@ -1,72 +1,99 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
 import SendIcon from "@mui/icons-material/Send";
 import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
 
-export default function Message() {
-    const [currentConversations, setCurrentConversations] = useState(0);
+export default function Message({ csrf_token }) {
+    // State used for storing conversation names and ids
+    const [conversations, setConversations] = useState([]);
+    // State used for storing the current conversation id
+    const [currentConversation, setCurrentConversation] = useState(null);
+    // State used for storing the current conversation's messages
+    const [messages, setMessages] = useState([]);
 
-    const [conversations, setConversations] = useState([
-        {
-            user: "user1",
-            messages: [
-                {
-                    content: "1 - Bonjour je suis un message",
-                    timestamp: "2022-10-10T12:45:27+00:00",
-                    in: true,
-                },
-                {
-                    content: "1 - Bonjour je suis un autre message",
-                    timestamp: "2022-10-10T12:46:36+00:00",
-                    in: false,
-                },
-            ],
-        },
-        {
-            user: "user2",
-            messages: [
-                {
-                    content:
-                        "2 - AAAAAA AAAAAA AAAAAA AAAAAA AAAA AAAAAAAA AAAAAA AAAAAA",
-                    timestamp: "2022-10-10T12:45:27+00:00",
-                    in: true,
-                },
-                {
-                    content: "2 - Bonjour je suis un autre message",
-                    timestamp: "2022-10-10T12:46:36+00:00",
-                    in: false,
-                },
-            ],
-        },
-    ]);
+    // Function to fetch all conversation names and ids
+    function getConversations() {
+        fetch("/message/fetch", {
+            method: "get",
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                setConversations(res);
+            });
+    }
+
+    // Function to fetch all messages for a conversation
+    function getMessages() {
+        if (currentConversation == null) return;
+        fetch("/message/" + currentConversation + "/fetch", {
+            method: "get",
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                setMessages(res);
+            });
+    }
+
+    // Effect to fetch all conversations on page load
+    useEffect(() => {
+        getConversations();
+    }, []);
+
+    // Effect to fetch all messages for a conversation when the current conversation changes
+    useEffect(() => {
+        getMessages();
+    }, [currentConversation]);
 
     const [message, setMessage] = useState("Hello");
+
     const send = () => {
-      const newConversations = [...conversations]; 
-      newConversations[currentConversations].messages.push({
-        content: message, 
-        timestamp: new Date().toISOString(),
-        in: false 
-      });
-      setConversations(newConversations);
-    }
+        fetch("/message/" + currentConversation + "/send", {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": csrf_token,
+            },
+            body: JSON.stringify({
+                message: message,
+            }),
+        })
+        .then((res) => {
+            if (res.ok) {
+                res.json().then((json) => {
+                    console.log(json);
+                });
+            } else {
+                console.log(res.status);
+                console.log(res.statusText);
+            }
+            getMessages();
+        }).catch((err) => {
+            console.log(err)
+        });
+    };
 
     return (
         <Container>
             <div>
-                {conversations.map((conv, i) => {
-                    return (
-                        <h3
-                            key={conv.user}
-                            onClick={() => setCurrentConversations(i)}
-                        >
-                            {conv.user}
-                        </h3>
-                    );
-                })}
+                {
+                    // Display a list of all conversations with a button to select each conversation
+                    conversations.map((conv) => {
+                        return (
+                            <Button
+                                sx={{ m: 1 }}
+                                variant="contained"
+                                key={conv.id}
+                                onClick={() => setCurrentConversation(conv.id)}
+                            >
+                                {conv.title}
+                            </Button>
+                        );
+                    })
+                }
             </div>
             <Grid>
                 {/* header */}
@@ -81,61 +108,93 @@ export default function Message() {
                         padding: "3vh",
                     }}
                 >
-
-                  {/* Todo: adapt avatar */}
-                    <Avatar sx={{ bgcolor: "orange" }}>
-                        {conversations[currentConversations].user[0]}
-                    </Avatar>
-                    {conversations[currentConversations].user}
+                    {/* Todo: adapt avatar */}
+                    {currentConversation != null ? (
+                        <Avatar sx={{ bgcolor: "orange" }}>
+                            {
+                                conversations.filter(
+                                    (conv) => conv.id == currentConversation
+                                )[0]?.title[0]
+                            }
+                        </Avatar>
+                    ) : null}
+                    {
+                        conversations.filter(
+                            (conv) => conv.id == currentConversation
+                        )[0]?.title
+                    }
                 </div>
             </Grid>
             {/* content */}
 
             <Grid sx={{ bgcolor: "white" }}>
                 <ul>
-                    {conversations[currentConversations].messages.map(
-                        (message, i) => {
+                    {currentConversation === null ? (
+                        <></>
+                    ) : messages.length === 0 ? (
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height: "20vh",
+                            }}
+                        >
+                            <h1>Send a message to get started!</h1>
+                        </div>
+                    ) : (
+                        messages.map((message) => {
                             return (
-                                <li key={i}>
-                                    ({message.timestamp}) - {message.content}
+                                <li key={message.id}>
+                                    {message.sender_user_id} (
+                                    {new Date(
+                                        message.created_at
+                                    ).toLocaleString("fr-FR")}
+                                    ) : {message.content}
                                 </li>
                             );
-                        }
+                        })
                     )}
                 </ul>
             </Grid>
 
             {/* sub */}
-            <Container
-                sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                <div>
-                    <TextField
-                        multiline
-                        placeholder="Send a message"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        style={{
-                            borderColor: "black",
-                            backgroundColor: "lightgrey",
-                            border: "0",
-                            textJustify: "center",
+            {currentConversation === null ? (
+                <></>
+            ) : (
+                <Container
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    <div>
+                        <TextField
+                            multiline
+                            placeholder="Send a message"
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            style={{
+                                borderColor: "black",
+                                backgroundColor: "lightgrey",
+                                border: "0",
+                                textJustify: "center",
+                            }}
+                        />
+                    </div>
 
-                        }}
-                    />
-                </div>
-
-                {/* input */}
-                <div>
-                    <IconButton sx={{ color: "orange" }} onClick={() => send()}>
-                        <SendIcon />
-                    </IconButton>
-                </div>
-            </Container>
+                    {/* input */}
+                    <div>
+                        <IconButton
+                            sx={{ color: "orange" }}
+                            onClick={() => send()}
+                        >
+                            <SendIcon />
+                        </IconButton>
+                    </div>
+                </Container>
+            )}
         </Container>
     );
 }
