@@ -7,6 +7,7 @@ use App\Models\Application;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\Account;
 
 
 class ApplicationController extends Controller
@@ -43,9 +44,17 @@ class ApplicationController extends Controller
         return response()->json(null, 204);
     }
 
-    public function messages(Application $application)
+    public function messages(Request $request, Application $application)
     {
-        return $application->messages;
+        if (!$request->has("include_sender_name"))
+            return $application->messages;
+
+        $result = $application->messages->all();
+        foreach ($result as $application) {
+            $sender_account = Account::find($application->sender_account_id);
+            $application["sender_name"] = $sender_account->user ? $sender_account->user->firstname[0] . ". " . $sender_account->user->lastname : $sender_account->company->name;
+        }
+        return response()->json($result);
     }
 
     /// Web

@@ -20,9 +20,14 @@ export default function Message(props) {
     // Function to fetch all messages for a conversation
     function getMessages() {
         if (currentConversation == null) return;
-        fetch("/api/applications/" + currentConversation + "/messages", {
-            method: "get",
-        })
+        fetch(
+            "/api/applications/" +
+                currentConversation +
+                "/messages?include_sender_name",
+            {
+                method: "get",
+            }
+        )
             .then((res) => res.json())
             .then((res) => {
                 setMessages(res);
@@ -133,7 +138,7 @@ export default function Message(props) {
                         messages.map((message) => {
                             return (
                                 <li key={message.id}>
-                                    {message.sender_account_id} (
+                                    {message.sender_name} (
                                     {new Date(
                                         message.created_at
                                     ).toLocaleString("fr-FR")}
