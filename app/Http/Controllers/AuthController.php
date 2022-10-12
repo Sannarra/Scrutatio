@@ -82,7 +82,7 @@ class AuthController extends Controller
                 'creation_date' => $data['creation_date'],
                 'size' => $data["size"],
                 'headquarter' => $data["headquarter"],
-                'postal_code' => 0,
+                'description' => $data["description"],
                 'website' => $data["website"],
                 'account_id' => $account->id
             ]);

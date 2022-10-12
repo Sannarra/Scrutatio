@@ -18,7 +18,7 @@ class Company extends Model
         'creation_date',
         'size',
         'headquarter',
-        'postal_code',
+        'description',
         'account_id',
         'website'];
 
