@@ -26,7 +26,7 @@ export default function Home(props) {
                     rowsPerPageOptions={[5, 10, 15, 25, 50, 100]}
                     rowsPerPage={props.data.page.size || 10}
                     onRowsPerPageChange={(event) => {
-                        changePage(props.data.page.current, event.target.value);
+                        changePage(1, event.target.value);
                     }}
                 />
             </div>
