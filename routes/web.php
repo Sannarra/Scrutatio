@@ -44,6 +44,7 @@ Route::middleware("auth")->group(function () {
         Route::middleware("can:isMember")->group(function () {
             Route::get('register-company', [AuthController::class , 'registerCompanyView']);
             Route::post('register-company', [AuthController::class , 'registerCompany']);
+            Route::get('apply/{post}', [ApplicationController::class , 'apply']);
         }
         );
 
@@ -52,6 +53,5 @@ Route::middleware("auth")->group(function () {
 
         //messsage
         Route::get('chat', [ApplicationController::class , 'chat']);
-        Route::get('apply/{post}', [ApplicationController::class , 'apply']);
         Route::post('applications/{application}/send-message', 'App\Http\Controllers\ApplicationController@sendMessage');
     });

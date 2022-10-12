@@ -105,6 +105,15 @@ export default function Profile(props) {
                 >
                     Create company account
                 </Button>
+                {props.data.isAdmin ? (
+                    <Button
+                        sx={{ color: "black" }}
+                        href="/admin-panel"
+                        variant="outlined"
+                    >
+                        Admin Panel
+                    </Button>
+                ) : null}
             </Box>
         </div>
     );
