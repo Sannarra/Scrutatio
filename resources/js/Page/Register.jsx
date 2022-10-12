@@ -124,103 +124,113 @@ export default function Register(props) {
 
     return (
         <div {...props}>
-            <div style={{ paddingLeft: "10%", paddingRight: "10%" }}>
-                <h1 style={{ justifyContent: "center", display: "flex" }}>
-                    Register
-                </h1>
-                <form method="POST" action="/register">
-                    <input
-                        type="hidden"
-                        name="_token"
-                        value={props.csrf_token}
-                    />
-                    <FormGroup>
-                        <Grid container spacing={4}>
-                            <Grid xs={6}>
-                                {VerifiedTextField({
-                                    type: "text",
-                                    label: "First Name",
-                                    name: "firstname",
-                                    autoComplete: "given-name",
-                                })}
-                            </Grid>
-                            <Grid xs={6}>
-                                {VerifiedTextField({
-                                    type: "text",
-                                    label: "Last Name",
-                                    name: "lastname",
-                                    autoComplete: "family-name",
-                                })}
-                            </Grid>
-                        </Grid>
-                        <br />
-                        {VerifiedTextField({
-                            type: "text",
-                            label: "Phone Number",
-                            name: "phone",
-                            autoComplete: "tel",
-                        })}
-                        <br />
-                        {VerifiedTextField({
-                            type: "text",
-                            label: "City",
-                            name: "city",
-                            autoComplete: "address-level1",
-                        })}
-                        <br />
-                        {VerifiedTextField({
-                            type: "email",
-                            label: "Email",
-                            name: "email",
-                            autoComplete: "email",
-                        })}
-                        <br />
-                        {VerifiedTextField({
-                            type: "password",
-                            label: "Password",
-                            name: "password",
-                            autoComplete: "new-password",
-                        })}
-                        <br />
-                        {VerifiedTextField({
-                            type: "password",
-                            label: "Confirm Password",
-                            name: "confirmPassword",
-                            autoComplete: "new-password",
-                        })}
-
-                        <br />
-                        <FormControlLabel
-                            control={<Checkbox />}
-                            label="Remember me"
-                            name="remember"
-                        />
-                        {Errors(props.errors)}
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            sx={{
-                                width: "200px",
-                                alignSelf: "center",
-                                backgroundColor: "var(--accent)",
-                                color: "black",
-                                borderRadius: 50,
-                            }}
-                            disabled={!validateInputs()}
-                        >
-                            Sign Up
-                        </Button>
-                    </FormGroup>
-                </form>
-            </div>
-            <br />
-            <a
-                href="/login"
-                style={{ justifyContent: "center", display: "flex" }}
+            <Grid
+                container
+                style={{ display: "flex", justifyContent: "center" }}
             >
-                Already registered ? log in
-            </a>
+                <Grid xs={11} sm={9} md={7} lg={5}>
+                    <h1
+                        style={{
+                            justifyContent: "center",
+                            display: "flex",
+                        }}
+                    >
+                        Register
+                    </h1>
+                    <form method="POST" action="/register">
+                        <input
+                            type="hidden"
+                            name="_token"
+                            value={props.csrf_token}
+                        />
+                        <FormGroup>
+                            <Grid container spacing={4}>
+                                <Grid xs={6}>
+                                    {VerifiedTextField({
+                                        type: "text",
+                                        label: "First Name",
+                                        name: "firstname",
+                                        autoComplete: "given-name",
+                                    })}
+                                </Grid>
+                                <Grid xs={6}>
+                                    {VerifiedTextField({
+                                        type: "text",
+                                        label: "Last Name",
+                                        name: "lastname",
+                                        autoComplete: "family-name",
+                                    })}
+                                </Grid>
+                            </Grid>
+                            <br />
+                            {VerifiedTextField({
+                                type: "text",
+                                label: "Phone Number",
+                                name: "phone",
+                                autoComplete: "tel",
+                            })}
+                            <br />
+                            {VerifiedTextField({
+                                type: "text",
+                                label: "City",
+                                name: "city",
+                                autoComplete: "address-level1",
+                            })}
+                            <br />
+                            {VerifiedTextField({
+                                type: "email",
+                                label: "Email",
+                                name: "email",
+                                autoComplete: "email",
+                            })}
+                            <br />
+                            {VerifiedTextField({
+                                type: "password",
+                                label: "Password",
+                                name: "password",
+                                autoComplete: "new-password",
+                            })}
+                            <br />
+                            {VerifiedTextField({
+                                type: "password",
+                                label: "Confirm Password",
+                                name: "confirmPassword",
+                                autoComplete: "new-password",
+                            })}
+
+                            <br />
+                            <FormControlLabel
+                                control={<Checkbox />}
+                                label="Remember me"
+                                name="remember"
+                            />
+                            {Errors(props.errors)}
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                sx={{
+                                    width: "200px",
+                                    alignSelf: "center",
+                                    backgroundColor: "var(--accent)",
+                                    color: "black",
+                                    borderRadius: 50,
+                                }}
+                                disabled={!validateInputs()}
+                            >
+                                Sign Up
+                            </Button>
+                        </FormGroup>
+                    </form>
+                    <br />
+                    <a
+                        href="/login"
+                        style={{ justifyContent: "center", display: "flex" }}
+                    >
+                        Already registered ? log in
+                    </a>
+                </Grid>
+            </Grid>
         </div>
     );
 }
