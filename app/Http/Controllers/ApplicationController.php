@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Application;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class ApplicationController extends Controller
 {
@@ -58,7 +60,17 @@ class ApplicationController extends Controller
 
     public function chat()
     {
-        $applications = Auth::user()->user->applications;
+        $applications = null;
+        if (Auth::user()->user != null)
+            $applications = Auth::user()->user->applications;
+        else
+            $applications = Application::whereHas('post', function (Builder $query) {
+                return $query->whereHas('company', function (Builder $query) {
+                        return $query->whereRelation('account', 'id', Auth::id());
+                    }
+                    );
+                })->get();
+
         $applications_id = $applications->pluck('id');
         $applications_title = $applications->pluck('post.title');
 
