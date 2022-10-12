@@ -69,7 +69,7 @@ export default function CompanyProfile(props) {
                     }}
                 >
                     <img
-                        src="/profile.png"
+                        src="/company_profile.png"
                         alt="test"
                         style={{ maxWidth: "100%" }}
                     />
