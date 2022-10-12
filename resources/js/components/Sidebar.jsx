@@ -2,6 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
 import Slider from "@mui/material/Slider";
 import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid";
@@ -10,6 +11,7 @@ import TextField from "@mui/material/TextField";
 import CancelIcon from "@mui/icons-material/Cancel";
 import IconButton from "@mui/material/IconButton";
 import MenuItem from "@mui/material/MenuItem";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 export default function FilterSidebar({
     isOpen,
@@ -43,6 +45,7 @@ export default function FilterSidebar({
     const [selectedChips, setSelectedChips] = React.useState(
         urlParams.contractTypes ? urlParams.contractTypes.split(",") : []
     );
+    const [includeNull, setIncludeNull] = React.useState(true);
 
     const toggleChip = (chip) => {
         if (selectedChips.includes(chip)) {
@@ -128,6 +131,7 @@ export default function FilterSidebar({
                         setLocation("");
                         setField("");
                         setSelectedChips([]);
+                        setIncludeNull(true);
                     }}
                     style={{ float: "right" }}
                 >
@@ -249,6 +253,13 @@ export default function FilterSidebar({
                             );
                         })}
                     </Grid>
+                    <FormControlLabel
+                        sx={{ mt: 2 }}
+                        control={<Checkbox />}
+                        label="Include attributes not set"
+                        name="includeNull"
+                        value={includeNull}
+                    />
                 </label>
                 <label>
                     <Button

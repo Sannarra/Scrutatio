@@ -48,11 +48,19 @@ class PostController extends Controller
     }
 
     /// Web api
-    static public function search($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $contractTypes, $field, $query = null)
+    static public function search($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $contractTypes, $field, $includeNull, $query = null)
     {
         if ($query == null)
             $query = (new Post)->newQuery();
         $result = $query;
+
+        $addWhereOrNull = function ($key, $operand, $value) use ($includeNull, $result) {
+            if ($value == null)
+                return;
+            $result = $result->where($key, $operand, $value);
+            if ($includeNull)
+                $result = $result->orWhereNull($key);
+        };
 
 
         if ($searchWords != null)
@@ -60,14 +68,10 @@ class PostController extends Controller
                 ->orWhere('description', 'like', "%$searchWords%")
                 ->orWhere('short_brief', 'like', "%$searchWords%")
                 ->orWhereRelation('company', 'name', 'like', "%$searchWords%");
-        if ($minSalary != null)
-            $result = $result->where('salary', '>', $minSalary);
-        if ($maxSalary != null)
-            $result = $result->where('salary', '<', $maxSalary);
-        if ($minHours != null)
-            $result = $result->where('working_time', '>', $minHours);
-        if ($maxHours != null)
-            $result = $result->where('working_time', '<', $maxHours);
+        $addWhereOrNull('salary', '>', $minSalary);
+        $addWhereOrNull('salary', '<', $maxSalary);
+        $addWhereOrNull('working_time', '>', $minHours);
+        $addWhereOrNull('working_time', '<', $maxHours);
         if ($location != null)
             $result = $result->where('city', 'like', "%$location%");
         if ($contractTypes != null)
@@ -87,7 +91,7 @@ class PostController extends Controller
         return $result;
     }
 
-    static public function getJobCardsData($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $contractTypes, $field, $pageSize, $currentPage, $query = null)
+    static public function getJobCardsData($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $contractTypes, $field, $includeNull, $pageSize, $currentPage, $query = null)
     {
         $posts = PostController::search($sortField,
             $sortOrder,
@@ -99,6 +103,7 @@ class PostController extends Controller
             $location,
             $contractTypes,
             $field,
+            $includeNull,
             $query);
 
         if ($currentPage < 1)
@@ -123,7 +128,8 @@ class PostController extends Controller
             $request->query('maxHours'),
             $request->query('location'),
             explode(",", $request->query('contractTypes')),
-            $request->query('field')), 200);
+            $request->query('field'),
+            $request->query("includeNull")), 200);
     }
 
     public function createPost(Request $request)
@@ -180,6 +186,7 @@ class PostController extends Controller
             $request->query('location'),
             explode(',', $request->query('contractTypes')),
             $request->query('field'),
+            $request->query("includeNull"),
             intval($request->query('pageSize', 10)),
             intval($request->query('page', 1)),
             $query));
