@@ -113,6 +113,7 @@ export default function FilterSidebar({
                     name="contractTypes"
                     value={selectedChips}
                 />
+                <input type="hidden" name="includeNull" value={includeNull} />
                 <IconButton
                     title="Close"
                     onClick={() => {
@@ -259,11 +260,8 @@ export default function FilterSidebar({
                         sx={{ mt: 2 }}
                         control={<Checkbox />}
                         label="Include attributes not set"
-                        name="includeNull"
                         checked={includeNull}
-                        onChange={(e) =>
-                            setIncludeNull(e.target.value == "true")
-                        }
+                        onChange={(e) => setIncludeNull(e.target.checked)}
                     />
                 </label>
                 <label>
