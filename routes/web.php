@@ -55,4 +55,8 @@ Route::middleware("auth")->group(function () {
 
         //messsage
 Route::get('message', [MessageController::class , 'chat'])->name('message');
-    });
+Route::get('message/fetch', [MessageController::class , 'index'])->name('message.fetch');
+Route::get('message/{applicationId}/fetch', [MessageController::class , 'show'])->name('message.fetchMessages');
+Route::post('message/{applicationId}/send', [MessageController::class , 'store'])->name('message.send');
+//change to application/appilicationID/fetch-messages
+});
