@@ -15,47 +15,55 @@ export default function Profile(props) {
     return (
         <div>
             <Grid container justifyContent="space-between">
-                <Button
-                    href={`/edit-profile/${
-                        props.data.user.account_id
-                            ? props.data.user.account_id
-                            : ""
-                    }`}
-                    variant="contained"
-                    startIcon={<EditIcon />}
-                >
-                    Edit profile
-                </Button>
-                <div>
+                {props.data.canEdit ? (
                     <Button
-                        sx={{ backgroundColor: "lightgrey" }}
-                        href="/signout"
+                        href={`/edit-profile/${
+                            props.data.user.account_id
+                                ? props.data.user.account_id
+                                : ""
+                        }`}
                         variant="contained"
-                        startIcon={<LogoutIcon />}
+                        startIcon={<EditIcon />}
                     >
-                        Sign Out
+                        Edit profile
                     </Button>
-                    <Button
-                        sx={{ backgroundColor: "lightgrey" }}
-                        variant="contained"
-                        startIcon={<DeleteIcon />}
-                        onClick={() => setDeleteOpen(true)}
-                    />
-                    <ConfirmDialog
-                        title="Delete account ?"
-                        open={deleteOpen}
-                        setOpen={setDeleteOpen}
-                        onConfirm={() => {
-                            fetch("/api/users/" + props.data.user.id, {
-                                method: "delete",
-                            }).then((res) => {
-                                if (!props.data.user.account_id)
-                                    window.location.replace("/signout");
-                            });
-                        }}
-                    >
-                        Are you sure you want to delete this account?
-                    </ConfirmDialog>
+                ) : null}
+                <div>
+                    {props.data.isCurrentProfile ? (
+                        <Button
+                            sx={{ backgroundColor: "lightgrey" }}
+                            href="/signout"
+                            variant="contained"
+                            startIcon={<LogoutIcon />}
+                        >
+                            Sign Out
+                        </Button>
+                    ) : null}
+                    {props.data.canEdit ? (
+                        <>
+                            <Button
+                                sx={{ backgroundColor: "lightgrey" }}
+                                variant="contained"
+                                startIcon={<DeleteIcon />}
+                                onClick={() => setDeleteOpen(true)}
+                            />
+                            <ConfirmDialog
+                                title="Delete account ?"
+                                open={deleteOpen}
+                                setOpen={setDeleteOpen}
+                                onConfirm={() => {
+                                    fetch("/api/users/" + props.data.user.id, {
+                                        method: "delete",
+                                    }).then((res) => {
+                                        if (!props.data.user.account_id)
+                                            window.location.replace("/signout");
+                                    });
+                                }}
+                            >
+                                Are you sure you want to delete this account?
+                            </ConfirmDialog>
+                        </>
+                    ) : null}
                 </div>
             </Grid>
             <Grid container sx={{ mt: 3, justifyContent: "center" }}>
@@ -86,35 +94,36 @@ export default function Profile(props) {
                     <UserInfo data={props.data.user} />
                 </Box>
             </Grid>
-
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <Button
-                    sx={{ color: "black" }}
-                    href="#"
-                    variant="outlined"
-                    startIcon={<StarIcon />}
-                >
-                    saved offers
-                </Button>
-
-                <Button
-                    sx={{ color: "black" }}
-                    href="/register-company"
-                    variant="outlined"
-                    startIcon={<AddCircleIcon />}
-                >
-                    Create company account
-                </Button>
-                {props.data.isAdmin ? (
+            {props.data.isCurrentProfile ? (
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
                     <Button
                         sx={{ color: "black" }}
-                        href="/admin-panel"
+                        href="#"
                         variant="outlined"
+                        startIcon={<StarIcon />}
                     >
-                        Admin Panel
+                        saved offers
                     </Button>
-                ) : null}
-            </Box>
+
+                    <Button
+                        sx={{ color: "black" }}
+                        href="/register-company"
+                        variant="outlined"
+                        startIcon={<AddCircleIcon />}
+                    >
+                        Create company account
+                    </Button>
+                    {props.data.isAdmin ? (
+                        <Button
+                            sx={{ color: "black" }}
+                            href="/admin-panel"
+                            variant="outlined"
+                        >
+                            Admin Panel
+                        </Button>
+                    ) : null}
+                </Box>
+            ) : null}
         </div>
     );
 }
