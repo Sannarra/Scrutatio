@@ -30,7 +30,8 @@ class ProfileController extends Controller
                     "description" => $company->description,
                     "email" => $account->email,
                     "account_id" => $include_id ? $account->id : null
-                ]
+                ],
+                "isAdmin" => $account->is_admin
             ]);
         }
         if ($user !== null) {
@@ -43,7 +44,8 @@ class ProfileController extends Controller
                     "city" => $user->city,
                     "email" => $user->account->email,
                     "account_id" => $include_id ? $account->id : null
-                ]
+                ],
+                "isAdmin" => $account->is_admin
             ]);
         }
     }

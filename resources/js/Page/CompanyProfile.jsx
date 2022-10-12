@@ -97,6 +97,15 @@ export default function CompanyProfile(props) {
                 >
                     Manage offers
                 </Button>
+                {props.data.isAdmin ? (
+                    <Button
+                        sx={{ color: "black" }}
+                        href="/admin-panel"
+                        variant="outlined"
+                    >
+                        Admin Panel
+                    </Button>
+                ) : null}
             </Box>
         </div>
     );
