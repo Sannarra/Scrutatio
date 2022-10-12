@@ -62,11 +62,19 @@ function getPage() {
             );
         case "edit_profile":
             return () => (
-                <EditProfile data={pageData} csrf_token={csrf_token} />
+                <EditProfile
+                    data={pageData}
+                    csrf_token={csrf_token}
+                    errors={errors}
+                />
             );
         case "edit_company_profile":
             return () => (
-                <EditCompanyProfile data={pageData} csrf_token={csrf_token} />
+                <EditCompanyProfile
+                    data={pageData}
+                    csrf_token={csrf_token}
+                    errors={errors}
+                />
             );
         /// Posts
         case "manage_posts":
@@ -78,10 +86,11 @@ function getPage() {
                     creation_mode
                     data={pageData}
                     csrf_token={csrf_token}
+                    errors={errors}
                 />
             );
         case "edit_post":
-            return () => <EditPosts data={pageData} csrf_token={csrf_token} />;
+            return () => <EditPosts data={pageData} csrf_token={csrf_token} errors={errors} />;
         case "message":
             return () => <Message data={pageData} csrf_token={csrf_token} />;
         default:

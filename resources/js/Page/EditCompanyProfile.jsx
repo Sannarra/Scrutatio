@@ -5,6 +5,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Unstable_Grid2";
+import Errors from "../components/Errors.jsx";
 
 export default function RegisterCompany(props) {
     const [input, setInput] = useState({
@@ -19,6 +20,7 @@ export default function RegisterCompany(props) {
         size: "",
         headquarter: "",
         website: "",
+        description: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -77,12 +79,8 @@ export default function RegisterCompany(props) {
 
     const VerifiedTextField = (props) => (
         <TextField
+            {...props}
             key={props.name}
-            type={props.type}
-            label={props.label}
-            placeholder={props.placeholder}
-            name={props.name}
-            autoComplete={props.autoComplete}
             value={input[props.name]}
             error={error[props.name] != ""}
             helperText={error[props.name]}
@@ -157,6 +155,14 @@ export default function RegisterCompany(props) {
                             })}
                             <br />
                             {VerifiedTextField({
+                                type: "text",
+                                label: "Description",
+                                name: "description",
+                                autoComplete: "on",
+                                multiline: true,
+                            })}
+                            <br />
+                            {VerifiedTextField({
                                 type: "email",
                                 label: "Email for your company account",
                                 name: "email",
@@ -177,6 +183,8 @@ export default function RegisterCompany(props) {
                                 autoComplete: "new-password",
                             })}
 
+                            <br />
+                            {Errors(props.errors)}
                             <br />
                             <Button
                                 type="submit"

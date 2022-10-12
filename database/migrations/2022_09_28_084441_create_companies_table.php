@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->date('creation_date');
             $table->integer('size')->unsigned();
             $table->string('headquarter');
-            $table->string('postal_code');
+            $table->text('description');
             $table->foreignId('account_id')->constrained('accounts')->onUpdate('cascade')->onDelete('cascade');
             $table->string('website');
         });

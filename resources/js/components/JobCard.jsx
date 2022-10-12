@@ -258,8 +258,16 @@ export default class JobCard extends React.Component {
                                 </Typography>
                             </Grid>
                             <Grid xs={1} />
-                            <Grid xs={5}>{this.props.data.salary}$</Grid>
-                            <Grid xs={6}>{this.props.data.working_time}h</Grid>
+                            <Grid xs={5}>
+                                {this.props.data.salary
+                                    ? `${this.props.data.salary}$`
+                                    : "Not Defined"}
+                            </Grid>
+                            <Grid xs={6}>
+                                {this.props.data.working_time
+                                    ? `${this.props.data.working_time}h`
+                                    : "Not Defined"}
+                            </Grid>
                         </Grid>
 
                         <br />
