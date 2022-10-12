@@ -11,6 +11,11 @@ class Application extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'id',
+        'post_id',
+        'user_id', ];
+
     public function post()
     {
         return $this->belongsTo(Post::class);

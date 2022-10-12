@@ -8,6 +8,9 @@ use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Account;
+use App\Models\Post;
+use App\Models\User;
+use Illuminate\Support\Facades\Session;
 
 
 class ApplicationController extends Controller
@@ -67,7 +70,7 @@ class ApplicationController extends Controller
         ]), 201);
     }
 
-    public function chat()
+    public function getApplications()
     {
         $applications = null;
         if (Auth::user()->user != null)
@@ -80,6 +83,7 @@ class ApplicationController extends Controller
                     );
                 })->get();
 
+        $applications = $applications->sortByDesc('created_at');
         $applications_id = $applications->pluck('id');
         $applications_title = $applications->pluck('post.title');
 
@@ -89,7 +93,46 @@ class ApplicationController extends Controller
                 "id" => $id,
                 "title" => $applications_title[$i]
             ]);
+        return $conversations;
+    }
 
-        return react_view("message", ["conversations" => $conversations]);
+    public function chat()
+    {
+        $conversations = $this->getApplications();
+        $conversationId = Session::get("conversationId");
+        if ($conversationId == null)
+            $conversationId = 0;
+        else
+            foreach ($conversations as $i => $conv)
+                if ($conv['id'] == $conversationId) {
+                    $conversationId = $i;
+                    break;
+                }
+
+        return react_view("message", ["conversations" => $conversations, "conversationId" => $conversationId]);
+    }
+
+    public function getApplyMessage(Post $post, User $user)
+    {
+        return "Hello,
+Your {$post->title} job offer interests me.
+
+{$user->firstname} {$user->lastname}
+{$user->account->email}
+{$user->phone}";
+    }
+
+    public function apply(Post $post)
+    {
+        $conversation = Application::where('user_id', Auth::user()->user->id)->where('post_id', $post->id)->get();
+        if ($conversation->count() > 0)
+            return redirect('/chat')->with("conversationId", $conversation->first()->id);
+        $conversations = $this->getApplications();
+
+        array_unshift($conversations, ["title" => $post->title, "new" => true, "post_id" => $post->id]);
+        return react_view("message", [
+            "user" => Auth::user()->user->id,
+            "conversations" => $conversations,
+            "icebreaker" => $this->getApplyMessage($post, Auth::user()->user)]);
     }
 }
