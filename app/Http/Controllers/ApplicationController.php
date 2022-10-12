@@ -82,6 +82,7 @@ class ApplicationController extends Controller
                     );
                 })->get();
 
+        $applications = $applications->sortByDesc('created_at');
         $applications_id = $applications->pluck('id');
         $applications_title = $applications->pluck('post.title');
 
