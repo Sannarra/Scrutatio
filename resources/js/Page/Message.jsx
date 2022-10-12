@@ -14,16 +14,32 @@ export default function Message(props) {
         props.data.conversations || []
     );
     // State used for storing the current conversation id
-    const [currentConversation, setCurrentConversation] = useState(null);
+    /// Id in conversations state
+    const [currentConversationId, setCurrentConversationId] = useState(
+        conversations.length > 0 ? 0 : null
+    );
+    const currentConversation = () => {
+        if (currentConversationId == null) return null;
+        return conversations[currentConversationId];
+    };
+
+    /// Application ID if existing
+    const currentApplicationId = () => {
+        if (currentConversation() == null || currentConversationId == -1)
+            return null;
+        return currentConversation().id;
+    };
+
     // State used for storing the current conversation's messages
     const [messages, setMessages] = useState([]);
 
     // Function to fetch all messages for a conversation
     function getMessages() {
-        if (currentConversation == null) return;
+        setMessages([]);
+        if (currentApplicationId() == null) return;
         fetch(
             "/api/applications/" +
-                currentConversation +
+                currentApplicationId() +
                 "/messages?include_sender_name",
             {
                 method: "get",
@@ -38,13 +54,36 @@ export default function Message(props) {
     // Effect to fetch all messages for a conversation when the current conversation changes
     useEffect(() => {
         getMessages();
-    }, [currentConversation]);
+    }, [currentConversationId]);
 
-    const [message, setMessage] = useState("Hello");
+    const [message, setMessage] = useState(props.data.icebreaker || "Hello");
 
     const send = () => {
         if (message.trim() == "") return;
-        fetch("/applications/" + currentConversation + "/send-message", {
+        if (currentApplicationId() == null) {
+            fetch("/api/applications", {
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": props.csrf_token,
+                },
+                body: JSON.stringify({
+                    post_id: currentConversation().post_id,
+                    user_id: props.data.user,
+                }),
+            })
+                .then((res) => res.json())
+                .then((newApplication) => {
+                    currentConversation().id = newApplication.id;
+                    send();
+                })
+                .catch((err) => {
+                    console.log("Failed to apply to post: ", err);
+                });
+            return;
+        }
+
+        fetch("/applications/" + currentApplicationId() + "/send-message", {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
@@ -55,14 +94,8 @@ export default function Message(props) {
             }),
         })
             .then((res) => {
-                if (res.ok) {
-                    res.json().then((json) => {
-                        console.log(json);
-                    });
-                } else {
-                    console.log(res.status);
-                    console.log(res.statusText);
-                }
+                if (currentConversation().new) window.location.href = "/chat";
+
                 getMessages();
                 setMessage("");
             })
@@ -72,55 +105,54 @@ export default function Message(props) {
     };
 
     return (
-        <Container sx={{mb:'20px'}}>
+        <Container sx={{ mb: "20px" }}>
             {
                 // Display a list of all conversations with a button to select each conversation
-                conversations.map((conv) => {
+                conversations.map((conv, i) => {
                     return (
                         <Button
                             sx={{ m: 1 }}
                             variant="contained"
-                            key={conv.id}
-                            onClick={() => setCurrentConversation(conv.id)}
+                            key={i}
+                            onClick={() => setCurrentConversationId(i)}
+                            style={{
+                                backgroundColor: conv.new
+                                    ? "var(--accent)"
+                                    : "var(--accent2)",
+                            }}
                         >
-                            {conv.title}
+                            {conv.new && "NEW: "} {conv.title}
                         </Button>
                     );
                 })
             }
-            
-                    {/* if not apply -> find offer else -> click offer */}
-                    {conversations.length == 0 ? (
-                        <Container
-                            sx={{
-                                bgcolor: "white",
-                                fontSize: "2em",
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                padding: "5%",
-                                textAlign: "center",
-                            }}
-                        >
-                            <div>
-                                You have not applied to any job offers yet!
-                            </div>
-                            <Button
-                                variant="contained"
-                                href="/"
-                                sx={{ margin: "3%" }}
-                            >
-                                Find offers?
-                            </Button>
-                        </Container>
-                    ) : (
-                        <></>
-                    )}
 
-           {currentConversation === null ? (
-                                <></>
-                            ) : (
+            {/* if not apply -> find offer else -> click offer */}
+            {conversations.length == 0 ? (
+                <Container
+                    sx={{
+                        bgcolor: "white",
+                        fontSize: "2em",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "5%",
+                        textAlign: "center",
+                    }}
+                >
+                    <div>You have not applied to any job offers yet!</div>
+                    <Button variant="contained" href="/" sx={{ margin: "3%" }}>
+                        Find offers?
+                    </Button>
+                </Container>
+            ) : (
+                <></>
+            )}
+
+            {currentConversationId === null ? (
+                <></>
+            ) : (
                 <div
                     style={{
                         backgroundColor: "var(--dark)",
@@ -131,44 +163,42 @@ export default function Message(props) {
                     {/* if not apply -> find offer else -> click offer */}
                     <Grid>
                         <div>
-                            {currentConversation != null ? (
-                                <div
-                                    style={{
-                                        backgroundColor: "var(--dark)",
-                                        color: "var(--light)",
-                                        display: "flex",
-                                        textAlign: "center",
-                                        alignItems: "center",
-                                        gap: "3%",
-                                        padding: "3vh",
-                                    }}
-                                >
-                                    {/* Todo: adapt avatar */}
+                            <div
+                                style={{
+                                    backgroundColor: "var(--dark)",
+                                    color: "var(--light)",
+                                    display: "flex",
+                                    textAlign: "center",
+                                    alignItems: "center",
+                                    gap: "3%",
+                                    padding: "3vh",
+                                }}
+                            >
+                                {/* Todo: adapt avatar */}
 
-                                    <Avatar sx={{ bgcolor: "orange" }}>
-                                        {
-                                            conversations.filter(
-                                                (conv) =>
-                                                    conv.id ==
-                                                    currentConversation
-                                            )[0]?.title[0]
-                                        }
-                                    </Avatar>
+                                <Avatar sx={{ bgcolor: "orange" }}>
                                     {
                                         conversations.filter(
                                             (conv) =>
-                                                conv.id == currentConversation
-                                        )[0]?.title
+                                                conv.id ==
+                                                currentApplicationId()
+                                        )[0]?.title[0]
                                     }
-                                </div>
-                            ) : null}
+                                </Avatar>
+                                {
+                                    conversations.filter(
+                                        (conv) =>
+                                            conv.id == currentApplicationId()
+                                    )[0]?.title
+                                }
+                            </div>
                         </div>
                     </Grid>
                     {/* content */}
 
                     <Grid>
                         <div>
-                            {currentConversation === null ? (
+                            {currentConversationId === null ? (
                                 <></>
                             ) : messages.length === 0 ? (
                                 <div
@@ -180,7 +210,7 @@ export default function Message(props) {
                                         backgroundColor: "white",
                                     }}
                                 >
-                                    <h1>Send a message to get started!</h1>
+                                    <h1>Send a message to apply to the job!</h1>
                                 </div>
                             ) : (
                                 messages.map((message, i) => {
@@ -238,7 +268,7 @@ export default function Message(props) {
                     </Grid>
 
                     {/* sub */}
-                    {currentConversation === null ? (
+                    {currentConversationId === null ? (
                         <></>
                     ) : (
                         <div
@@ -268,7 +298,7 @@ export default function Message(props) {
                             {/* input */}
 
                             <IconButton
-                                sx={{ color: "orange"}}
+                                sx={{ color: "orange" }}
                                 onClick={() => send()}
                             >
                                 <SendIcon />
@@ -276,7 +306,7 @@ export default function Message(props) {
                         </div>
                     )}
                 </div>
-            ) }
+            )}
         </Container>
     );
 }

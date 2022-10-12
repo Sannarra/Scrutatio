@@ -52,6 +52,6 @@ Route::middleware("auth")->group(function () {
 
         //messsage
         Route::get('chat', [ApplicationController::class , 'chat']);
-        Route::post('chat', [ApplicationController::class , 'chat']); //paramettre post id 
+        Route::get('apply/{post}', [ApplicationController::class , 'apply']);
         Route::post('applications/{application}/send-message', 'App\Http\Controllers\ApplicationController@sendMessage');
     });

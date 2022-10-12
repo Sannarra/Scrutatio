@@ -281,6 +281,7 @@ export default class JobCard extends React.Component {
                                 color: "black",
                                 borderRadius: 50,
                             }}
+                            href={`/apply/${this.props.data.id}`}
                         >
                             Apply
                         </Button>

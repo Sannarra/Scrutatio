@@ -8,6 +8,7 @@ use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Account;
+use App\Models\Post;
 
 
 class ApplicationController extends Controller
@@ -67,7 +68,7 @@ class ApplicationController extends Controller
         ]), 201);
     }
 
-    public function chat()
+    public function getApplications()
     {
         $applications = null;
         if (Auth::user()->user != null)
@@ -89,7 +90,19 @@ class ApplicationController extends Controller
                 "id" => $id,
                 "title" => $applications_title[$i]
             ]);
+        return $conversations;
+    }
 
-        return react_view("message", ["conversations" => $conversations]);
+    public function chat()
+    {
+        return react_view("message", ["conversations" => $this->getApplications()]);
+    }
+
+    public function apply(Post $post)
+    {
+        $conversations = $this->getApplications();
+
+        array_unshift($conversations, ["title" => $post->title, "new" => true, "post_id" => $post->id]);
+        return react_view("message", ["user" => Auth::user()->user->id, "conversations" => $conversations, "icebreaker" => "Hello from the back"]);
     }
 }
