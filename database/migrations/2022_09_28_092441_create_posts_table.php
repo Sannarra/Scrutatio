@@ -17,8 +17,8 @@ return new class extends Migration {
             $table->timestamps();
             $table->string('title');
             $table->text('description');
-            $table->integer('salary')->unsigned();
-            $table->integer('working_time')->unsigned();
+            $table->integer('salary')->unsigned()->nullable();
+            $table->integer('working_time')->unsigned()->nullable();
             $table->string('city');
             $table->enum('contract_type', ["Not Defined", "Fixed-term", 'Permanent', "Internship", "Apprenticeship", "Seasonal"]);
             $table->text('short_brief');
