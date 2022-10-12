@@ -100,6 +100,8 @@ class ApplicationController extends Controller
 
     public function apply(Post $post)
     {
+        if (Application::where('user_id', Auth::user()->user->id)->where('post_id', $post->id)->get()->count() > 0)
+            return redirect('/chat');
         $conversations = $this->getApplications();
 
         array_unshift($conversations, ["title" => $post->title, "new" => true, "post_id" => $post->id]);
