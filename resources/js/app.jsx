@@ -32,6 +32,7 @@ import EditProfile from "./Page/EditProfile";
 import CompanyProfile from "./Page/CompanyProfile";
 import EditCompanyProfile from "./Page/EditCompanyProfile";
 import AdminPanel from "./Page/AdminPanel.jsx";
+import Message from "./Page/Message.jsx";
 
 let with_sidebar = false;
 
@@ -89,13 +90,9 @@ function getPage() {
                 />
             );
         case "edit_post":
-            return () => (
-                <EditPosts
-                    data={pageData}
-                    csrf_token={csrf_token}
-                    errors={errors}
-                />
-            );
+            return () => <EditPosts data={pageData} csrf_token={csrf_token} errors={errors} />;
+        case "message":
+            return () => <Message data={pageData} csrf_token={csrf_token} />;
         default:
             return () => <h1>Undefined page name </h1>;
     }

@@ -31,7 +31,7 @@ Route::post('companies', 'App\Http\Controllers\CompanyController@store');
 Route::put('companies/{company}', 'App\Http\Controllers\CompanyController@update');
 Route::delete('companies/{company}', 'App\Http\Controllers\CompanyController@delete');
 
-// Post 
+/// Post 
 Route::get('posts', 'App\Http\Controllers\PostController@index');
 Route::get('posts/{post}', 'App\Http\Controllers\PostController@show');
 Route::get('posts/search', 'App\Http\Controllers\PostController@searchRoute');
@@ -45,3 +45,18 @@ Route::get('accounts/{account}', 'App\Http\Controllers\AccountController@show');
 Route::post('accounts', 'App\Http\Controllers\AccountController@store');
 Route::put('accounts/{account}', 'App\Http\Controllers\AccountController@update');
 Route::delete('accounts/{account}', 'App\Http\Controllers\AccountController@delete');
+
+/// Message
+Route::get('messages', 'App\Http\Controllers\MessageController@index');
+Route::get('messages/{message}', 'App\Http\Controllers\MessageController@show');
+Route::post('messages', 'App\Http\Controllers\MessageController@store');
+Route::put('messages/{message}', 'App\Http\Controllers\MessageController@update');
+Route::delete('messages/{message}', 'App\Http\Controllers\MessageController@delete');
+
+/// Application
+Route::get('applications', 'App\Http\Controllers\ApplicationController@index');
+Route::get('applications/{application}', 'App\Http\Controllers\ApplicationController@show');
+Route::get('applications/{application}/messages', 'App\Http\Controllers\ApplicationController@messages');
+Route::post('applications', 'App\Http\Controllers\ApplicationController@store');
+Route::put('applications/{application}', 'App\Http\Controllers\ApplicationController@update');
+Route::delete('applications/{application}', 'App\Http\Controllers\ApplicationController@delete');

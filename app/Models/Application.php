@@ -21,8 +21,8 @@ class Application extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function mails()
+    public function messages()
     {
-        return $this->hasMany(Mail::class);
+        return $this->hasMany(Message::class);
     }
 }

@@ -4,12 +4,12 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Mail;
+use App\Models\Message;
 use App\Models\Application;
 use Illuminate\Support\Facades\Schema;
-use App\Models\User;
+use App\Models\Account;
 
-class MailSeeder extends Seeder
+class MessageSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -22,15 +22,14 @@ class MailSeeder extends Seeder
 
 
         Schema::disableForeignKeyConstraints();
-        Mail::truncate();
+        Message::truncate();
         Schema::enableForeignKeyConstraints();
 
         for ($i = 0; $i < 20; $i++) {
-            Mail::create([
-                'subject' => $faker->sentence(),
+            Message::create([
                 'content' => $faker->text(),
                 'application_id' => $faker->numberBetween(1, Application::count()),
-                'sender_user_id' => $faker->numberBetween(1, User::count())
+                'sender_account_id' => $faker->numberBetween(1, Account::count())
             ]);
         }
     }

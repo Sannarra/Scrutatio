@@ -32,8 +32,8 @@ class User extends Model
         return $this->hasMany(Application::class);
     }
 
-    public function mails()
+    public function messages()
     {
-        return $this->hasMany(Mail::class , 'sender_user_id');
+        return $this->hasMany(Message::class , 'sender_account_id');
     }
 }

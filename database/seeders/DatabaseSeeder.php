@@ -21,6 +21,6 @@ class DatabaseSeeder extends Seeder
             CompanySectorSeeder::class ,
             PostSeeder::class ,
             ApplicationSeeder::class ,
-            MailSeeder::class]);
+            MessageSeeder::class]);
     }
 }

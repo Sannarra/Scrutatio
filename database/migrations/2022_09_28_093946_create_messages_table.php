@@ -12,12 +12,11 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('mails', function (Blueprint $table) {
+        Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->foreignId('application_id')->constrained("applications")->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('sender_user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('subject');
+            $table->foreignId('sender_account_id')->constrained('accounts')->onUpdate('cascade')->onDelete('cascade');
             $table->text('content');
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('mails');
+        Schema::dropIfExists('messages');
     }
 };
