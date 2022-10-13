@@ -247,6 +247,7 @@ export default function DBGrid(props) {
             headerName: "ID",
             width: 50,
             editable: true,
+            type: "number",
         });
         return columns;
     };
@@ -259,12 +260,14 @@ export default function DBGrid(props) {
                 headerName: "Creation Date",
                 width: 180,
                 editable: true,
+                type: "dateTime",
             },
             {
                 field: "updated_at",
                 headerName: "Modification Date",
                 width: 180,
                 editable: true,
+                type: "dateTime",
             },
         ]);
 

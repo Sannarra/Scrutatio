@@ -14,12 +14,14 @@ export default function MessagesGrid(props) {
                         headerName: "Application Id",
                         editable: true,
                         width: 110,
+                        type: "number",
                     },
                     {
                         field: "sender_account_id",
                         headerName: "Sender Account ID",
                         editable: true,
                         width: 140,
+                        type: "number",
                     },
                     {
                         field: "content",

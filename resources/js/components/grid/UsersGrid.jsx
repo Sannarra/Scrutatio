@@ -39,6 +39,7 @@ export default function UsersGrid(props) {
                         field: "account_id",
                         headerName: "Account Id",
                         editable: true,
+                        type: "number",
                     },
                 ],
             })}

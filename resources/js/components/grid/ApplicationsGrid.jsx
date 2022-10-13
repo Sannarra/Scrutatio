@@ -13,12 +13,14 @@ export default function ApplicationsGrid(props) {
                         field: "post_id",
                         headerName: "Post ID",
                         editable: true,
+                        type: "number",
                     },
                     {
                         field: "user_id",
                         headerName: "Applicant user id",
                         editable: true,
                         width: 150,
+                        type: "number",
                     },
                 ],
             })}

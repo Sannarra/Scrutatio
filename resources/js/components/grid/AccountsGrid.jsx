@@ -20,6 +20,7 @@ export default function AccountsGrid(props) {
                         headerName: "Admin",
                         width: 250,
                         editable: true,
+                        type: "boolean",
                     },
                 ],
             })}

@@ -25,12 +25,14 @@ export default function CompaniesGrid(props) {
                         headerName: "Creation Date",
                         width: 150,
                         editable: true,
+                        type: "date",
                     },
                     {
                         field: "size",
                         headerName: "Company Workforce",
                         width: 150,
                         editable: true,
+                        type: "number",
                     },
                     {
                         field: "headquarter",
@@ -55,6 +57,7 @@ export default function CompaniesGrid(props) {
                         field: "account_id",
                         headerName: "Account Id",
                         editable: true,
+                        type: "number",
                     },
                 ],
             })}
