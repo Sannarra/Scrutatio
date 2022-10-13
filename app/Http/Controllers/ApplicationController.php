@@ -93,7 +93,7 @@ class ApplicationController extends Controller
             array_push($conversations, [
                 "id" => $id,
                 "title" => $posts_title[$i],
-                "post_id" => $posts_id
+                "post_id" => $posts_id[$i]
             ]);
         return $conversations;
     }

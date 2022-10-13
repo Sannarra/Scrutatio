@@ -33,8 +33,7 @@ export default function Message(props) {
     };
 
     const currentPostId = () => {
-        if (currentConversation() == null)
-            return null;
+        if (currentConversation() == null) return null;
         return currentConversation().post_id;
     };
 
@@ -113,6 +112,7 @@ export default function Message(props) {
                 "Content-Type": "application/json",
                 "X-CSRF-TOKEN": props.csrf_token,
             },
+
             body: JSON.stringify({
                 message: inputMessage().trim(),
             }),
@@ -131,9 +131,8 @@ export default function Message(props) {
     return (
         <Container sx={{ mb: "20px" }}>
             {
-                //regroup conv per 2 for now
 
-                
+                // groupByPostId.map(())
 
                 // Display a list of all conversations with a button to select each conversation
                 conversations.map((conv, i) => {
@@ -355,3 +354,24 @@ export default function Message(props) {
         </Container>
     );
 }
+
+//
+function groupByPostId(data) {
+    const result = [];
+
+    data.forEach((e) => {
+      const postGroup = result.find((p) => p.post_id === e.post_id);
+
+      if (postGroup) {
+        postGroup.applications.push(e);
+      } else {
+        result.push({
+          post_id: e.post_id,
+          title: e.title,
+          applications: [e],
+        });
+      }
+    });
+
+    return result;
+  }
