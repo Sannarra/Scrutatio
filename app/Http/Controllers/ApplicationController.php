@@ -112,7 +112,10 @@ class ApplicationController extends Controller
                     break;
                 }
 
-        return react_view("message", ["conversations" => $conversations, "conversationId" => $conversationId, "account_id" => Auth::id()]);
+        return react_view("message", ["conversations" => $conversations, 
+        "conversationId" => $conversationId, 
+        "account_id" => Auth::id(),
+        "isCompany" => Auth::user()->company != null]);
     }
 
     public function getApplyMessage(Post $post, User $user)
