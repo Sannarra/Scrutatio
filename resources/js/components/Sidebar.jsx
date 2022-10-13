@@ -224,7 +224,7 @@ export default function FilterSidebar({
                         }}
                     />
                 </label>
-                <h3>Field</h3>
+                {/* <h3>Field</h3>
                 <label>
                     <TextField
                         name="field"
@@ -234,7 +234,7 @@ export default function FilterSidebar({
                             setField(e.target.value);
                         }}
                     />
-                </label>
+                </label> */}
                 <label>
                     <h3>Contract type</h3>
                     <Grid container>
