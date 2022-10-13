@@ -35,7 +35,6 @@ export default function PostsGrid(props) {
                         headerName: "Contract Type",
                         width: 120,
                     },
-                    { field: "icon_src", headerName: "Icon url", hide: true },
                     { field: "company_id", headerName: "Company ID" },
                 ],
             })}

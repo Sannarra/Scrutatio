@@ -24,10 +24,6 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|unique:sectors|max:255'
-        ]);
-
         $posts = Post::create($request->all());
 
         return response()->json($posts, 201);
@@ -48,7 +44,7 @@ class PostController extends Controller
     }
 
     /// Web api
-    static public function search($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $contractTypes, $field, $includeNull, $query = null)
+    static public function search($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $contractTypes, $includeNull, $query = null)
     {
         if ($query == null)
             $query = (new Post)->newQuery();
@@ -77,13 +73,6 @@ class PostController extends Controller
         if ($contractTypes != null)
             for ($i = 0; $i < count($contractTypes); $i++)
                 $result = $result->where('contract_type', 'like', "%" . $contractTypes[$i] . "%", ($i == 0) ? 'and' : 'or');
-        if ($field != null)
-            $result = $result->whereHas('company', function (Builder $query) use ($field) {
-                return $query->whereHas('sectors', function (Builder $query) use ($field) {
-                        return $query->whereRelation('sector', 'name', 'like', "%$field%");
-                    }
-                    );
-                });
         if ($sortField != null && $sortOrder != null)
             $result = $result->orderBy($sortField, $sortOrder);
 
@@ -91,7 +80,7 @@ class PostController extends Controller
         return $result;
     }
 
-    static public function getJobCardsData($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $contractTypes, $field, $includeNull, $pageSize, $currentPage, $query = null)
+    static public function getJobCardsData($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $contractTypes, $includeNull, $pageSize, $currentPage, $query = null)
     {
         $posts = PostController::search($sortField,
             $sortOrder,
@@ -102,7 +91,6 @@ class PostController extends Controller
             $maxHours,
             $location,
             $contractTypes,
-            $field,
             $includeNull,
             $query);
 
@@ -128,7 +116,6 @@ class PostController extends Controller
             $request->query('maxHours'),
             $request->query('location'),
             explode(",", $request->query('contractTypes')),
-            $request->query('field'),
             $request->query("includeNull")), 200);
     }
 
@@ -142,7 +129,6 @@ class PostController extends Controller
         return react_view("create_post", ["post" => [],
             "company" => [
                 "company_name" => $company->name,
-                "sectors" => $company->sectors->pluck('sector.name'),
             ]]);
     }
 
@@ -159,12 +145,10 @@ class PostController extends Controller
                 "salary" => $post->salary,
                 "working_time" => $post->working_time,
                 "publication_date" => $post->publication_date,
-                "company_icon" => $post->icon_src,
                 "id" => $post->id
             ],
             "company" => [
                 "company_name" => $post->company->name,
-                "sectors" => $post->company->sectors->pluck('sector.name'),
             ]]);
     }
 
@@ -185,7 +169,6 @@ class PostController extends Controller
             $request->query('maxHours'),
             $request->query('location'),
             explode(',', $request->query('contractTypes')),
-            $request->query('field'),
             $request->query("includeNull"),
             intval($request->query('pageSize', 10)),
             intval($request->query('page', 1)),

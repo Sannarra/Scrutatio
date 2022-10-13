@@ -91,7 +91,7 @@ export default function FilterSidebar({
         },
     ];
 
-    const sectors = [
+    const contractTypes = [
         "Not Defined",
         "Fixed-term",
         "Permanent",
@@ -238,19 +238,19 @@ export default function FilterSidebar({
                 <label>
                     <h3>Contract type</h3>
                     <Grid container>
-                        {sectors.map((sector, index) => {
+                        {contractTypes.map((contractType, index) => {
                             return (
                                 <Chip
                                     key={index}
                                     sx={{ m: 0.5 }}
                                     color={
-                                        selectedChips.includes(sector)
+                                        selectedChips.includes(contractType)
                                             ? "primary"
                                             : "default"
                                     }
-                                    label={sector}
+                                    label={contractType}
                                     onClick={() => {
-                                        toggleChip(sector);
+                                        toggleChip(contractType);
                                     }}
                                 />
                             );

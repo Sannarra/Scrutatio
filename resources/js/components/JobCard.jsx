@@ -30,24 +30,6 @@ const LearnMore = styled((props) => {
     borderRadius: "50px",
 }));
 
-class Sector extends React.Component {
-    render() {
-        return (
-            <Chip
-                label={this.props.name}
-                size="small"
-                sx={{
-                    backgroundColor: "var(--background)",
-                    marginLeft: "5px",
-                    marginRight: "5px",
-                    marginTop: "2px",
-                    marginBottom: "2px",
-                }}
-            />
-        );
-    }
-}
-
 export default class JobCard extends React.Component {
     constructor(props) {
         super(props);
@@ -148,8 +130,16 @@ export default class JobCard extends React.Component {
                     avatar={
                         <Avatar
                             aria-label="company_icon"
-                            src={this.props.data.company_icon}
-                        />
+                            style={{
+                                backgroundColor:
+                                    "#" +
+                                    Math.floor(
+                                        Math.random() * 0xffffff
+                                    ).toString(16),
+                            }}
+                        >
+                            {this.props.data.company_name[0]}
+                        </Avatar>
                     }
                     action={this.cardAction()}
                     title={this.props.data.title}
@@ -217,14 +207,6 @@ export default class JobCard extends React.Component {
                                 sx={{ backgroundColor: "var(--background)" }}
                             />
                         </Divider>
-                        <br />
-                        <Typography component={"span"}>
-                            Sectors:
-                            {this.props.data.sectors &&
-                                this.props.data.sectors.map((sector, index) => {
-                                    return <Sector name={sector} key={index} />;
-                                })}
-                        </Typography>
                         <br />
                         <Typography>
                             Contract Type: {this.props.data.contract_type}
