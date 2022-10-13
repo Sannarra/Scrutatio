@@ -51,7 +51,6 @@ export default function EditPosts(props) {
             `${now.getMonth()}/${now.getDay()} ${now.getHours()}:${now.getMinutes()}`,
         company_icon: props.data.post.company_icon || "",
         company_name: props.data.company.company_name || "",
-        sectors: props.data.company.sectors || undefined,
     });
 
     const [error, setError] = useState({
