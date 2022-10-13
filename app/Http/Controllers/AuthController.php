@@ -22,6 +22,8 @@ class AuthController extends Controller
 
     public function loginView()
     {
+        if (Auth::user() != null)
+            return redirect("/profile");
         return react_view("login");
     }
 
@@ -95,6 +97,8 @@ class AuthController extends Controller
 
     public function registerMemberView()
     {
+        if (Auth::user() != null)
+            return redirect("/profile");
         return react_view("register");
     }
 

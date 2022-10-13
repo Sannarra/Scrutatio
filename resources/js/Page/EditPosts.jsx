@@ -264,7 +264,10 @@ export default function EditPosts(props) {
             </Grid>
             <Grid xs={12} md={6} paddingLeft={{ xs: 0, md: 3 }}>
                 <div style={{ width: "100%" }}>
-                    <JobCard data={input} expanded="true" />
+                    <JobCard
+                        data={{ ...input, hasApply: false }}
+                        expanded="true"
+                    />
                 </div>
             </Grid>
         </Grid>
