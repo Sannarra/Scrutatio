@@ -245,14 +245,21 @@ export default function Message(props) {
                                             <Grid
                                                 style={{
                                                     backgroundColor:
-                                                        i % 2 == 0
+                                                        props.data.account_id ==
+                                                        message.sender_account_id
                                                             ? "var(--accent2)"
                                                             : "var(--background)",
                                                     marginTop: "20px",
                                                     marginLeft:
-                                                        i % 2 == 0 ? "10%" : 0,
+                                                        props.data.account_id ==
+                                                        message.sender_account_id
+                                                            ? "10%"
+                                                            : 0,
                                                     marginRight:
-                                                        i % 2 == 0 ? 0 : "10%",
+                                                        props.data.account_id ==
+                                                        message.sender_account_id
+                                                            ? 0
+                                                            : "10%",
                                                     borderRadius: "6px",
 
                                                     padding: "5px",
