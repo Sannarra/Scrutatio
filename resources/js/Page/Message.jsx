@@ -56,8 +56,10 @@ export default function Message(props) {
 
     // Function to fetch all messages for a conversation
     function getMessages() {
-        setMessages([]);
-        if (currentApplicationId() == null) return;
+        if (currentApplicationId() == null) {
+            setMessages([]);
+            return;
+        }
         fetch(
             "/api/applications/" +
                 currentApplicationId() +
@@ -69,8 +71,18 @@ export default function Message(props) {
             .then((res) => res.json())
             .then((res) => {
                 setMessages(res);
+            })
+            .catch((err) => {
+                setMessages([]);
             });
     }
+
+    // Effect to fetch all messages for a conversation when the current conversation changes
+    useEffect(() => {
+        const interval = setInterval(() => {
+            getMessages();
+        }, 2000);
+    }, []);
 
     // Effect to fetch all messages for a conversation when the current conversation changes
     useEffect(() => {

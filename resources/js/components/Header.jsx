@@ -3,8 +3,9 @@ import HomeIcon from "@mui/icons-material/Home";
 import ChatIcon from "@mui/icons-material/Chat";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import IconButton from "@mui/material/IconButton";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
-export default function Header({ with_sidebar, openSidebar }) {
+export default function Header({ with_sidebar, openSidebar, returnPage }) {
     const TopLeftButton = () => {
         if (with_sidebar)
             return (
@@ -34,7 +35,20 @@ export default function Header({ with_sidebar, openSidebar }) {
                 padding: "3vh",
             }}
         >
-            {TopLeftButton()}
+            <div style={{ display: "flex", gap: "2vw" }}>
+                {returnPage && (
+                    <div>
+                        <IconButton
+                            sx={{ color: "var(--light)" }}
+                            href={returnPage}
+                        >
+                            <KeyboardBackspaceIcon />
+                        </IconButton>
+                    </div>
+                )}
+                <div>{TopLeftButton()}</div>
+            </div>
+
             <a
                 href="/"
                 style={{
@@ -50,16 +64,19 @@ export default function Header({ with_sidebar, openSidebar }) {
                 />
             </a>
 
-            <div style={{ display: "flex", gap:'4vw' }}>
-                <div style={{ margin: "0 1em" }}>
-                    <a style={{ color: "var(--light)" }} href="/chat">
+            <div style={{ display: "flex", gap: "2vw" }}>
+                <div>
+                    <IconButton style={{ color: "var(--light)" }} href="/chat">
                         <ChatIcon />
-                    </a>
+                    </IconButton>
                 </div>
                 <div>
-                    <a style={{ color: "var(--light)" }} href="/profile">
+                    <IconButton
+                        style={{ color: "var(--light)" }}
+                        href="/profile"
+                    >
                         <AccountCircleIcon />
-                    </a>
+                    </IconButton>
                 </div>
             </div>
         </header>
