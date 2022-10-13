@@ -89,11 +89,6 @@ export default function Message(props) {
         getMessages();
     }, [currentConversationId]);
 
-
-    const navigateToContacts = () => {
-        href('/profile' + conv.company_id);
-    };
-
     const send = () => {
         if (inputMessage().trim() == "") return;
         if (currentApplicationId() == null) {
@@ -215,8 +210,8 @@ export default function Message(props) {
                                     padding: "3vh",
                                 }}
                             >
-                                {/* Todo: adapt avatar */}
-
+                                {/* avatar and title link with profile page */}
+                                <Link href={'/profile/'+ currentConversation().company_id}>
                                 <Avatar sx={{ bgcolor: "orange" }}>
                                     {
                                         conversations.filter(
@@ -226,8 +221,8 @@ export default function Message(props) {
                                         )[0]?.title[0]
                                     }
                                 </Avatar>
-                                
-                                    <Link href={conv.company_id}>
+                                </Link>
+                                    <Link href={'/profile/'+ currentConversation().company_id}>
                                         {
                                             conversations.filter(
                                                 (conv) =>

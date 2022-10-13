@@ -94,6 +94,7 @@ class ApplicationController extends Controller
                 "id" => $id,
                 "title" => $applications_title[$i],
                 "company_id" => Post::find($posts_id[$i])->company->account->id
+                //id de celui à qui je parle 
             ]);
         return $conversations;
     }
@@ -131,7 +132,7 @@ Your {$post->title} job offer interests me.
             return redirect('/chat')->with("conversationId", $conversation->first()->id);
         $conversations = $this->getApplications();
 
-        array_unshift($conversations, ["title" => $post->title, "new" => true, "post_id" => $post->id]);
+        array_unshift($conversations, ["title" => $post->title, "new" => true, "post_id" => $post->id, "company_id" => $post->company->id]);
         return react_view("message", [
             "user" => Auth::user()->user->id,
             "conversations" => $conversations,
