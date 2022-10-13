@@ -34,7 +34,6 @@ class PostSeeder extends Seeder
                 'city' => $faker->city(),
                 'contract_type' => $faker->randomElement(["Not Defined", "Fixed-term", 'Permanent', "Internship", "Apprenticeship", "Seasonal"]),
                 'company_id' => $faker->numberBetween(1, Company::count()),
-                'icon_src' => $faker->imageUrl(40, 40)
             ]);
         }
     }
