@@ -6,10 +6,11 @@ export default function PostsGrid(props) {
             {DBGrid({
                 table_name: "Posts",
                 crud: {
-                    create: "/create-post",
-                    read: "/api/posts",
-                    update: "/edit-post",
-                    delete: "/api/posts",
+                    api: "/api/posts",
+                    web: {
+                        create: (row) => `/create-post`,
+                        update: (row) => `/edit-post/${row.id}`,
+                    },
                 },
                 columns: [
                     { field: "title", headerName: "Title", width: 300 },
