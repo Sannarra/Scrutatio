@@ -11,14 +11,17 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title',
+    protected $fillable = [
+        'id',
+        'created_at',
+        'updated_at',
+        'title',
         'description',
         'salary',
         'working_time',
         'city',
-        'contract_type',
-        'company_id',
-        'short_brief'];
+        'short_brief',
+        'company_id'];
 
     public function company()
     {

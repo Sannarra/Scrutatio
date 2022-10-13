@@ -13,9 +13,12 @@ class Account extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
+        'id',
         'email',
         'password',
-        'is_admin'];
+        'is_admin',
+        'created_at',
+        'updated_at', ];
 
 
     /**

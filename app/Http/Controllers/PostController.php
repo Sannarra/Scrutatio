@@ -17,23 +17,47 @@ class PostController extends Controller
         return Post::all();
     }
 
-    public function show(Request $request, Post $posts)
+    public function show(Post $post)
     {
-        return $posts;
+        return $post;
     }
 
     public function store(Request $request)
     {
-        $posts = Post::create($request->all());
+        $request->validate([
+            'created_at' => 'date',
+            'updated_at' => 'date',
+            'title' => 'required|max:255',
+            'description' => "required",
+            'salary' => 'numeric|min:0|nullable',
+            'working_time' => 'numeric|min:0|nullable',
+            'city' => 'required|max:255',
+            'short_brief' => "required",
+            'company_id' => 'required|exists:companies,id',
+        ]);
+        $postData = $request->all();
+        unset($postData["id"]);
+        $post = Post::create($postData);
 
-        return response()->json($posts, 201);
+        return response()->json($post, 201);
     }
 
-    public function update(Request $request, Post $posts)
+    public function update(Request $request, Post $post)
     {
-        $posts->update($request->all());
+        $request->validate([
+            'created_at' => 'date',
+            'updated_at' => 'date',
+            'title' => 'filled|max:255',
+            'description' => "filled",
+            'salary' => 'numeric|min:0|nullable',
+            'working_time' => 'numeric|min:0|nullable',
+            'city' => 'filled|max:255',
+            'short_brief' => "filled",
+            'company_id' => 'exists:companies,id',
+        ]);
+        $post->update($request->all());
 
-        return response()->json($posts, 200);
+        return response()->json($post, 200);
     }
 
     public function delete(Post $post)

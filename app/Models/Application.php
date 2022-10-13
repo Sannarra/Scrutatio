@@ -13,6 +13,8 @@ class Application extends Model
 
     protected $fillable = [
         'id',
+        'created_at',
+        'updated_at',
         'post_id',
         'user_id', ];
 
@@ -21,7 +23,7 @@ class Application extends Model
         return $this->belongsTo(Post::class);
     }
 
-    public function applicant()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

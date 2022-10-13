@@ -28,13 +28,27 @@ class ApplicationController extends Controller
 
     public function store(Request $request)
     {
-        $application = Application::create($request->all());
+        $request->validate([
+            'created_at' => 'date',
+            'updated_at' => 'date',
+            'post_id' => 'required|exists:posts,id',
+            'user_id' => 'required|exists:users,id',
+        ]);
+        $applicationData = $request->all();
+        unset($applicationData["id"]);
+        $application = Application::create($applicationData);
 
         return response()->json($application, 201);
     }
 
     public function update(Request $request, Application $application)
     {
+        $request->validate([
+            'created_at' => 'date',
+            'updated_at' => 'date',
+            'post_id' => 'exists:posts,id',
+            'user_id' => 'exists:users,id',
+        ]);
         $application->update($request->all());
 
         return response()->json($application, 200);
@@ -85,19 +99,22 @@ class ApplicationController extends Controller
 
         $applications = $applications->sortByDesc('created_at');
         $applications_id = $applications->pluck('id');
-        $applications_title = $applications->pluck('post.title');
+        $posts_title = $applications->pluck('post.title');
         $posts_id = $applications->pluck('post.id');
+        $applicants = $applications->pluck('user.lastname');
 
         $conversations = [];
         foreach ($applications_id as $i => $id)
             array_push($conversations, [
                 "id" => $id,
-                "title" => $applications_title[$i],
+                "title" => $posts_title[$i],
+                "post_id" => $posts_id[$i],
+                "applicant" => $applicants[$i],
                 "company_id" => Post::find($posts_id[$i])->company->account->id
-                //id de celui à qui je parle 
             ]);
         return $conversations;
     }
+
 
     public function chat()
     {
@@ -112,7 +129,10 @@ class ApplicationController extends Controller
                     break;
                 }
 
-        return react_view("message", ["conversations" => $conversations, "conversationId" => $conversationId, "account_id" => Auth::id()]);
+        return react_view("message", ["conversations" => $conversations,
+            "conversationId" => $conversationId,
+            "account_id" => Auth::id(),
+            "isCompany" => Auth::user()->company != null]);
     }
 
     public function getApplyMessage(Post $post, User $user)

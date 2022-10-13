@@ -6,10 +6,12 @@ export default function CompaniesGrid(props) {
             {DBGrid({
                 table_name: "Companies",
                 crud: {
-                    create: "/register-company",
-                    read: "/api/companies",
-                    update: "/edit-company",
-                    delete: "/api/companies",
+                    api: "/api/companies",
+                    web: {
+                        create: (row) => `/register-company`,
+                        read: (row) => `/profile/${row.account_id}`,
+                        update: (row) => `/edit-profile/${row.account_id}`,
+                    },
                 },
                 columns: [
                     {
@@ -23,16 +25,24 @@ export default function CompaniesGrid(props) {
                         headerName: "Creation Date",
                         width: 150,
                         editable: true,
+                        type: "date",
                     },
                     {
                         field: "size",
                         headerName: "Company Workforce",
                         width: 150,
                         editable: true,
+                        type: "number",
                     },
                     {
                         field: "headquarter",
                         headerName: "Heaquarter location",
+                        width: 170,
+                        editable: true,
+                    },
+                    {
+                        field: "description",
+                        headerName: "Description",
                         width: 170,
                         editable: true,
                     },
@@ -46,6 +56,7 @@ export default function CompaniesGrid(props) {
                         field: "account_id",
                         headerName: "Account Id",
                         editable: true,
+                        type: "number",
                     },
                 ],
             })}

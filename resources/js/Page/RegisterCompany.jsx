@@ -14,6 +14,7 @@ export default function RegisterCompany(props) {
         size: "",
         headquarter: "",
         website: "",
+        description:"",
         email: "",
         password: "",
         confirmPassword: "",
@@ -25,6 +26,7 @@ export default function RegisterCompany(props) {
         size: "",
         headquarter: "",
         website: "",
+        description:"",
         email: "",
         password: "",
         confirmPassword: "",
@@ -73,6 +75,9 @@ export default function RegisterCompany(props) {
                 case "email":
                     if (!value) stateObj[name] = "Please enter your email.";
                     break;
+                case "email":
+                    if (!value) stateObj[name] = "Please enter a description of your company.";
+                    break;
 
                 case "password":
                     if (!value) {
@@ -112,12 +117,13 @@ export default function RegisterCompany(props) {
 
     const VerifiedTextField = (props) => (
         <TextField
+        {...props}
             key={props.name}
-            type={props.type}
-            label={props.label}
-            placeholder={props.placeholder}
-            name={props.name}
-            autoComplete={props.autoComplete}
+            // type={props.type}
+            // label={props.label}
+            // placeholder={props.placeholder}
+            // name={props.name}
+            // autoComplete={props.autoComplete}
             value={input[props.name]}
             error={error[props.name] != ""}
             helperText={error[props.name]}
@@ -125,6 +131,7 @@ export default function RegisterCompany(props) {
             onChange={onInputChange}
             onBlur={validateInput}
             required
+            
             style={{ backgroundColor: "white", width: "100%" }}
         />
     );
@@ -194,6 +201,14 @@ export default function RegisterCompany(props) {
                                 name: "website",
                                 autoComplete: "on",
                                 placeholder: "https://mycompany.com",
+                            })}
+                            <br />
+                            {VerifiedTextField({
+                                type: "textarea",
+                                label: "Description",
+                                name: "description",
+                                autoComplete: "on",
+                                multiline: true,
                             })}
                             <br />
                             {VerifiedTextField({
