@@ -18,7 +18,6 @@ class Post extends Model
         'city',
         'contract_type',
         'company_id',
-        'icon_src',
         'short_brief'];
 
     public function company()
@@ -42,7 +41,6 @@ class Post extends Model
             "contract_type" => $this->contract_type,
             "salary" => $this->salary,
             "working_time" => $this->working_time,
-            "company_icon" => $this->icon_src,
             "description" => $this->description,
             "short_brief" => $this->short_brief,
             "id" => $this->id

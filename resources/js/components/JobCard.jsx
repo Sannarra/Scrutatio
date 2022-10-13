@@ -130,8 +130,16 @@ export default class JobCard extends React.Component {
                     avatar={
                         <Avatar
                             aria-label="company_icon"
-                            src={this.props.data.company_icon}
-                        />
+                            style={{
+                                backgroundColor:
+                                    "#" +
+                                    Math.floor(
+                                        Math.random() * 0xffffff
+                                    ).toString(16),
+                            }}
+                        >
+                            {this.props.data.company_name[0]}
+                        </Avatar>
                     }
                     action={this.cardAction()}
                     title={this.props.data.title}

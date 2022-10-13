@@ -145,7 +145,6 @@ class PostController extends Controller
                 "salary" => $post->salary,
                 "working_time" => $post->working_time,
                 "publication_date" => $post->publication_date,
-                "company_icon" => $post->icon_src,
                 "id" => $post->id
             ],
             "company" => [

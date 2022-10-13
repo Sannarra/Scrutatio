@@ -22,7 +22,6 @@ return new class extends Migration {
             $table->string('city');
             $table->enum('contract_type', ["Not Defined", "Fixed-term", 'Permanent', "Internship", "Apprenticeship", "Seasonal"]);
             $table->text('short_brief');
-            $table->text('icon_src')->nullable();
             $table->foreignId('company_id')->constrained("companies")->onUpdate('cascade')->onDelete('cascade');
         });
     }
