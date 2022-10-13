@@ -28,13 +28,27 @@ class ApplicationController extends Controller
 
     public function store(Request $request)
     {
-        $application = Application::create($request->all());
+        $request->validate([
+            'created_at' => 'date',
+            'updated_at' => 'date',
+            'post_id' => 'required|exists:posts,id',
+            'user_id' => 'required|exists:users,id',
+        ]);
+        $applicationData = $request->all();
+        unset($applicationData["id"]);
+        $application = Application::create($applicationData);
 
         return response()->json($application, 201);
     }
 
     public function update(Request $request, Application $application)
     {
+        $request->validate([
+            'created_at' => 'date',
+            'updated_at' => 'date',
+            'post_id' => 'exists:posts,id',
+            'user_id' => 'exists:users,id',
+        ]);
         $application->update($request->all());
 
         return response()->json($application, 200);

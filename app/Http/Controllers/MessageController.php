@@ -19,13 +19,29 @@ class MessageController extends Controller
 
     public function store(Request $request)
     {
-        $message = Message::create($request->all());
+        $request->validate([
+            'created_at' => 'date',
+            'updated_at' => 'date',
+            'application_id' => 'required|exists:applications,id',
+            'sender_account_id' => 'required|exists:accounts,id',
+            'content' => "required",
+        ]);
+        $messageData = $request->all();
+        unset($messageData["id"]);
+        $message = Message::create($messageData);
 
         return response()->json($message, 201);
     }
 
     public function update(Request $request, Message $message)
     {
+        $request->validate([
+            'created_at' => 'date',
+            'updated_at' => 'date',
+            'application_id' => 'exists:applications,id',
+            'sender_account_id' => 'exists:accounts,id',
+            'content' => "filled",
+        ]);
         $message->update($request->all());
 
         return response()->json($message, 200);

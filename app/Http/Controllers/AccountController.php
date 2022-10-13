@@ -19,13 +19,29 @@ class AccountController extends Controller
 
     public function store(Request $request)
     {
-        $account = Account::create($request->all());
+        $request->validate([
+            'created_at' => 'date',
+            'updated_at' => 'date',
+            'email' => 'required|email|unique:accounts',
+            'password' => 'required|min:6',
+            'is_admin' => 'required|boolean',
+        ]);
+        $accountData = $request->all();
+        unset($accountData["id"]);
+        $account = Account::create($accountData);
 
         return response()->json($account, 201);
     }
 
     public function update(Request $request, Account $account)
     {
+        $request->validate([
+            'created_at' => 'date',
+            'updated_at' => 'date',
+            'email' => 'filled|email|unique:accounts',
+            'password' => 'min:6',
+            'is_admin' => 'boolean',
+        ]);
         $account->update($request->all());
 
         return response()->json($account, 200);

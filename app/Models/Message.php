@@ -12,7 +12,10 @@ class Message extends Model
     use HasFactory;
 
     protected $fillable = [
-        'application_id', //with company_id
+        'id',
+        'created_at',
+        'updated_at',
+        'application_id',
         'sender_account_id',
         'content'];
 

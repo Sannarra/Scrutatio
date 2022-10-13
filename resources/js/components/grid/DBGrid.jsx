@@ -15,6 +15,9 @@ import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
 import ConfirmDialog from "../Confirm.jsx";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 function EditToolbar(props) {
     const handleClick = () => {
@@ -25,7 +28,7 @@ function EditToolbar(props) {
                 valid = false;
                 return [...oldRows];
             }
-            return [{ id, isNew: true }, ...oldRows];
+            return [{ id, isNew: true, ...props.props.default }, ...oldRows];
         });
         if (!valid) return;
         props.setRowModesModel((oldModel) => ({
@@ -37,18 +40,15 @@ function EditToolbar(props) {
     return (
         <GridToolbarContainer>
             <GridToolbar />
-            {props.props.crud.create !== false && (
-                <Button
-                    color="primary"
-                    startIcon={<AddIcon />}
-                    onClick={props.props.crud.create ? undefined : handleClick}
-                    href={props.props.crud.create}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Add record
-                </Button>
-            )}
+            <Button
+                color="primary"
+                startIcon={<AddIcon />}
+                onClick={handleClick}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Add record
+            </Button>
         </GridToolbarContainer>
     );
 }
@@ -64,12 +64,7 @@ export default function DBGrid(props) {
     const [rowModesModel, setRowModesModel] = useState({});
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [toDeleteID, setToDeleteID] = useState(undefined);
-
-    useEffect(() => {
-        fetch(props.crud.read)
-            .then((res) => res.json())
-            .then((data) => setRows(data));
-    }, []);
+    const [error, setError] = useState("");
 
     const handleRowEditStart = (params, event) => {
         event.defaultMuiPrevented = true;
@@ -93,15 +88,6 @@ export default function DBGrid(props) {
         });
     };
 
-    const handleDeleteClick = (id) => {
-        fetch(`${props.crud.delete}/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-type": "application/json",
-            },
-        }).then((res) => setRows(rows.filter((row) => row.id !== id)));
-    };
-
     const handleCancelClick = (id) => () => {
         setRowModesModel({
             ...rowModesModel,
@@ -114,104 +100,218 @@ export default function DBGrid(props) {
         }
     };
 
+    /// CREATE/UPDATE
     const processRowUpdate = (newRow) => {
-        const updatedRow = { ...newRow, isNew: false };
-        let route = props.crud.delete;
+        let route = props.crud.api;
         if (!newRow.isNew) route = route + "/" + newRow.id;
+        const method = newRow.isNew ? "POST" : "PUT";
+        setError("");
         fetch(route, {
-            method: newRow.isNew ? "POST" : "PUT",
+            method: method,
             headers: {
+                Accept: "application/json",
                 "Content-type": "application/json",
             },
-            body: JSON.stringify(updatedRow),
+            body: JSON.stringify(newRow),
         })
+            .then((res) =>
+                res.json().then((data) => ({ status: res.status, body: data }))
+            )
+            .then((res) => {
+                if (res.status == 400) {
+                    if (method == "POST") {
+                        setRows(
+                            rows.map((row) =>
+                                row.id === newRow.id ? newRow : row
+                            )
+                        );
+                    } else setRows(rows.map((row) => row));
+                    setError(res.body.error);
+                    if (method == "POST")
+                        setRowModesModel({
+                            ...rowModesModel,
+                            [newRow.id]: { mode: GridRowModes.Edit },
+                        });
+                } else {
+                    if (method == "POST")
+                        setRows(
+                            rows.map((row) => (row.id === -1 ? res.body : row))
+                        );
+                    else
+                        setRows(
+                            rows.map((row) =>
+                                row.id === res.body.id ? res.body : row
+                            )
+                        );
+                }
+            });
+        return newRow;
+    };
+
+    /// READ
+    useEffect(() => {
+        fetch(props.crud.api)
             .then((res) => res.json())
             .then((data) => {
-                setRows(
-                    rows.map((row) => (row.id === newRow.id ? updatedRow : row))
-                );
+                setRows(data);
             });
-        return updatedRow;
+    }, []);
+
+    /// DELETE
+    const handleDeleteClick = (id) => {
+        setError("");
+        fetch(`${props.crud.api}/${id}`, {
+            method: "DELETE",
+            headers: {
+                Accept: "application/json",
+                "Content-type": "application/json",
+            },
+        }).then((res) => {
+            setRows(rows.filter((row) => row.id != id));
+        });
     };
 
     const crud_columns = () => {
-        let columns = [
-            {
-                field: "actions",
+        let columns = [];
+
+        if (props.crud.web && (props.crud.web.update || props.crud.web.read)) {
+            columns.push({
+                field: "webActions",
                 type: "actions",
-                headerName: "Actions",
-                width: 100,
+                headerName: "Interface Actions",
+                width: 130,
                 cellClassName: "actions",
-                getActions: ({ id }) => {
-                    const isInEditMode =
-                        rowModesModel[id]?.mode === GridRowModes.Edit;
+                getActions: ({ row }) => {
+                    if (row.id == -1) return [];
+                    let actions = [];
 
-                    if (isInEditMode) {
-                        return [
+                    if (props.crud.web.read)
+                        actions.push(
                             <GridActionsCellItem
-                                icon={<SaveIcon />}
-                                label="Save"
-                                onClick={handleSaveClick(id)}
-                            />,
-                            <GridActionsCellItem
-                                icon={<CancelIcon />}
-                                label="Cancel"
+                                icon={<VisibilityIcon />}
+                                label="View"
+                                title="View"
                                 className="textPrimary"
-                                onClick={handleCancelClick(id)}
+                                href={props.crud.web.read(row)}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 color="inherit"
-                            />,
-                        ];
-                    }
+                            />
+                        );
+                    if (props.crud.web.update)
+                        actions.push(
+                            <GridActionsCellItem
+                                icon={<EditIcon />}
+                                label="Edit"
+                                title="Edit"
+                                className="textPrimary"
+                                href={props.crud.web.update(row)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                color="inherit"
+                            />
+                        );
+                    if (props.crud.web.create)
+                        actions.push(
+                            <GridActionsCellItem
+                                icon={<AddCircleOutlineIcon />}
+                                label="Create"
+                                title="Create"
+                                className="textPrimary"
+                                href={props.crud.web.create(row)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                color="inherit"
+                            />
+                        );
+                    return actions;
+                },
+            });
+        }
+        columns.push({
+            field: "actions",
+            type: "actions",
+            headerName: "Fast Actions",
+            width: 100,
+            cellClassName: "actions",
+            getActions: ({ id }) => {
+                const isInEditMode =
+                    rowModesModel[id]?.mode === GridRowModes.Edit;
 
+                if (isInEditMode) {
                     return [
                         <GridActionsCellItem
-                            icon={<EditIcon />}
-                            label="Edit"
-                            className="textPrimary"
-                            onClick={
-                                props.crud.update
-                                    ? undefined
-                                    : handleEditClick(id)
-                            }
-                            href={
-                                props.crud.update &&
-                                `${props.crud.update}/${id}`
-                            }
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            color="inherit"
+                            icon={<SaveIcon />}
+                            label="Save"
+                            title="Save"
+                            onClick={handleSaveClick(id)}
                         />,
                         <GridActionsCellItem
-                            icon={<DeleteIcon />}
-                            label="Delete"
-                            onClick={() => {
-                                setToDeleteID(id);
-                                setDeleteOpen(true);
-                            }}
+                            icon={<CancelIcon />}
+                            label="Cancel"
+                            title="Cancel"
+                            className="textPrimary"
+                            onClick={handleCancelClick(id)}
                             color="inherit"
                         />,
                     ];
-                },
+                }
+
+                return [
+                    <GridActionsCellItem
+                        icon={<BorderColorIcon />}
+                        label="Edit"
+                        title="Edit"
+                        className="textPrimary"
+                        onClick={handleEditClick(id)}
+                        color="inherit"
+                    />,
+                    <GridActionsCellItem
+                        icon={<DeleteIcon />}
+                        label="Delete"
+                        title="Delete"
+                        onClick={() => {
+                            setToDeleteID(id);
+                            setDeleteOpen(true);
+                        }}
+                        color="inherit"
+                    />,
+                ];
             },
-        ];
-        columns.push({ field: "id", headerName: "ID", width: 50 });
+        });
+        columns.push({
+            field: "id",
+            headerName: "ID",
+            width: 50,
+            editable: true,
+            type: "number",
+        });
         return columns;
     };
 
     const columns = crud_columns()
         .concat(props.columns)
         .concat([
-            { field: "created_at", headerName: "Creation Date", width: 180 },
+            {
+                field: "created_at",
+                headerName: "Creation Date",
+                width: 180,
+                editable: true,
+                type: "dateTime",
+            },
             {
                 field: "updated_at",
                 headerName: "Modification Date",
                 width: 180,
+                editable: true,
+                type: "dateTime",
             },
         ]);
 
     return (
         <div>
             <h3>{props.table_name}</h3>
+            <p style={{ color: "red" }}>{error}</p>
             <div style={{ height: "450px" }}>
                 <div style={{ display: "flex", height: "100%" }}>
                     <DataGrid

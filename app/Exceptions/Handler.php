@@ -61,7 +61,7 @@ class Handler extends ExceptionHandler
             }
             else if ($e instanceof ValidationException) {
 
-                return response()->json(['message' => 'Invalid query parameters: ' . $e->getMessage()], 400);
+                return response()->json(['error' => $e->getMessage()], 400);
             }
         }
         else {

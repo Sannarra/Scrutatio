@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ConfirmDialog from "../components/Confirm.jsx";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 
 export default function CompanyProfile(props) {
     const [deleteOpen, setDeleteOpen] = useState(false);
@@ -115,6 +116,7 @@ export default function CompanyProfile(props) {
                             sx={{ color: "black" }}
                             href="/admin-panel"
                             variant="outlined"
+                            startIcon={<AdminPanelSettingsIcon />}
                         >
                             Admin Panel
                         </Button>
