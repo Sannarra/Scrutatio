@@ -87,13 +87,15 @@ class ApplicationController extends Controller
         $applications_id = $applications->pluck('id');
         $posts_title = $applications->pluck('post.title');
         $posts_id = $applications->pluck('post.id');
+        $applicants = $applications->pluck('user.lastname');
 
         $conversations = [];
         foreach ($applications_id as $i => $id)
             array_push($conversations, [
                 "id" => $id,
                 "title" => $posts_title[$i],
-                "post_id" => $posts_id[$i]
+                "post_id" => $posts_id[$i],
+                "applicant" => $applicants[$i],
             ]);
         return $conversations;
     }

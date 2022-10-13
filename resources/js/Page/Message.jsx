@@ -7,6 +7,8 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
+import Collapse from "@mui/material/Collapse";
+import Badge from "@mui/material/Badge";
 
 export default function Message(props) {
     // State used for storing conversation names and ids
@@ -128,34 +130,49 @@ export default function Message(props) {
             });
     };
 
+    ///////////////////render block///////////////////////
+
     return (
         <Container sx={{ mb: "20px" }}>
             {props.data.isCompany
                 ? groupByPostId(conversations).map((convGroup, i) => {
+                      // open application group
+                      const [open, setOpen] = React.useState(false);
+
+                      const handleClick = () => {
+                          setOpen(!open);
+                      };
                       return (
                           <div
-                              //mettre dans une grille tel = 12 ; desc = 6 ; padding
                               key={i}
                               style={{
                                   display: "flex",
                                   flexDirection: "column",
-                                  alignItems: "center",
+                                  marginBottom:'3vh'
                               }}
                           >
                               <Button
+                                  onClick={handleClick}
                                   variant="outlined"
                                   style={{
                                       color: "black",
                                       borderColor: "black",
+                                      backgroundColor:'lightgrey'
                                   }}
                               >
-                                  {convGroup.title} (
-                                  {convGroup.applications.length} applicants)
+                                  {convGroup.title}
+                                  <Badge
+                                  style={{margin:'1em', color:'white'}}
+                                      badgeContent={
+                                          convGroup.applications.length
+                                      }
+                                      color="grey"
+                                  >
+                                  </Badge>
                               </Button>
 
-                              <p>
+                              <Collapse in={open} timeout="auto" unmountOnExit>
                                   {convGroup.applications.map((conv, i) => {
-                              
                                       return (
                                           <Button
                                               sx={{ m: 1 }}
@@ -178,11 +195,12 @@ export default function Message(props) {
                                                           : 0,
                                               }}
                                           >
-                                              {conv.new && "NEW: "} {conv.title}
+                                              {conv.new && "NEW: "}{" "}
+                                              {conv.applicant}
                                           </Button>
                                       );
                                   })}
-                              </p>
+                              </Collapse>
                           </div>
                       );
                   })
@@ -292,7 +310,7 @@ export default function Message(props) {
                                         backgroundColor: "white",
                                     }}
                                 >
-                                    <h1>Send a message to apply to the job!</h1>
+                                    <h2>Send a message to apply to the job!</h2>
                                 </div>
                             ) : (
                                 messages.map((message, i) => {
@@ -405,6 +423,7 @@ export default function Message(props) {
     );
 }
 
+// group application by post in a company chat
 function groupByPostId(data) {
     const result = [];
     let start_id = 0;

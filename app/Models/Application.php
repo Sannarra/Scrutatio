@@ -21,7 +21,7 @@ class Application extends Model
         return $this->belongsTo(Post::class);
     }
 
-    public function applicant()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
