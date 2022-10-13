@@ -7,6 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
 
 export default function Message(props) {
     // State used for storing conversation names and ids
@@ -87,6 +88,11 @@ export default function Message(props) {
     useEffect(() => {
         getMessages();
     }, [currentConversationId]);
+
+
+    const navigateToContacts = () => {
+        href('/profile' + conv.company_id);
+    };
 
     const send = () => {
         if (inputMessage().trim() == "") return;
@@ -220,12 +226,17 @@ export default function Message(props) {
                                         )[0]?.title[0]
                                     }
                                 </Avatar>
-                                {
-                                    conversations.filter(
-                                        (conv) =>
-                                            conv.id == currentApplicationId()
-                                    )[0]?.title
-                                }
+                                
+                                    <Link href={conv.company_id}>
+                                        {
+                                            conversations.filter(
+                                                (conv) =>
+                                                    conv.id ==
+                                                    currentApplicationId()
+                                            )[0]?.title
+                                        }
+                                    </Link>
+                                
                             </div>
                         </div>
                     </Grid>

@@ -86,12 +86,14 @@ class ApplicationController extends Controller
         $applications = $applications->sortByDesc('created_at');
         $applications_id = $applications->pluck('id');
         $applications_title = $applications->pluck('post.title');
+        $posts_id = $applications->pluck('post.id');
 
         $conversations = [];
         foreach ($applications_id as $i => $id)
             array_push($conversations, [
                 "id" => $id,
-                "title" => $applications_title[$i]
+                "title" => $applications_title[$i],
+                "company_id" => Post::find($posts_id[$i])->company->account->id
             ]);
         return $conversations;
     }
