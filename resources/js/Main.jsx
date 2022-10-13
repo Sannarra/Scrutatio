@@ -18,6 +18,7 @@ export default function Main(props) {
         >
             <Header
                 with_sidebar={props.with_sidebar}
+                returnPage={props.returnPage}
                 openSidebar={() => setSidebarOpen(true)}
             />
             <div
