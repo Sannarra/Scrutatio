@@ -152,7 +152,7 @@ export default function Message(props) {
                               style={{
                                   display: "flex",
                                   flexDirection: "column",
-                                  marginBottom:'3vh'
+                                  marginBottom: "3vh",
                               }}
                           >
                               <Button
@@ -161,18 +161,17 @@ export default function Message(props) {
                                   style={{
                                       color: "black",
                                       borderColor: "black",
-                                      backgroundColor:'lightgrey'
+                                      backgroundColor: "lightgrey",
                                   }}
                               >
                                   {convGroup.title}
                                   <Badge
-                                  style={{margin:'1em', color:'white'}}
+                                      style={{ margin: "1em", color: "white" }}
                                       badgeContent={
                                           convGroup.applications.length
                                       }
                                       color="grey"
-                                  >
-                                  </Badge>
+                                  ></Badge>
                               </Button>
 
                               <Collapse in={open} timeout="auto" unmountOnExit>
@@ -232,6 +231,7 @@ export default function Message(props) {
                   })}
 
             {/* if not apply -> find offer else -> click offer */}
+
             {conversations.length == 0 ? (
                 <Container
                     sx={{
@@ -245,10 +245,22 @@ export default function Message(props) {
                         textAlign: "center",
                     }}
                 >
-                    <div>You have not applied to any job offers yet!</div>
-                    <Button variant="contained" href="/" sx={{ margin: "3%" }}>
-                        Find offers?
-                    </Button>
+                    {!props.data.isCompany ? (
+                        <div>
+                            <div>
+                                You have not applied to any job offers yet!
+                            </div>
+                            <Button
+                                variant="contained"
+                                href="/"
+                                sx={{ margin: "3%" }}
+                            >
+                                Find offers?
+                            </Button>
+                        </div>
+                    ) : (
+                        <p>No one has applied to your offers for now</p>
+                    )}
                 </Container>
             ) : (
                 <></>
