@@ -291,32 +291,28 @@ export default function Message(props) {
                                 <Link
                                     href={
                                         "/profile/" +
-                                        currentConversation().company_id
+                                        currentConversation().contact_id
                                     }
                                 >
                                     <Avatar sx={{ bgcolor: "orange" }}>
                                         {
-                                            conversations.filter(
-                                                (conv) =>
-                                                    conv.id ==
-                                                    currentApplicationId()
-                                            )[0]?.title[0]
+                                            (props.data.isCompany
+                                                ? currentConversation()
+                                                      .applicant
+                                                : currentConversation()
+                                                      .title)[0]
                                         }
                                     </Avatar>
                                 </Link>
                                 <Link
                                     href={
                                         "/profile/" +
-                                        currentConversation().company_id
+                                        currentConversation().contact_id
                                     }
                                 >
-                                    {
-                                        conversations.filter(
-                                            (conv) =>
-                                                conv.id ==
-                                                currentApplicationId()
-                                        )[0]?.title
-                                    }
+                                    {props.data.isCompany
+                                        ? currentConversation().applicant
+                                        : currentConversation().title}
                                 </Link>
                             </div>
                         </div>

@@ -110,7 +110,7 @@ class ApplicationController extends Controller
                 "title" => $posts_title[$i],
                 "post_id" => $posts_id[$i],
                 "applicant" => $applicants[$i],
-                "company_id" => Post::find($posts_id[$i])->company->account->id
+                "contact_id" => (Auth::user()->user != null) ?Post::find($posts_id[$i])->company->account->id : $applications[$i]->user->account->id
             ]);
         return $conversations;
     }
