@@ -131,32 +131,46 @@ export default function Message(props) {
     return (
         <Container sx={{ mb: "20px" }}>
             {
-
-                // groupByPostId.map(())
-
-                // Display a list of all conversations with a button to select each conversation
-                conversations.map((conv, i) => {
+                groupByPostId(conversations).map((conv, i) => {
                     return (
-                        <Button
-                            sx={{ m: 1 }}
-                            variant="contained"
-                            key={i}
-                            onClick={() => setCurrentConversationId(i)}
-                            style={{
-                                backgroundColor: conv.new
-                                    ? "var(--accent)"
-                                    : "var(--accent2)",
-                                borderColor: "var(--dark)",
-                                border:
-                                    i == currentConversationId
-                                        ? "solid 1px"
-                                        : 0,
-                            }}
-                        >
-                            {conv.new && "NEW: "} {conv.title}
-                        </Button>
+                        <div
+                        //mettre dans une grille tel = 12 ; desc = 6 ; padding 
+                        key={i}
+                        style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+                            <Button
+                                variant="outlined"
+                                style={{color:'black', borderColor:'black'}}
+                            >
+                                {conv.title} ({conv.applications.length} applicants)
+                            </Button>
+                            
+                            <p>{conv.applications.length} applicant - see the offer</p>
+                        </div>
                     );
                 })
+                // Display a list of all conversations with a button to select each conversation
+                // conversations.map((conv, i) => {
+                //     return (
+                //         <Button
+                //             sx={{ m: 1 }}
+                //             variant="contained"
+                //             key={i}
+                //             onClick={() => setCurrentConversationId(i)}
+                //             style={{
+                //                 backgroundColor: conv.new
+                //                     ? "var(--accent)"
+                //                     : "var(--accent2)",
+                //                 borderColor: "var(--dark)",
+                //                 border:
+                //                     i == currentConversationId
+                //                         ? "solid 1px"
+                //                         : 0,
+                //             }}
+                //         >
+                //             {conv.new && "NEW: "} {conv.title}
+                //         </Button>
+                //     );
+                // })
             }
 
             {/* if not apply -> find offer else -> click offer */}
@@ -355,23 +369,22 @@ export default function Message(props) {
     );
 }
 
-//
 function groupByPostId(data) {
     const result = [];
 
     data.forEach((e) => {
-      const postGroup = result.find((p) => p.post_id === e.post_id);
+        const postGroup = result.find((p) => p.post_id === e.post_id);
 
-      if (postGroup) {
-        postGroup.applications.push(e);
-      } else {
-        result.push({
-          post_id: e.post_id,
-          title: e.title,
-          applications: [e],
-        });
-      }
+        if (postGroup) {
+            postGroup.applications.push(e);
+        } else {
+            result.push({
+                post_id: e.post_id,
+                title: e.title,
+                applications: [e],
+            });
+        }
     });
 
     return result;
-  }
+}
