@@ -77,17 +77,26 @@ class PostController extends Controller
         $addWhereOrNull = function ($key, $operand, $value) use ($includeNull, $result) {
             if ($value == null)
                 return;
-            $result = $result->where($key, $operand, $value);
-            if ($includeNull)
-                $result = $result->orWhereNull($key);
-        };
+
+            if (filter_var($includeNull, FILTER_VALIDATE_BOOLEAN)) {
+                $result = $result->where(function ($query) use ($key, $operand, $value, $includeNull) {
+                            $query->where($key, $operand, $value)
+                                ->orWhereNull($key);
+                        }
+                        );
+                    }
+                    else
+                        $result = $result->where($key, $operand, $value);
+                };
 
 
         if ($searchWords != null)
-            $result = $result->where('title', 'like', "%$searchWords%")
-                ->orWhere('description', 'like', "%$searchWords%")
-                ->orWhere('short_brief', 'like', "%$searchWords%")
-                ->orWhereRelation('company', 'name', 'like', "%$searchWords%");
+            $result = $result->where(function ($query) use ($searchWords) {
+                $query->where('title', 'like', "%$searchWords%")
+                    ->orWhere('description', 'like', "%$searchWords%")
+                    ->orWhere('short_brief', 'like', "%$searchWords%")
+                    ->orWhereRelation('company', 'name', 'like', "%$searchWords%");
+            });
         $addWhereOrNull('salary', '>', $minSalary);
         $addWhereOrNull('salary', '<', $maxSalary);
         $addWhereOrNull('working_time', '>', $minHours);
