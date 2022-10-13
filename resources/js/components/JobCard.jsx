@@ -30,24 +30,6 @@ const LearnMore = styled((props) => {
     borderRadius: "50px",
 }));
 
-class Sector extends React.Component {
-    render() {
-        return (
-            <Chip
-                label={this.props.name}
-                size="small"
-                sx={{
-                    backgroundColor: "var(--background)",
-                    marginLeft: "5px",
-                    marginRight: "5px",
-                    marginTop: "2px",
-                    marginBottom: "2px",
-                }}
-            />
-        );
-    }
-}
-
 export default class JobCard extends React.Component {
     constructor(props) {
         super(props);
@@ -217,14 +199,6 @@ export default class JobCard extends React.Component {
                                 sx={{ backgroundColor: "var(--background)" }}
                             />
                         </Divider>
-                        <br />
-                        <Typography component={"span"}>
-                            Sectors:
-                            {this.props.data.sectors &&
-                                this.props.data.sectors.map((sector, index) => {
-                                    return <Sector name={sector} key={index} />;
-                                })}
-                        </Typography>
                         <br />
                         <Typography>
                             Contract Type: {this.props.data.contract_type}
