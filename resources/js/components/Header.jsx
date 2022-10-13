@@ -50,7 +50,7 @@ export default function Header({ with_sidebar, openSidebar }) {
                 />
             </a>
 
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex", gap:'4vw' }}>
                 <div style={{ margin: "0 1em" }}>
                     <a style={{ color: "var(--light)" }} href="/chat">
                         <ChatIcon />
