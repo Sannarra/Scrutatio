@@ -32,6 +32,12 @@ export default function Message(props) {
         return currentConversation().id;
     };
 
+    const currentPostId = () => {
+        if (currentConversation() == null)
+            return null;
+        return currentConversation().post_id;
+    };
+
     // State used for storing the current conversation's messages, and the input field of the user
     const initialInputMessages = () => {
         let array = new Array(conversations.length).fill("");
@@ -125,6 +131,10 @@ export default function Message(props) {
     return (
         <Container sx={{ mb: "20px" }}>
             {
+                //regroup conv per 2 for now
+
+                
+
                 // Display a list of all conversations with a button to select each conversation
                 conversations.map((conv, i) => {
                     return (

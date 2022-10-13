@@ -85,16 +85,19 @@ class ApplicationController extends Controller
 
         $applications = $applications->sortByDesc('created_at');
         $applications_id = $applications->pluck('id');
-        $applications_title = $applications->pluck('post.title');
+        $posts_title = $applications->pluck('post.title');
+        $posts_id = $applications->pluck('post.id');
 
         $conversations = [];
         foreach ($applications_id as $i => $id)
             array_push($conversations, [
                 "id" => $id,
-                "title" => $applications_title[$i]
+                "title" => $posts_title[$i],
+                "post_id" => $posts_id
             ]);
         return $conversations;
     }
+
 
     public function chat()
     {
