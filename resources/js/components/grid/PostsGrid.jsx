@@ -13,12 +13,6 @@ export default function PostsGrid(props) {
                     },
                 },
                 default: {
-                    title: "",
-                    city: "",
-                    short_brief: "",
-                    description: "",
-                    salary: null,
-                    working_time: null,
                     contract_type: "Not Defined",
                 },
                 columns: [

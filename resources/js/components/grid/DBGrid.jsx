@@ -120,7 +120,6 @@ export default function DBGrid(props) {
             .then((res) => {
                 if (res.status == 400) {
                     if (method == "POST") {
-                        console.log(newRow, rows);
                         setRows(
                             rows.map((row) =>
                                 row.id === newRow.id ? newRow : row
