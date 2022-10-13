@@ -242,18 +242,29 @@ export default function DBGrid(props) {
                 ];
             },
         });
-        columns.push({ field: "id", headerName: "ID", width: 50 });
+        columns.push({
+            field: "id",
+            headerName: "ID",
+            width: 50,
+            editable: true,
+        });
         return columns;
     };
 
     const columns = crud_columns()
         .concat(props.columns)
         .concat([
-            { field: "created_at", headerName: "Creation Date", width: 180 },
+            {
+                field: "created_at",
+                headerName: "Creation Date",
+                width: 180,
+                editable: true,
+            },
             {
                 field: "updated_at",
                 headerName: "Modification Date",
                 width: 180,
+                editable: true,
             },
         ]);
 

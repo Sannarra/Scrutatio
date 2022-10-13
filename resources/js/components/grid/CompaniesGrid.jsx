@@ -39,6 +39,13 @@ export default function CompaniesGrid(props) {
                         editable: true,
                     },
                     {
+                        field: "description",
+                        headerName: "Description",
+                        width: 170,
+                        editable: true,
+                        hide: true,
+                    },
+                    {
                         field: "website",
                         headerName: "Website",
                         width: 250,
