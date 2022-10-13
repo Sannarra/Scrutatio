@@ -109,7 +109,7 @@ class ApplicationController extends Controller
                     break;
                 }
 
-        return react_view("message", ["conversations" => $conversations, "conversationId" => $conversationId]);
+        return react_view("message", ["conversations" => $conversations, "conversationId" => $conversationId, "account_id" => Auth::id()]);
     }
 
     public function getApplyMessage(Post $post, User $user)
@@ -133,6 +133,7 @@ Your {$post->title} job offer interests me.
         return react_view("message", [
             "user" => Auth::user()->user->id,
             "conversations" => $conversations,
-            "icebreaker" => $this->getApplyMessage($post, Auth::user()->user)]);
+            "icebreaker" => $this->getApplyMessage($post, Auth::user()->user),
+            "account_id" => Auth::id()]);
     }
 }
