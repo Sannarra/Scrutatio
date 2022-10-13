@@ -16,7 +16,6 @@ export default function Message(props) {
         props.data.conversations || []
     );
     // State used for storing the current conversation id
-    /// Id in conversations state
     const [currentConversationId, setCurrentConversationId] = useState(
         conversations.length > 0
             ? props.data.conversationId != undefined
@@ -32,11 +31,6 @@ export default function Message(props) {
         if (currentConversation() == null || currentConversationId == -1)
             return null;
         return currentConversation().id;
-    };
-
-    const currentPostId = () => {
-        if (currentConversation() == null) return null;
-        return currentConversation().post_id;
     };
 
     // State used for storing the current conversation's messages, and the input field of the user
@@ -129,8 +123,6 @@ export default function Message(props) {
                 console.log(err);
             });
     };
-
-    ///////////////////render block///////////////////////
 
     return (
         <Container sx={{ mb: "20px" }}>
