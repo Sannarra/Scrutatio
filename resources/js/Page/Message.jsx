@@ -7,6 +7,8 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
+import Collapse from "@mui/material/Collapse";
+import Badge from "@mui/material/Badge";
 
 export default function Message(props) {
     // State used for storing conversation names and ids
@@ -14,7 +16,6 @@ export default function Message(props) {
         props.data.conversations || []
     );
     // State used for storing the current conversation id
-    /// Id in conversations state
     const [currentConversationId, setCurrentConversationId] = useState(
         conversations.length > 0
             ? props.data.conversationId != undefined
@@ -119,6 +120,7 @@ export default function Message(props) {
                 "Content-Type": "application/json",
                 "X-CSRF-TOKEN": props.csrf_token,
             },
+
             body: JSON.stringify({
                 message: inputMessage().trim(),
             }),
@@ -136,33 +138,100 @@ export default function Message(props) {
 
     return (
         <Container sx={{ mb: "20px" }}>
-            {
-                // Display a list of all conversations with a button to select each conversation
-                conversations.map((conv, i) => {
-                    return (
-                        <Button
-                            sx={{ m: 1 }}
-                            variant="contained"
-                            key={i}
-                            onClick={() => setCurrentConversationId(i)}
-                            style={{
-                                backgroundColor: conv.new
-                                    ? "var(--accent)"
-                                    : "var(--accent2)",
-                                borderColor: "var(--dark)",
-                                border:
-                                    i == currentConversationId
-                                        ? "solid 1px"
-                                        : 0,
-                            }}
-                        >
-                            {conv.new && "NEW: "} {conv.title}
-                        </Button>
-                    );
-                })
-            }
+            {props.data.isCompany
+                ? groupByPostId(conversations).map((convGroup, i) => {
+                      // open application group
+                      const [open, setOpen] = React.useState(false);
+
+                      const handleClick = () => {
+                          setOpen(!open);
+                      };
+                      return (
+                          <div
+                              key={i}
+                              style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  marginBottom: "3vh",
+                              }}
+                          >
+                              <Button
+                                  onClick={handleClick}
+                                  variant="outlined"
+                                  style={{
+                                      color: "black",
+                                      borderColor: "black",
+                                      backgroundColor: "lightgrey",
+                                  }}
+                              >
+                                  {convGroup.title}
+                                  <Badge
+                                      style={{ margin: "1em", color: "white" }}
+                                      badgeContent={
+                                          convGroup.applications.length
+                                      }
+                                      color="grey"
+                                  ></Badge>
+                              </Button>
+
+                              <Collapse in={open} timeout="auto" unmountOnExit>
+                                  {convGroup.applications.map((conv, i) => {
+                                      return (
+                                          <Button
+                                              sx={{ m: 1 }}
+                                              variant="contained"
+                                              key={i}
+                                              onClick={() =>
+                                                  setCurrentConversationId(
+                                                      i + convGroup.start_id
+                                                  )
+                                              }
+                                              style={{
+                                                  backgroundColor: conv.new
+                                                      ? "var(--accent)"
+                                                      : "var(--accent2)",
+                                                  borderColor: "var(--dark)",
+                                                  border:
+                                                      i + convGroup.start_id ==
+                                                      currentConversationId
+                                                          ? "solid 1px"
+                                                          : 0,
+                                              }}
+                                          >
+                                              {conv.new && "NEW: "}{" "}
+                                              {conv.applicant}
+                                          </Button>
+                                      );
+                                  })}
+                              </Collapse>
+                          </div>
+                      );
+                  })
+                : conversations.map((conv, i) => {
+                      return (
+                          <Button
+                              sx={{ m: 1 }}
+                              variant="contained"
+                              key={i}
+                              onClick={() => setCurrentConversationId(i)}
+                              style={{
+                                  backgroundColor: conv.new
+                                      ? "var(--accent)"
+                                      : "var(--accent2)",
+                                  borderColor: "var(--dark)",
+                                  border:
+                                      i == currentConversationId
+                                          ? "solid 1px"
+                                          : 0,
+                              }}
+                          >
+                              {conv.new && "NEW: "} {conv.title}
+                          </Button>
+                      );
+                  })}
 
             {/* if not apply -> find offer else -> click offer */}
+
             {conversations.length == 0 ? (
                 <Container
                     sx={{
@@ -176,10 +245,22 @@ export default function Message(props) {
                         textAlign: "center",
                     }}
                 >
-                    <div>You have not applied to any job offers yet!</div>
-                    <Button variant="contained" href="/" sx={{ margin: "3%" }}>
-                        Find offers?
-                    </Button>
+                    {!props.data.isCompany ? (
+                        <div>
+                            <div>
+                                You have not applied to any job offers yet!
+                            </div>
+                            <Button
+                                variant="contained"
+                                href="/"
+                                sx={{ margin: "3%" }}
+                            >
+                                Find offers?
+                            </Button>
+                        </div>
+                    ) : (
+                        <p>No one has applied to your offers for now</p>
+                    )}
                 </Container>
             ) : (
                 <></>
@@ -245,7 +326,7 @@ export default function Message(props) {
                                         backgroundColor: "white",
                                     }}
                                 >
-                                    <h1>Send a message to apply to the job!</h1>
+                                    <h2>Send a message to apply to the job!</h2>
                                 </div>
                             ) : (
                                 messages.map((message, i) => {
@@ -356,4 +437,28 @@ export default function Message(props) {
             )}
         </Container>
     );
+}
+
+// group application by post in a company chat
+function groupByPostId(data) {
+    const result = [];
+    let start_id = 0;
+
+    data.forEach((e) => {
+        const postGroup = result.find((p) => p.post_id === e.post_id);
+
+        if (postGroup) {
+            postGroup.applications.push(e);
+        } else {
+            result.push({
+                post_id: e.post_id,
+                title: e.title,
+                applications: [e],
+                start_id: start_id,
+            });
+        }
+        start_id += 1;
+    });
+
+    return result;
 }

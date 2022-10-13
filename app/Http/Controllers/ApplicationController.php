@@ -99,16 +99,21 @@ class ApplicationController extends Controller
 
         $applications = $applications->sortByDesc('created_at');
         $applications_id = $applications->pluck('id');
-        $applications_title = $applications->pluck('post.title');
+        $posts_title = $applications->pluck('post.title');
+        $posts_id = $applications->pluck('post.id');
+        $applicants = $applications->pluck('user.lastname');
 
         $conversations = [];
         foreach ($applications_id as $i => $id)
             array_push($conversations, [
                 "id" => $id,
-                "title" => $applications_title[$i]
+                "title" => $posts_title[$i],
+                "post_id" => $posts_id[$i],
+                "applicant" => $applicants[$i],
             ]);
         return $conversations;
     }
+
 
     public function chat()
     {
@@ -123,7 +128,10 @@ class ApplicationController extends Controller
                     break;
                 }
 
-        return react_view("message", ["conversations" => $conversations, "conversationId" => $conversationId, "account_id" => Auth::id()]);
+        return react_view("message", ["conversations" => $conversations, 
+        "conversationId" => $conversationId, 
+        "account_id" => Auth::id(),
+        "isCompany" => Auth::user()->company != null]);
     }
 
     public function getApplyMessage(Post $post, User $user)
