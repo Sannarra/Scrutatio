@@ -110,6 +110,7 @@ class ApplicationController extends Controller
                 "title" => $posts_title[$i],
                 "post_id" => $posts_id[$i],
                 "applicant" => $applicants[$i],
+                "contact_id" => (Auth::user()->user != null) ?Post::find($posts_id[$i])->company->account->id : $applications[$i]->user->account->id
             ]);
         return $conversations;
     }
@@ -128,10 +129,10 @@ class ApplicationController extends Controller
                     break;
                 }
 
-        return react_view("message", ["conversations" => $conversations, 
-        "conversationId" => $conversationId, 
-        "account_id" => Auth::id(),
-        "isCompany" => Auth::user()->company != null]);
+        return react_view("message", ["conversations" => $conversations,
+            "conversationId" => $conversationId,
+            "account_id" => Auth::id(),
+            "isCompany" => Auth::user()->company != null]);
     }
 
     public function getApplyMessage(Post $post, User $user)
@@ -151,7 +152,7 @@ Your {$post->title} job offer interests me.
             return redirect('/chat')->with("conversationId", $conversation->first()->id);
         $conversations = $this->getApplications();
 
-        array_unshift($conversations, ["title" => $post->title, "new" => true, "post_id" => $post->id]);
+        array_unshift($conversations, ["title" => $post->title, "new" => true, "post_id" => $post->id, "company_id" => $post->company->id]);
         return react_view("message", [
             "user" => Auth::user()->user->id,
             "conversations" => $conversations,

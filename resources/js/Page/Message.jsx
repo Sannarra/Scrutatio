@@ -7,6 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
 import Collapse from "@mui/material/Collapse";
 import Badge from "@mui/material/Badge";
 
@@ -286,23 +287,33 @@ export default function Message(props) {
                                     padding: "3vh",
                                 }}
                             >
-                                {/* Todo: adapt avatar */}
-
-                                <Avatar sx={{ bgcolor: "orange" }}>
-                                    {
-                                        conversations.filter(
-                                            (conv) =>
-                                                conv.id ==
-                                                currentApplicationId()
-                                        )[0]?.title[0]
+                                {/* avatar and title link with profile page */}
+                                <Link
+                                    href={
+                                        "/profile/" +
+                                        currentConversation().contact_id
                                     }
-                                </Avatar>
-                                {
-                                    conversations.filter(
-                                        (conv) =>
-                                            conv.id == currentApplicationId()
-                                    )[0]?.title
-                                }
+                                >
+                                    <Avatar sx={{ bgcolor: "orange" }}>
+                                        {
+                                            (props.data.isCompany
+                                                ? currentConversation()
+                                                      .applicant
+                                                : currentConversation()
+                                                      .title)[0]
+                                        }
+                                    </Avatar>
+                                </Link>
+                                <Link
+                                    href={
+                                        "/profile/" +
+                                        currentConversation().contact_id
+                                    }
+                                >
+                                    {props.data.isCompany
+                                        ? currentConversation().applicant
+                                        : currentConversation().title}
+                                </Link>
                             </div>
                         </div>
                     </Grid>
