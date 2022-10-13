@@ -12,6 +12,15 @@ export default function PostsGrid(props) {
                         update: (row) => `/edit-post/${row.id}`,
                     },
                 },
+                default: {
+                    title: "",
+                    city: "",
+                    short_brief: "",
+                    description: "",
+                    salary: null,
+                    working_time: null,
+                    contract_type: "Not Defined",
+                },
                 columns: [
                     {
                         field: "title",
@@ -28,13 +37,11 @@ export default function PostsGrid(props) {
                     {
                         field: "short_brief",
                         headerName: "Short Brief",
-                        hide: true,
                         editable: true,
                     },
                     {
                         field: "description",
                         headerName: "Description",
-                        hide: true,
                         editable: true,
                     },
                     {

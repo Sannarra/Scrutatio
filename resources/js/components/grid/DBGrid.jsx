@@ -28,7 +28,7 @@ function EditToolbar(props) {
                 valid = false;
                 return [...oldRows];
             }
-            return [{ id, isNew: true }, ...oldRows];
+            return [{ id, isNew: true, ...props.props.default }, ...oldRows];
         });
         if (!valid) return;
         props.setRowModesModel((oldModel) => ({
@@ -64,12 +64,7 @@ export default function DBGrid(props) {
     const [rowModesModel, setRowModesModel] = useState({});
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [toDeleteID, setToDeleteID] = useState(undefined);
-
-    useEffect(() => {
-        fetch(props.crud.api)
-            .then((res) => res.json())
-            .then((data) => setRows(data));
-    }, []);
+    const [error, setError] = useState("");
 
     const handleRowEditStart = (params, event) => {
         event.defaultMuiPrevented = true;
@@ -93,15 +88,6 @@ export default function DBGrid(props) {
         });
     };
 
-    const handleDeleteClick = (id) => {
-        fetch(`${props.crud.api}/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-type": "application/json",
-            },
-        }).then((res) => setRows(rows.filter((row) => row.id !== id)));
-    };
-
     const handleCancelClick = (id) => () => {
         setRowModesModel({
             ...rowModesModel,
@@ -114,24 +100,76 @@ export default function DBGrid(props) {
         }
     };
 
+    /// CREATE/UPDATE
     const processRowUpdate = (newRow) => {
-        const updatedRow = { ...newRow, isNew: false };
         let route = props.crud.api;
         if (!newRow.isNew) route = route + "/" + newRow.id;
+        const method = newRow.isNew ? "POST" : "PUT";
+        setError("");
         fetch(route, {
-            method: newRow.isNew ? "POST" : "PUT",
+            method: method,
             headers: {
+                Accept: "application/json",
                 "Content-type": "application/json",
             },
-            body: JSON.stringify(updatedRow),
+            body: JSON.stringify(newRow),
         })
+            .then((res) =>
+                res.json().then((data) => ({ status: res.status, body: data }))
+            )
+            .then((res) => {
+                if (res.status == 400) {
+                    if (method == "POST") {
+                        console.log(newRow, rows);
+                        setRows(
+                            rows.map((row) =>
+                                row.id === newRow.id ? newRow : row
+                            )
+                        );
+                    } else setRows(rows.map((row) => row));
+                    setError(res.body.error);
+                    if (method == "POST")
+                        setRowModesModel({
+                            ...rowModesModel,
+                            [newRow.id]: { mode: GridRowModes.Edit },
+                        });
+                } else {
+                    if (method == "POST")
+                        setRows(
+                            rows.map((row) => (row.id === -1 ? res.body : row))
+                        );
+                    else
+                        setRows(
+                            rows.map((row) =>
+                                row.id === res.body.id ? res.body : row
+                            )
+                        );
+                }
+            });
+        return newRow;
+    };
+
+    /// READ
+    useEffect(() => {
+        fetch(props.crud.api)
             .then((res) => res.json())
             .then((data) => {
-                setRows(
-                    rows.map((row) => (row.id === newRow.id ? updatedRow : row))
-                );
+                setRows(data);
             });
-        return updatedRow;
+    }, []);
+
+    /// DELETE
+    const handleDeleteClick = (id) => {
+        setError("");
+        fetch(`${props.crud.api}/${id}`, {
+            method: "DELETE",
+            headers: {
+                Accept: "application/json",
+                "Content-type": "application/json",
+            },
+        }).then((res) => {
+            setRows(rows.filter((row) => row.id != id));
+        });
     };
 
     const crud_columns = () => {
@@ -274,6 +312,7 @@ export default function DBGrid(props) {
     return (
         <div>
             <h3>{props.table_name}</h3>
+            <p style={{ color: "red" }}>{error}</p>
             <div style={{ height: "450px" }}>
                 <div style={{ display: "flex", height: "100%" }}>
                     <DataGrid
