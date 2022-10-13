@@ -13,6 +13,8 @@ class Application extends Model
 
     protected $fillable = [
         'id',
+        'created_at',
+        'updated_at',
         'post_id',
         'user_id', ];
 
