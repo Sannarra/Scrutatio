@@ -78,15 +78,11 @@ export default function Message(props) {
     }
 
     // Effect to fetch all messages for a conversation when the current conversation changes
+    const [updateInterval, setUpdateInterval] = useState(null);
     useEffect(() => {
-        const interval = setInterval(() => {
-            getMessages();
-        }, 2000);
-    }, []);
-
-    // Effect to fetch all messages for a conversation when the current conversation changes
-    useEffect(() => {
+        if (updateInterval != null) clearInterval(updateInterval);
         getMessages();
+        setUpdateInterval(setInterval(() => getMessages(), 2000));
     }, [currentConversationId]);
 
     const send = () => {
