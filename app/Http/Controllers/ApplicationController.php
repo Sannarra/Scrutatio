@@ -8,6 +8,9 @@ use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Account;
+use App\Models\Post;
+use App\Models\User;
+use Illuminate\Support\Facades\Session;
 
 
 class ApplicationController extends Controller
@@ -25,13 +28,27 @@ class ApplicationController extends Controller
 
     public function store(Request $request)
     {
-        $application = Application::create($request->all());
+        $request->validate([
+            'created_at' => 'date',
+            'updated_at' => 'date',
+            'post_id' => 'required|exists:posts,id',
+            'user_id' => 'required|exists:users,id',
+        ]);
+        $applicationData = $request->all();
+        unset($applicationData["id"]);
+        $application = Application::create($applicationData);
 
         return response()->json($application, 201);
     }
 
     public function update(Request $request, Application $application)
     {
+        $request->validate([
+            'created_at' => 'date',
+            'updated_at' => 'date',
+            'post_id' => 'exists:posts,id',
+            'user_id' => 'exists:users,id',
+        ]);
         $application->update($request->all());
 
         return response()->json($application, 200);
@@ -67,7 +84,7 @@ class ApplicationController extends Controller
         ]), 201);
     }
 
-    public function chat()
+    public function getApplications()
     {
         $applications = null;
         if (Auth::user()->user != null)
@@ -80,16 +97,65 @@ class ApplicationController extends Controller
                     );
                 })->get();
 
+        $applications = $applications->sortByDesc('created_at');
         $applications_id = $applications->pluck('id');
-        $applications_title = $applications->pluck('post.title');
+        $posts_title = $applications->pluck('post.title');
+        $posts_id = $applications->pluck('post.id');
+        $applicants = $applications->pluck('user.lastname');
 
         $conversations = [];
         foreach ($applications_id as $i => $id)
             array_push($conversations, [
                 "id" => $id,
-                "title" => $applications_title[$i]
+                "title" => $posts_title[$i],
+                "post_id" => $posts_id[$i],
+                "applicant" => $applicants[$i],
             ]);
+        return $conversations;
+    }
 
-        return react_view("message", ["conversations" => $conversations]);
+
+    public function chat()
+    {
+        $conversations = $this->getApplications();
+        $conversationId = Session::get("conversationId");
+        if ($conversationId == null)
+            $conversationId = 0;
+        else
+            foreach ($conversations as $i => $conv)
+                if ($conv['id'] == $conversationId) {
+                    $conversationId = $i;
+                    break;
+                }
+
+        return react_view("message", ["conversations" => $conversations, 
+        "conversationId" => $conversationId, 
+        "account_id" => Auth::id(),
+        "isCompany" => Auth::user()->company != null]);
+    }
+
+    public function getApplyMessage(Post $post, User $user)
+    {
+        return "Hello,
+Your {$post->title} job offer interests me.
+
+{$user->firstname} {$user->lastname}
+{$user->account->email}
+{$user->phone}";
+    }
+
+    public function apply(Post $post)
+    {
+        $conversation = Application::where('user_id', Auth::user()->user->id)->where('post_id', $post->id)->get();
+        if ($conversation->count() > 0)
+            return redirect('/chat')->with("conversationId", $conversation->first()->id);
+        $conversations = $this->getApplications();
+
+        array_unshift($conversations, ["title" => $post->title, "new" => true, "post_id" => $post->id]);
+        return react_view("message", [
+            "user" => Auth::user()->user->id,
+            "conversations" => $conversations,
+            "icebreaker" => $this->getApplyMessage($post, Auth::user()->user),
+            "account_id" => Auth::id()]);
     }
 }

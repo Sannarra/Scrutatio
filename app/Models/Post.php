@@ -11,15 +11,17 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title',
+    protected $fillable = [
+        'id',
+        'created_at',
+        'updated_at',
+        'title',
         'description',
         'salary',
         'working_time',
         'city',
-        'contract_type',
-        'company_id',
-        'icon_src',
-        'short_brief'];
+        'short_brief',
+        'company_id'];
 
     public function company()
     {
@@ -39,11 +41,9 @@ class Post extends Model
             "company_name" => $this->company->name,
             "city" => $this->city,
             "publication_date" => date('m-d H:i', strtotime($this->created_at)),
-            "sectors" => $this->company->sectors->pluck('sector.name'),
             "contract_type" => $this->contract_type,
             "salary" => $this->salary,
             "working_time" => $this->working_time,
-            "company_icon" => $this->icon_src,
             "description" => $this->description,
             "short_brief" => $this->short_brief,
             "id" => $this->id

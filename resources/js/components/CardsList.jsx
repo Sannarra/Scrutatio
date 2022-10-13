@@ -70,7 +70,13 @@ export default function CardsList(props) {
                 return (
                     <JobCard
                         key={index}
-                        data={job}
+                        data={{
+                            ...job,
+                            hasApply:
+                                props.data.hasApply == undefined
+                                    ? true
+                                    : props.data.hasApply,
+                        }}
                         onExpand={handleExpandClick}
                         edit_mode={props.edit_mode ? +true : +false}
                     />

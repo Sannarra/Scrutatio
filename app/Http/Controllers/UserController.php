@@ -15,21 +15,40 @@ class UserController extends Controller
         return User::all();
     }
 
-    public function show(Request $request, User $user)
+    public function show(User $user)
     {
         return $user;
     }
 
     public function store(Request $request)
     {
-        $user = User::create($request->all());
+        $request->validate([
+            'firstname' => 'required|max:255',
+            'lastname' => "required|max:255",
+            'phone' => 'required|max:255',
+            'city' => 'required|max:255',
+            'account_id' => 'required|exists:accounts,id',
+            'created_at' => 'date',
+            'updated_at' => 'date',
+        ]);
+        $userData = $request->all();
+        unset($userData["id"]);
+        $user = User::create($userData);
 
         return response()->json($user, 201);
     }
 
     public function update(Request $request, User $user)
     {
-
+        $request->validate([
+            'firstname' => 'filled|max:255',
+            'lastname' => "filled|max:255",
+            'phone' => 'filled|max:255',
+            'city' => 'filled|max:255',
+            'account_id' => 'exists:accounts,id',
+            'created_at' => 'date',
+            'updated_at' => 'date',
+        ]);
         $user->update($request->all());
 
         return response()->json($user, 200);

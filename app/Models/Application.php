@@ -11,12 +11,19 @@ class Application extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'id',
+        'created_at',
+        'updated_at',
+        'post_id',
+        'user_id', ];
+
     public function post()
     {
         return $this->belongsTo(Post::class);
     }
 
-    public function applicant()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

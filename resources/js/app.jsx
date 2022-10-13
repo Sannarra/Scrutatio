@@ -35,6 +35,7 @@ import AdminPanel from "./Page/AdminPanel.jsx";
 import Message from "./Page/Message.jsx";
 
 let with_sidebar = false;
+let returnPage = undefined;
 
 function getPage() {
     switch (pageName) {
@@ -81,6 +82,7 @@ function getPage() {
             with_sidebar = true;
             return () => <ManagePosts data={pageData} />;
         case "create_post":
+            returnPage = "/manage-posts";
             return () => (
                 <EditPosts
                     creation_mode
@@ -90,7 +92,14 @@ function getPage() {
                 />
             );
         case "edit_post":
-            return () => <EditPosts data={pageData} csrf_token={csrf_token} errors={errors} />;
+            returnPage = "/manage-posts";
+            return () => (
+                <EditPosts
+                    data={pageData}
+                    csrf_token={csrf_token}
+                    errors={errors}
+                />
+            );
         case "message":
             return () => <Message data={pageData} csrf_token={csrf_token} />;
         default:
@@ -112,6 +121,7 @@ ReactDOM.createRoot(document.getElementById("app")).render(
                 content={getPage()}
                 csrf_token={csrf_token}
                 with_sidebar={with_sidebar}
+                returnPage={returnPage}
             />
         </div>
     </ThemeProvider>

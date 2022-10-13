@@ -30,7 +30,10 @@ class ProfileController extends Controller
                     "description" => $company->description,
                     "email" => $account->email,
                     "account_id" => $include_id ? $account->id : null
-                ]
+                ],
+                "isAdmin" => $account->is_admin,
+                "canEdit" => Gate::allows('edit-profile', [$account]),
+                "isCurrentProfile" => $account->id == Auth::id()
             ]);
         }
         if ($user !== null) {
@@ -43,7 +46,10 @@ class ProfileController extends Controller
                     "city" => $user->city,
                     "email" => $user->account->email,
                     "account_id" => $include_id ? $account->id : null
-                ]
+                ],
+                "isAdmin" => $account->is_admin,
+                "canEdit" => Gate::allows('edit-profile', [$account]),
+                "isCurrentProfile" => $account->id == Auth::id()
             ]);
         }
     }
@@ -75,7 +81,7 @@ class ProfileController extends Controller
                     "description" => $company->description,
                     "email" => $account->email,
                     "account_id" => $account->id,
-                ]
+                ],
             ]);
         }
 
@@ -89,7 +95,7 @@ class ProfileController extends Controller
                     "city" => $user->city,
                     "email" => $user->account->email,
                     "account_id" => $account->id
-                ]
+                ],
             ]);
         }
     }
@@ -173,6 +179,8 @@ class ProfileController extends Controller
         Gate::authorize('edit-profile', [$profile]);
         ProfileController::editProfile($request, $profile);
 
+        if ($profile->id != Auth::id())
+            return redirect("/profile/$profile->id");
         return redirect()->intended('profile');
     }
 }

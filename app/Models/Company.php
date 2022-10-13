@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
-use App\Models\CompanySector;
 use App\Models\Post;
 
 class Company extends Model
@@ -14,6 +13,8 @@ class Company extends Model
 
     protected $fillable = [
         'id',
+        'created_at',
+        'updated_at',
         'name',
         'creation_date',
         'size',
@@ -25,11 +26,6 @@ class Company extends Model
     public function account()
     {
         return $this->belongsTo(Account::class);
-    }
-
-    public function sectors()
-    {
-        return $this->hasMany(CompanySector::class);
     }
 
     public function posts()
