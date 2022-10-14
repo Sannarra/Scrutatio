@@ -25,6 +25,7 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#database-schema">Database Schema</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
@@ -62,6 +63,14 @@ In addition of those constraints, we aims to:
 -   Save posts in profile for later candidature
 -   Show messages chat
 -   Ultra Dark mode
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Database Schema
+
+<a href="https://github.com/EpitechMscProPromo2025/T-WEB-501-NAN-5-1-jobboard-lisa.bourdon/doc/DatabaseDiagram.pdf">
+    <img src="doc/DatabaseDiagram.png" alt="Database Diagram" width="1000" height="auto">
+  </a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
