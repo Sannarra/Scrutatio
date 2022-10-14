@@ -12,7 +12,6 @@
   <p align="center">
     An awesome jobboard to jumpstart your career!
     <br />
-    <a href="https://github.com/EpitechMscProPromo2025/T-WEB-501-NAN-5-1-jobboard-lisa.bourdon"><strong>Explore the docs »</strong></a>
     <br />
     <br />
   </p>
