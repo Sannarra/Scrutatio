@@ -20,7 +20,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 function EditToolbar(props) {
-    const handleClick = () => {
+    /// Create a new record in the grid when clicking explicit "Add Record" button
+    const handleAdd = () => {
         const id = -1;
         let valid = true;
         props.setRows((oldRows) => {
@@ -43,7 +44,7 @@ function EditToolbar(props) {
             <Button
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={handleClick}
+                onClick={handleAdd}
                 target="_blank"
                 rel="noopener noreferrer"
             >
@@ -58,10 +59,12 @@ EditToolbar.propTypes = {
     setRows: PropTypes.func.isRequired,
 };
 
+/// Generic database grid with crud operations
 export default function DBGrid(props) {
     const [pageSize, setPageSize] = useState(5);
     const [rows, setRows] = useState([]);
     const [rowModesModel, setRowModesModel] = useState({});
+    /// If delete confirmation dialog is opened
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [toDeleteID, setToDeleteID] = useState(undefined);
     const [error, setError] = useState("");
@@ -119,20 +122,26 @@ export default function DBGrid(props) {
             )
             .then((res) => {
                 if (res.status == 400) {
-                    if (method == "POST") {
+                    /// Failure
+                    /// If post fail, it keeps the row on the table as unsaved
+                    if (method == "POST")
                         setRows(
                             rows.map((row) =>
                                 row.id === newRow.id ? newRow : row
                             )
                         );
-                    } else setRows(rows.map((row) => row));
+                    /// If update fail, it reverts the update
+                    else setRows(rows.map((row) => row));
+
                     setError(res.body.error);
+                    /// Set failed new row in edit mode
                     if (method == "POST")
                         setRowModesModel({
                             ...rowModesModel,
                             [newRow.id]: { mode: GridRowModes.Edit },
                         });
                 } else {
+                    ///Success
                     if (method == "POST")
                         setRows(
                             rows.map((row) => (row.id === -1 ? res.body : row))
@@ -171,10 +180,20 @@ export default function DBGrid(props) {
         });
     };
 
+    /// Common columns including
+    /// Inteface actions: view, edit, create
+    /// Inline row actions: edit delete | save cancel (depending on edit mode)
+    /// Common infos: id, created_at, updated_at
     const crud_columns = () => {
         let columns = [];
 
-        if (props.crud.web && (props.crud.web.update || props.crud.web.read)) {
+        /// If it has interface actions (in props.crud.web)
+        if (
+            props.crud.web &&
+            (props.crud.web.create ||
+                props.crud.web.update ||
+                props.crud.web.read)
+        ) {
             columns.push({
                 field: "webActions",
                 type: "actions",
@@ -185,6 +204,7 @@ export default function DBGrid(props) {
                     if (row.id == -1) return [];
                     let actions = [];
 
+                    /// Interface View
                     if (props.crud.web.read)
                         actions.push(
                             <GridActionsCellItem
@@ -198,6 +218,7 @@ export default function DBGrid(props) {
                                 color="inherit"
                             />
                         );
+                    /// Inteface Edit
                     if (props.crud.web.update)
                         actions.push(
                             <GridActionsCellItem
@@ -211,6 +232,7 @@ export default function DBGrid(props) {
                                 color="inherit"
                             />
                         );
+                    ///Interface Create
                     if (props.crud.web.create)
                         actions.push(
                             <GridActionsCellItem
@@ -228,6 +250,7 @@ export default function DBGrid(props) {
                 },
             });
         }
+        /// Inline row actions
         columns.push({
             field: "actions",
             type: "actions",
@@ -238,14 +261,17 @@ export default function DBGrid(props) {
                 const isInEditMode =
                     rowModesModel[id]?.mode === GridRowModes.Edit;
 
+                /// If row is being edited
                 if (isInEditMode) {
                     return [
+                        /// Save changes
                         <GridActionsCellItem
                             icon={<SaveIcon />}
                             label="Save"
                             title="Save"
                             onClick={handleSaveClick(id)}
                         />,
+                        /// cancel changes
                         <GridActionsCellItem
                             icon={<CancelIcon />}
                             label="Cancel"
@@ -257,7 +283,9 @@ export default function DBGrid(props) {
                     ];
                 }
 
+                /// If row is not being edited
                 return [
+                    /// Edit
                     <GridActionsCellItem
                         icon={<BorderColorIcon />}
                         label="Edit"
@@ -266,6 +294,7 @@ export default function DBGrid(props) {
                         onClick={handleEditClick(id)}
                         color="inherit"
                     />,
+                    /// Delete
                     <GridActionsCellItem
                         icon={<DeleteIcon />}
                         label="Delete"

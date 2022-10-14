@@ -34,6 +34,7 @@ class Post extends Model
     }
 
 
+    /// Convert a Post record to the required React JobCard informations
     public function toJobCard()
     {
         return [

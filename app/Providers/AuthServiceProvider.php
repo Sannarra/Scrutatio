@@ -28,10 +28,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        /// Admin can do anything        
         Gate::before(function ($user) {
-            if ($user->is_admin == true) {
+            if ($user->is_admin == true)
                 return true;
-            }
         });
         Gate::define('isMember', function (Account $user) {
             return $user->user !== null;
@@ -39,9 +39,11 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('isCompany', function (Account $user) {
             return $user->company !== null;
         });
+        /// User must be a company and be owner of the post
         Gate::define('edit-post', function (Account $user, Post $post) {
             return Gate::check('isCompany') && $user->company->id == $post->company_id;
         });
+        /// User can only edit his profile
         Gate::define('edit-profile', function (Account $user, Account $profile) {
             return $user->id == $profile->id;
         });

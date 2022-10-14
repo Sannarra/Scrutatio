@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/EpitechMscProPromo2025/T-WEB-501-NAN-5-1-jobboard-lisa.bourdon">
-    <img src="./logo-white.png" alt="Logo" width="80" height="80">
+    <img src="public/logo-white.png" alt="Logo" width="350" height="auto">
   </a>
 
   <h3 align="center">JobBoard</h3>
@@ -80,9 +80,6 @@ Why ? We don't know, we are here for learning purposes.
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
 ### Prerequisites
 
 You must install:
@@ -140,16 +137,6 @@ You must install:
     php artisan serve
     ```
     <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- USAGE EXAMPLES -->
-
-## Usage
-
-Sint nostrud commodo id deserunt dolore sunt sunt proident id reprehenderit aute laboris consequat ea. Proident commodo incididunt cillum tempor cillum magna minim officia incididunt. Officia quis culpa voluptate sint anim non reprehenderit commodo commodo culpa et in deserunt adipisicing.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ACKNOWLEDGMENTS -->
 
