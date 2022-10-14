@@ -53,18 +53,21 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
+        /// Return error messages in json when the request expect a json response
         if ($request->expectsJson()) {
+            /// When a model is not found (ex: /api/messages/-1)
             if ($e instanceof ModelNotFoundException) {
                 return response()->json([
-                    'message' => 'Resource not found.'
+                    'error' => 'Resource not found.'
                 ], 404);
             }
+            /// When the request parameters are invalid (using request->validate)
             else if ($e instanceof ValidationException) {
-
                 return response()->json(['error' => $e->getMessage()], 400);
             }
         }
         else {
+            /// Redirect to last page if the user is unauthorized
             if ($e instanceof AuthorizationException)
                 return redirect()->intended();
         }

@@ -7,11 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Company;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Database\Eloquent\Builder;
 
 class PostController extends Controller
 {
-    /// CRUD api
+    /// Api
     public function index()
     {
         return Post::all();
@@ -67,29 +66,52 @@ class PostController extends Controller
         return response()->json(null, 204);
     }
 
+    public function searchRoute(Request $request)
+    {
+        return response()->json(PostController::search(
+            $request->query('sortField'),
+            $request->query('sortOrder'),
+            $request->query('searchWords'),
+            $request->query('minSalary'),
+            $request->query('maxSalary'),
+            $request->query('minHours'),
+            $request->query('maxHours'),
+            $request->query('location'),
+            explode(",", $request->query('contractTypes')),
+            $request->query("includeNull")), 200);
+    }
+
     /// Web api
+    /// Search posts corresponding with filter based on a query or on all posts
+    /// Each filter is optionnal (set to null if not used)
     static public function search($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $contractTypes, $includeNull, $query = null)
     {
+        /// If no query is set we filter on all the posts
         if ($query == null)
             $query = (new Post)->newQuery();
         $result = $query;
 
+        /// Add a where clause of the following form: WHERE {condition} OR IS NULL
+        /// The OR IS NULL part is only set when $includeNull is True
         $addWhereOrNull = function ($key, $operand, $value) use ($includeNull, $result) {
             if ($value == null)
                 return;
 
+            /// If include Null
             if (filter_var($includeNull, FILTER_VALIDATE_BOOLEAN)) {
-                $result = $result->where(function ($query) use ($key, $operand, $value, $includeNull) {
+                $result = $result->where(function ($query) use ($key, $operand, $value) {
                             $query->where($key, $operand, $value)
                                 ->orWhereNull($key);
                         }
                         );
                     }
+                    /// If not include null
                     else
                         $result = $result->where($key, $operand, $value);
                 };
 
 
+        /// Filter using searchwords in post title, description, short brief or company name
         if ($searchWords != null)
             $result = $result->where(function ($query) use ($searchWords) {
                 $query->where('title', 'like', "%$searchWords%")
@@ -97,6 +119,7 @@ class PostController extends Controller
                     ->orWhere('short_brief', 'like', "%$searchWords%")
                     ->orWhereRelation('company', 'name', 'like', "%$searchWords%");
             });
+        /// Filter salary/worktime in a given range, or null
         $addWhereOrNull('salary', '>=', $minSalary);
         $addWhereOrNull('salary', '<=', $maxSalary);
         $addWhereOrNull('working_time', '>=', $minHours);
@@ -106,6 +129,7 @@ class PostController extends Controller
         if ($contractTypes != null)
             for ($i = 0; $i < count($contractTypes); $i++)
                 $result = $result->where('contract_type', 'like', "%" . $contractTypes[$i] . "%", ($i == 0) ? 'and' : 'or');
+        /// Sort on a specified field/order
         if ($sortField != null && $sortOrder != null)
             $result = $result->orderBy($sortField, $sortOrder);
 
@@ -113,6 +137,8 @@ class PostController extends Controller
         return $result;
     }
 
+    /// Search posts and keep informations required by the front JobCard React component
+    /// It includes pagination and apply rights
     static public function getJobCardsData($sortField, $sortOrder, $searchWords, $minSalary, $maxSalary, $minHours, $maxHours, $location, $contractTypes, $includeNull, $pageSize, $currentPage, $query = null)
     {
         $posts = PostController::search($sortField,
@@ -137,22 +163,7 @@ class PostController extends Controller
         return $data;
     }
 
-    public function searchRoute(Request $request)
-    {
-        return response()->json(PostController::search(
-            $request->query('sortField'),
-            $request->query('sortOrder'),
-            $request->query('searchWords'),
-            $request->query('minSalary'),
-            $request->query('maxSalary'),
-            $request->query('minHours'),
-            $request->query('maxHours'),
-            $request->query('location'),
-            explode(",", $request->query('contractTypes')),
-            $request->query("includeNull")), 200);
-    }
-
-    public function createPost(Request $request)
+    public function createPost()
     {
         $company = Auth::user()->company;
 
@@ -165,7 +176,7 @@ class PostController extends Controller
             ]]);
     }
 
-    public function editPost(Request $request, Post $post)
+    public function editPost(Post $post)
     {
         Gate::authorize('edit-post', [$post]);
         return react_view("edit_post", [
@@ -208,6 +219,7 @@ class PostController extends Controller
             $query));
     }
 
+    /// Effectively create a new post in the database (POST request)
     public function doCreatePost(Request $request)
     {
         $request->validate([
@@ -225,6 +237,7 @@ class PostController extends Controller
         return redirect("manage-posts");
     }
 
+    /// Effectively edit a new post in the database (POST request due to html forms not supporting PUT)
     public function doEditPost(Request $request, Post $post)
     {
         $request->validate([

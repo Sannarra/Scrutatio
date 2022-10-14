@@ -7,12 +7,13 @@ use App\Models\Account;
 
 class AccountController extends Controller
 {
+    /// Api routes
     public function index()
     {
         return Account::all();
     }
 
-    public function show(Request $request, Account $account)
+    public function show(Account $account)
     {
         return $account;
     }

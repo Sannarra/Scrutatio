@@ -7,6 +7,7 @@ use App\Models\Message;
 
 class MessageController extends Controller
 {
+    /// Api
     public function index()
     {
         return Message::all();

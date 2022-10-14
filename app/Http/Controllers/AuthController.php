@@ -27,6 +27,7 @@ class AuthController extends Controller
         return react_view("login");
     }
 
+    /// Try to sign in
     public function login(Request $request)
     {
         $request->validate([
@@ -35,12 +36,14 @@ class AuthController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
+        /// If successfully sign in, redirect to the authentified page which triggered the login request (or home if none)
         if (Auth::attempt($credentials, filter_var($request->query("remember", "false"), FILTER_VALIDATE_BOOLEAN))) {
             $request->session()->regenerate();
 
             return redirect()->intended();
         }
 
+        /// Redirect in login on failure
         return redirect("login")->withErrors('Login details are not valid');
     }
 

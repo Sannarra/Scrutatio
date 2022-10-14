@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
-use App\Models\Company;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller

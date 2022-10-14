@@ -21,7 +21,7 @@ class ApplicationController extends Controller
         return Application::all();
     }
 
-    public function show(Request $request, Application $application)
+    public function show(Application $application)
     {
         return $application;
     }
@@ -84,11 +84,14 @@ class ApplicationController extends Controller
         ]), 201);
     }
 
+    /// Get the applications informations needed by the front related to the authentified user
     public function getApplications()
     {
         $applications = null;
+        /// If user is private we get their applications
         if (Auth::user()->user != null)
             $applications = Auth::user()->user->applications;
+        /// If user is company we get the applications to their posts
         else
             $applications = Application::whereHas('post', function (Builder $query) {
                 return $query->whereHas('company', function (Builder $query) {
@@ -97,6 +100,7 @@ class ApplicationController extends Controller
                     );
                 })->get();
 
+        /// Retreive front needed informations
         $applications = $applications->sortByDesc('created_at');
         $applications_id = $applications->pluck('id');
         $posts_title = $applications->pluck('post.title');
@@ -110,6 +114,7 @@ class ApplicationController extends Controller
                 "title" => $posts_title[$i],
                 "post_id" => $posts_id[$i],
                 "applicant" => $applicants[$i],
+                /// Contact id is either the company offering the job or the applicant (depending on the authentified user)
                 "contact_id" => (Auth::user()->user != null) ?Post::find($posts_id[$i])->company->account->id : $applications[$i]->user->account->id
             ]);
         return $conversations;
@@ -119,6 +124,9 @@ class ApplicationController extends Controller
     public function chat()
     {
         $conversations = $this->getApplications();
+
+        /// Conversation Id is the conversation index (in the $conversations array, not the id database field) to open when loading the page
+        /// If not set it open the first existing conversation
         $conversationId = Session::get("conversationId");
         if ($conversationId == null)
             $conversationId = 0;
@@ -145,13 +153,19 @@ Your {$post->title} job offer interests me.
 {$user->phone}";
     }
 
+    /// Open the chat when applying to a specific post
+    /// The chat open on a new conversation which will be created in database on the first sent message and redirect to the regular chat
+    /// Other conversations works as the regular chat page
     public function apply(Post $post)
     {
+        /// Test if the user has already applied to the offer, if true it redirect to the regular chat and open on the post conversation
         $conversation = Application::where('user_id', Auth::user()->user->id)->where('post_id', $post->id)->get();
         if ($conversation->count() > 0)
             return redirect('/chat')->with("conversationId", $conversation->first()->id);
-        $conversations = $this->getApplications();
 
+        /// Retreive regular chat applications
+        $conversations = $this->getApplications();
+        /// Add the new conversation (not stored in database until the first message is sent)
         array_unshift($conversations, ["title" => $post->title, "new" => true, "post_id" => $post->id, "company_id" => $post->company->id]);
         return react_view("message", [
             "user" => Auth::user()->user->id,

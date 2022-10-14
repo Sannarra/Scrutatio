@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\Models\Account;
 use App\Models\User;
 use App\Models\Company;
@@ -121,11 +120,13 @@ class ProfileController extends Controller
         return redirect("edit-profile/" . $company->account_id);
     }
 
+    /// Effectively edit a profile in the database
     static public function editProfile(Request $request, Account $account)
     {
         $user = $account->user;
         $company = $account->company;
 
+        /// add a key in the array if its request value isn't null
         $addIfSet = function ($array, $key) use ($request) {
             $val = $request->input($key);
             if ($val != null && $val != "")
