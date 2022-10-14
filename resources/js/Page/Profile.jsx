@@ -115,14 +115,24 @@ export default function Profile(props) {
                         Create company account
                     </Button>
                     {props.data.isAdmin ? (
-                        <Button
-                            sx={{ color: "black" }}
-                            href="/admin-panel"
-                            variant="outlined"
-                            startIcon={<AdminPanelSettingsIcon />}
-                        >
-                            Admin Panel
-                        </Button>
+                        <>
+                            <Button
+                                sx={{ color: "black" }}
+                                href="/manage-posts"
+                                variant="outlined"
+                                startIcon={<StarIcon />}
+                            >
+                                Manage offers
+                            </Button>
+                            <Button
+                                sx={{ color: "black" }}
+                                href="/admin-panel"
+                                variant="outlined"
+                                startIcon={<AdminPanelSettingsIcon />}
+                            >
+                                Admin Panel
+                            </Button>
+                        </>
                     ) : null}
                 </Box>
             ) : null}

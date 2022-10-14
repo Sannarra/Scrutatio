@@ -46,6 +46,8 @@ export default class JobCard extends React.Component {
         };
         this.collapseRef = React.createRef();
         this.cardRef = React.createRef();
+        this.avatarColor =
+            "#" + Math.floor(Math.random() * 0xffffff).toString(16);
     }
 
     handleExpandClick() {
@@ -131,11 +133,7 @@ export default class JobCard extends React.Component {
                         <Avatar
                             aria-label="company_icon"
                             style={{
-                                backgroundColor:
-                                    "#" +
-                                    Math.floor(
-                                        Math.random() * 0xffffff
-                                    ).toString(16),
+                                backgroundColor: this.avatarColor,
                             }}
                         >
                             {this.props.data.company_name[0]}

@@ -97,10 +97,10 @@ class PostController extends Controller
                     ->orWhere('short_brief', 'like', "%$searchWords%")
                     ->orWhereRelation('company', 'name', 'like', "%$searchWords%");
             });
-        $addWhereOrNull('salary', '>', $minSalary);
-        $addWhereOrNull('salary', '<', $maxSalary);
-        $addWhereOrNull('working_time', '>', $minHours);
-        $addWhereOrNull('working_time', '<', $maxHours);
+        $addWhereOrNull('salary', '>=', $minSalary);
+        $addWhereOrNull('salary', '<=', $maxSalary);
+        $addWhereOrNull('working_time', '>=', $minHours);
+        $addWhereOrNull('working_time', '<=', $maxHours);
         if ($location != null)
             $result = $result->where('city', 'like', "%$location%");
         if ($contractTypes != null)
@@ -210,15 +210,13 @@ class PostController extends Controller
 
     public function doCreatePost(Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             'title' => 'required|max:255',
-            'city' => 'required',
-            'short_brief' => 'required',
-            'description' => 'required',
-            'contract_type' => 'required',
-            'salary' => 'required',
-            'working_time' => 'required'
-
+            'description' => "required",
+            'salary' => 'numeric|min:0|nullable',
+            'working_time' => 'numeric|min:0|nullable',
+            'city' => 'required|max:255',
+            'short_brief' => "required",
         ]);
         $data = $request->all();
         $data['company_id'] = Auth::user()->company->id;
@@ -229,12 +227,13 @@ class PostController extends Controller
 
     public function doEditPost(Request $request, Post $post)
     {
-        $this->validate($request, [
-            'title' => 'required|max:255',
-            'city' => 'required',
-            'short_brief' => 'required',
-            'description' => 'required',
-            'contract_type' => 'required'
+        $request->validate([
+            'title' => 'filled|max:255',
+            'description' => "filled",
+            'salary' => 'numeric|min:0|nullable',
+            'working_time' => 'numeric|min:0|nullable',
+            'city' => 'filled|max:255',
+            'short_brief' => "filled",
         ]);
 
         $post->update($request->all());
