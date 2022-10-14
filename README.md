@@ -68,7 +68,7 @@ In addition of those constraints, we aims to:
 
 ## Database Schema
 
-<a href="https://github.com/EpitechMscProPromo2025/T-WEB-501-NAN-5-1-jobboard-lisa.bourdon/doc/DatabaseDiagram.pdf">
+<a href="https://github.com/EpitechMscProPromo2025/T-WEB-501-NAN-5-1-jobboard-lisa.bourdon/blob/master/doc/DatabaseDiagram.pdf">
     <img src="doc/DatabaseDiagram.png" alt="Database Diagram" width="1000" height="auto">
   </a>
 
